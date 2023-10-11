@@ -1,5 +1,6 @@
-from dfes.fire_bans import rss_url
+from dfes.fire_bans import fire_bans
 
 
-def test_get_fire_ban_rss_url():
-    assert rss_url() == "https://www.emergency.wa.gov.au/data/message_TFB.rss"
+def test_get_feed_title():
+    fire_ban_contents = fire_bans()
+    assert fire_ban_contents['feed']['title'] == "Total Fire Ban (All Regions)"
