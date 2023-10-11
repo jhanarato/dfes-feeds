@@ -1,6 +1,13 @@
+import pytest
+import feedparser
+
 from dfes.fire_bans import feed_title
 
 
-def test_get_feed_title():
-    test_data = "data/2023-01-03/message_TFB.rss"
-    assert feed_title(test_data) == "Total Fire Ban (All Regions)"
+@pytest.fixture
+def with_bans():
+    return feedparser.parse("data/2023-01-03/message_TFB.rss")
+
+
+def test_get_feed_title(with_bans):
+    assert feed_title(with_bans) == "Total Fire Ban (All Regions)"
