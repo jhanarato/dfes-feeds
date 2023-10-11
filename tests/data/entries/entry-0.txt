@@ -1,0 +1,206 @@
+<div>
+<b>Content:</b><table><tr><td width="600"><table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+    <tr>
+        <td style="padding: 10px 20px; text-align: Left;">
+            <img alt="" src="https://education.whispir.com/public/resources/723bc710b55ac33f5f153729df1100573f8.png" width="100%" />
+        </td>
+    </tr>
+</table><table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+    <tr>
+        <td style="padding: 15px 20px 15px;">
+            <p><div style="font-family: Arial, Helvetica, sans-serif; font-size: 12pt;">
+  <p><strong> The following alert has been issued by the Department of Fire and Emergency Services (DFES).</strong>
+  </p>
+  <p>
+    <br /><span style="color: #777777;">Time of issue: 05:05 PM </span>
+    <br /><span style="color: #777777;">Date of issue: 02 January 2023 </span> 
+  </p>
+  <p><strong>Total Fire Ban affecting</strong>
+     
+    
+    Midwest Gascoyne, 
+    Perth Metropolitan, 
+    Goldfields Midlands, 
+    South West, 
+    Great Southern for 3 January 2023
+  </p>
+  <p>A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:
+  </p>
+  
+  
+  
+  <p><strong>Midwest Gascoyne Region:</strong> 	
+  </p>
+  <ul>
+    <li>Carnamah - All Day</li>  
+     
+    <li>Chapman Valley - All Day</li> 
+    <li>Coorow - All Day</li> 
+     
+    <li>Dandaragan - All Day</li> 
+    <li>Greater Geraldton - All Day</li> 
+    <li>Irwin - All Day</li> 
+     
+    <li>Mingenew - All Day</li> 
+    <li>Moora - All Day</li> 
+    <li>Morawa - All Day</li> 
+     
+     
+    <li>Northampton - All Day</li> 
+    <li>Perenjori - All Day</li> 
+     
+     
+    <li>Three Springs - All Day</li> 
+     
+    <li>Victoria Plains - All Day</li> 
+     
+    
+  </ul>
+  
+  <p><strong>Perth Metropolitan Region:</strong> 	
+  </p>
+  <ul>
+    <li>Armadale - All Day</li> 	
+     	
+     	
+     	
+     	
+     	
+    <li>Chittering - All Day</li> 	
+     	
+     	
+     	
+     	
+     	
+    <li>Gingin - All Day</li> 	
+    <li>Gosnells - All Day</li> 	
+     	
+    <li>Kalamunda - All Day</li> 	
+     	
+     	
+     	
+     	
+    <li>Mundaring - All Day</li> 	
+     	
+     	
+     	
+     	
+    <li>Serpentine Jarrahdale - All Day</li> 
+     	
+     	
+     	
+    <li>Swan - All Day</li> 	
+     	
+     	
+    
+  </ul>
+  
+  <p><strong>Goldfields Midlands Region:</strong>
+  </p>
+  <ul>
+    <li>Beverley - All Day</li> 	
+    <li>Bruce Rock - All Day</li> 	
+     
+    <li>Cunderdin - All Day</li> 
+    <li>Dalwallinu - All Day</li> 
+    <li>Dowerin - All Day</li> 	
+     	
+    <li>Goomalling - All Day</li> 	
+     	
+    <li>Kellerberrin - All Day</li>
+    <li>Koorda - All Day</li>
+    <li>Laverton - All Day</li> 	
+     	
+    <li>Menzies - All Day</li> 	
+    <li>Merredin - All Day</li> 	
+    <li>Mount Marshall - All Day</li> 	
+    <li>Mukinbudin - All Day</li> 	
+    <li>Narembeen - All Day</li> 	
+     	
+    <li>Northam - All Day</li> 	
+    <li>Nungarin - All Day</li> 	
+    <li>Quairading - All Day</li> 	
+    <li>Tammin - All Day</li> 	
+    <li>Toodyay - All Day</li> 	
+    <li>Trayning - All Day</li>
+    <li>Wongan Ballidu - All Day</li>
+    <li>Westonia - All Day</li> 	
+    <li>Wyalkatchem - All Day</li> 	
+    <li>Yilgarn - All Day</li> 	
+    <li>York - All Day</li>
+  </ul>
+  
+  <p><strong>South West Region:</strong> 	
+  </p>
+  <ul>
+    <li>Bunbury - All Day</li> 	
+    <li>Capel - All Day</li> 	
+    <li>Collie - All Day</li> 	
+    <li>Dardanup - All Day</li> 	
+    <li>Harvey - All Day</li>    
+    <li>Murray - All Day</li> 	
+    <li>Waroona - All Day</li> 	
+  </ul>
+  
+  
+  <p><strong>Great Southern Region:</strong> 	
+  </p>
+  <ul>
+     	
+    <li>Boddington - All Day</li> 	
+    <li>Brookton - All Day</li> 	
+     	
+    <li>Corrigin - All Day</li> 	
+     	
+    <li>Cuballing - All Day</li> 	
+     	
+     	
+     	
+     	
+     	
+     	
+     	
+     	
+    <li>Kondinin - All Day</li> 	
+    <li>Kulin - All Day</li> 	
+     	
+    <li>Narrogin - All Day</li> 	
+    <li>Pingelly - All Day</li> 	
+     	
+     	
+    <li>Wagin - All Day</li> 	
+    <li>Wandering - All Day</li> 	
+    <li>West Arthur - All Day</li> 	
+    <li>Wickepin - All Day</li> 	
+    <li>Williams - All Day</li> 	
+    <li>Woodanilling - All Day</li>
+  </ul>
+  <p>At these times you must not:
+  </p>
+  <ul>
+    <li>Light, maintain or use a fire in the open air</li>
+    <li>Carry out any activity that could start a fire</li>
+  </ul>
+  <p>This includes:
+  </p>
+  <ul>
+    <li>Open fires for the purpose of cooking, camping or outdoor entertainment are not allowed including fire pits and bonfires.</li>
+    <li>Hot work such as metal work, grinding, welding, gas cutting is not allowed in the open air except for business and industry if regulatory conditions are met.</li>
+    <li>Off-road activity using a four-wheel drive, quad bike, motorcycle, bobcat or similar vehicle, except for agricultural purposes or by business and industry if regulatory conditions are met.</li>
+  </ul>
+  <p>
+    <br />If a Harvest and Vehicle Movement Ban has been imposed by your local government, off-road activity for agriculture or business and industry including harvesting is banned. Exceptions are made for essential services.
+    <br />
+    <br />For a list of activities that can or cannot be carried out during a Total Fire Ban and conditions visit <a href="https://www.dfes.wa.gov.au/totalfirebans" target="_blank"><u>www.dfes.wa.gov.au/totalfirebans</u></a> or by telephoning the Total Fire Ban Information Line on 1800 709 355.
+    <br />
+    <br />You could be fined up to $25,000 or jailed for 12 months or both if you breach a Total Fire Ban.
+    <br />
+    <br />Current Total Fire Bans are also available by visiting <a href="www.emergency.wa.gov.au/#totalfirebans" target="_blank"><u>www.emergency.wa.gov.au/#totalfirebans</u></a>
+  </p>
+  <p>END
+    <br />Media Contact: DFES Media and Corporate Communications on 9395 9543.
+  </p>
+</div></p>
+        </td>
+    </tr>
+</table></td></tr></table></div>

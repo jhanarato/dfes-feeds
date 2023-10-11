@@ -1,0 +1,74 @@
+<div>
+<b>Content:</b><table><tr><td width="600"><table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+    <tr>
+        <td style="padding: 10px 20px; text-align: Left;">
+            <img alt="" src="https://education.whispir.com/public/resources/723bc710b55ac33f5f153729df1100573f8.png" width="100%" />
+        </td>
+    </tr>
+</table><table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+    <tr>
+        <td style="padding: 15px 20px 15px;">
+            <p><div style="font-family: Arial, Helvetica, sans-serif; font-size: 12pt;">
+  <p><strong> The following alert has been issued by the Department of Fire and Emergency Services (DFES).</strong>
+  </p>
+  <p>
+    <br /><span style="color: #777777;">Time of issue: 04:16 PM </span>
+    <br /><span style="color: #777777;">Date of issue: 31 December 2022 </span> 
+  </p>
+  <p><strong>Total Fire Ban affecting</strong>
+     
+    Pilbara, 
+    
+    
+    
+    
+    for 1 January 2023
+  </p>
+  <p>A Total Fire Ban has been declared for 1 January 2023 for the local government districts listed below:
+  </p>
+  
+  
+  <p><strong>Pilbara Region:</strong> 	
+  </p>
+  <ul>
+     		
+     		
+     		
+    <li>Karratha - All Day</li> 		
+     	
+  </ul>
+  
+  
+  
+  
+  
+  
+  <p>At these times you must not:
+  </p>
+  <ul>
+    <li>Light, maintain or use a fire in the open air</li>
+    <li>Carry out any activity that could start a fire</li>
+  </ul>
+  <p>This includes:
+  </p>
+  <ul>
+    <li>Open fires for the purpose of cooking, camping or outdoor entertainment are not allowed including fire pits and bonfires.</li>
+    <li>Hot work such as metal work, grinding, welding, gas cutting is not allowed in the open air except for business and industry if regulatory conditions are met.</li>
+    <li>Off-road activity using a four-wheel drive, quad bike, motorcycle, bobcat or similar vehicle, except for agricultural purposes or by business and industry if regulatory conditions are met.</li>
+  </ul>
+  <p>
+    <br />If a Harvest and Vehicle Movement Ban has been imposed by your local government, off-road activity for agriculture or business and industry including harvesting is banned. Exceptions are made for essential services.
+    <br />
+    <br />For a list of activities that can or cannot be carried out during a Total Fire Ban and conditions visit <a href="https://www.dfes.wa.gov.au/totalfirebans" target="_blank"><u>www.dfes.wa.gov.au/totalfirebans</u></a> or by telephoning the Total Fire Ban Information Line on 1800 709 355.
+    <br />
+    <br />You could be fined up to $25,000 or jailed for 12 months or both if you breach a Total Fire Ban.
+    <br />
+    <br />Current Total Fire Bans are also available by visiting <a href="www.emergency.wa.gov.au/#totalfirebans" target="_blank"><u>www.emergency.wa.gov.au/#totalfirebans</u></a>
+  </p>
+  <p>END
+    <br />Media Contact: DFES Media and Corporate Communications on 9395 9543.
+  </p>
+</div></p>
+        </td>
+    </tr>
+</table></td></tr></table></div>
