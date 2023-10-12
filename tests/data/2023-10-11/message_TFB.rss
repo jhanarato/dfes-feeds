@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:georss="urn:oasis:names:tc:emergency:cap:1.2" xmlns:dfes="http://emergency.wa.gov.au/xmlns/dfes" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" version="2.0">
+<channel>
+<title>Total Fire Ban (All Regions)</title>
+<link>http://emergency.wa.gov</link>
+<description />
+<language>en-us</language>
+<pubDate>Wed, 11 Oct 2023 16:39:10 GMT</pubDate>
+<lastBuildDate>Wed, 11 Oct 2023 16:39:10 GMT</lastBuildDate>
+<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+<generator>Whispir RSS Engine</generator>
+<managingEditor>no-reply@whispir.com</managingEditor>
+<webMaster>no-reply@whispir.com</webMaster>
+<ttl>1</ttl>
+</channel>
+</rss>
