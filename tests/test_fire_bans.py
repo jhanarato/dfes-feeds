@@ -4,7 +4,7 @@ import pytest
 import feedparser
 
 from dfes import fire_bans
-from dfes.fire_bans import affected_regions
+from dfes.fire_bans import affected_regions, affected_districts, get_region_tag
 
 
 @pytest.fixture
@@ -46,3 +46,25 @@ def test_affected_regions(entry):
         "South West",
         "Great Southern",
     ]
+
+
+def test_affected_districts(entry):
+    assert affected_districts(entry.summary, "South West") == [
+        "Bunbury",
+        "Capel",
+        "Collie",
+        "Dardanup",
+        "Harvey",
+        "Murray",
+        "Waroona",
+    ]
+
+
+def test_get_region_tag(entry):
+    tag = get_region_tag(entry.summary, "South West")
+    assert tag.name == "strong"
+    assert tag.string == "South West Region:"
+
+
+def test_get_district_tags(entry):
+    pass

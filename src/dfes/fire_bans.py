@@ -49,3 +49,34 @@ def affected_regions(summary: str) -> list[str]:
     soup = BeautifulSoup(summary)
     tags = soup.find_all('strong', string=re.compile("Region:$"))
     return [tag.string.removesuffix(" Region:") for tag in tags]
+
+
+def get_region_tag(summary: str, region: str):
+    soup = BeautifulSoup(summary)
+    region_tags = soup.find_all('strong', string=re.compile(f"{region} Region:$"))
+
+    if not region_tags:
+        return []
+
+    if len(region_tags) > 1:
+        raise ParseException(f"More than one tag for region {region}")
+
+    return region_tags[0]
+
+
+def get_district_tags(region_tag: Tag):
+    pass
+
+
+def affected_districts(summary: str, region: str) -> list[str]:
+    region_tag = get_region_tag(summary, region)
+
+    return [
+        "Bunbury",
+        "Capel",
+        "Collie",
+        "Dardanup",
+        "Harvey",
+        "Murray",
+        "Waroona",
+    ]
