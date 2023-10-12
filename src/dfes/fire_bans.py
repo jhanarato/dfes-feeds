@@ -1,11 +1,13 @@
-import feedparser
+from dataclasses import dataclass
 
 RSS_URL = "https://www.emergency.wa.gov.au/data/message_TFB.rss"
 
 
-def feed_title(data) -> str:
-    return data['feed']['title']
+@dataclass
+class Entry:
+    summary: str
 
 
-def summaries(data) -> list[str]:
-    return [entry['summary'] for entry in data['entries']]
+def entries(parsed_data) -> list[Entry]:
+    return [Entry(entry['summary'][:5]) for entry in parsed_data['entries']]
+

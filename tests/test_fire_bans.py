@@ -1,17 +1,19 @@
 import pytest
 import feedparser
 
-from dfes.fire_bans import feed_title, summaries
+from dfes import fire_bans
 
 
 @pytest.fixture
-def with_bans():
+def bans_2023_01_03():
     return feedparser.parse("data/2023-01-03/message_TFB.rss")
 
 
-def test_get_feed_title(with_bans):
-    assert feed_title(with_bans) == "Total Fire Ban (All Regions)"
+def test_entry_count(bans_2023_01_03):
+    entries = fire_bans.entries(bans_2023_01_03)
+    assert len(entries) == 4
 
 
-def test_summaries(with_bans):
-    assert len(summaries(with_bans)) == 4
+def test_entry_summary(bans_2023_01_03):
+    first_entry = fire_bans.entries(bans_2023_01_03)[0]
+    assert first_entry.summary[:5] == "<div>"
