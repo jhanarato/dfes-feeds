@@ -64,8 +64,23 @@ def get_region_tag(summary: str, region: str):
     return region_tags[0]
 
 
-def get_district_tags(region_tag: Tag):
-    pass
+def get_list_after_region_tag(region_tag: Tag) -> Tag:
+    parent_paragraph = region_tag.parent
+    for element in parent_paragraph.next_elements:
+        if isinstance(element, Tag):
+            if element.name == "ul":
+                return element
+    raise ParseException("No district list <ul> found.")
+
+
+def get_district_tags(list_tag: Tag) -> list[Tag]:
+    tags = []
+    for child in list_tag.children:
+        if isinstance(child, Tag):
+            if child.name == "li":
+                tags.append(child)
+
+    return tags
 
 
 def affected_districts(summary: str, region: str) -> list[str]:

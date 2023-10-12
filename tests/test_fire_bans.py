@@ -4,7 +4,8 @@ import pytest
 import feedparser
 
 from dfes import fire_bans
-from dfes.fire_bans import affected_regions, affected_districts, get_region_tag
+from dfes.fire_bans import affected_regions, affected_districts, get_region_tag, get_list_after_region_tag, \
+    get_district_tags
 
 
 @pytest.fixture
@@ -66,5 +67,12 @@ def test_get_region_tag(entry):
     assert tag.string == "South West Region:"
 
 
+def test_get_next_list_after_region_tag(entry):
+    region_tag = get_region_tag(entry.summary, "South West")
+    assert get_list_after_region_tag(region_tag).name == "ul"
+
+
 def test_get_district_tags(entry):
-    pass
+    region_tag = get_region_tag(entry.summary, "South West")
+    list_tag = get_list_after_region_tag(region_tag)
+    assert len(get_district_tags(list_tag)) == 7
