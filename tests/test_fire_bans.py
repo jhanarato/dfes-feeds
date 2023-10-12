@@ -1,3 +1,5 @@
+import datetime
+
 import pytest
 import feedparser
 
@@ -23,5 +25,5 @@ def test_entry_summary(entry):
     assert entry.summary[:5] == "<div>"
 
 
-def test_entry_published(bans_2023_01_03):
-    pass
+def test_entry_published(entry):
+    assert entry.published == datetime.date(2023, 1, 2)
