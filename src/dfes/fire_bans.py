@@ -85,13 +85,9 @@ def get_district_tags(list_tag: Tag) -> list[Tag]:
 
 def affected_districts(summary: str, region: str) -> list[str]:
     region_tag = get_region_tag(summary, region)
+    list_tag = get_list_after_region_tag(region_tag)
+    district_tags = get_district_tags(list_tag)
 
-    return [
-        "Bunbury",
-        "Capel",
-        "Collie",
-        "Dardanup",
-        "Harvey",
-        "Murray",
-        "Waroona",
-    ]
+    districts = [tag.string.removesuffix(" - All Day") for tag in district_tags]
+
+    return districts
