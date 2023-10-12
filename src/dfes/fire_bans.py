@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-RSS_URL = "https://www.emergency.wa.gov.au/data/message_TFB.rss"
-
 
 @dataclass
 class Entry:
@@ -9,5 +7,8 @@ class Entry:
 
 
 def entries(parsed_data) -> list[Entry]:
-    return [Entry(entry['summary'][:5]) for entry in parsed_data['entries']]
+    return [make_entry(entry_data) for entry_data in parsed_data['entries']]
 
+
+def make_entry(entry_data) -> Entry:
+    return Entry(summary=entry_data['summary'])
