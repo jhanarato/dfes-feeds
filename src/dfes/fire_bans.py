@@ -1,5 +1,11 @@
 import datetime
+import re
 from dataclasses import dataclass
+from bs4 import BeautifulSoup
+
+
+class ParseException(Exception):
+    pass
 
 
 @dataclass
@@ -24,3 +30,20 @@ def make_entry(entry_data) -> Entry:
         title=entry_data["title"],
         summary=entry_data["summary"],
     )
+
+
+def affected_districts(summary: str) -> list[str]:
+    return ["Carnamah", "Chapman Valley", "Coorow", "Dandaragan"]
+
+
+def date_of_issue(summary: str) -> datetime.date:
+    soup = BeautifulSoup(summary)
+    tags = soup.find_all("span", string=re.compile("^Date of issue:"))
+
+    if not tags:
+        raise ParseException("Date of issue tag not found.")
+
+    contents = tags[0].string
+    date_str = contents.removeprefix("Date of issue: ").rstrip()
+    date_time = datetime.datetime.strptime(date_str, "%d %B %Y")
+    return date_time.date()

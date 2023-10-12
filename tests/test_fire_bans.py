@@ -31,3 +31,34 @@ def test_entry_published(entry):
 
 def test_entry_title(entry):
     assert entry.title == "Total Fire Ban advice for 3 January 2023"
+
+
+@pytest.fixture
+def ban_html():
+    return """
+    <div><table><tbody><tr><td>
+    <table><tr><td>
+        <div>
+            <p>
+            <p>A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:</p>
+            <p><strong>Midwest Gascoyne Region:</strong></p>
+                <ul>
+                <li>Carnamah - All Day</li>  
+                <li>Chapman Valley - All Day</li> 
+                <li>Coorow - All Day</li> 
+                <li>Dandaragan - All Day</li> 
+                </ul>
+        </div> 
+    </td></tr></table>
+</td></tr></tbody></table></div>
+"""
+
+
+def test_districts(ban_html):
+    assert fire_bans.affected_districts(ban_html) == [
+        "Carnamah", "Chapman Valley", "Coorow", "Dandaragan"
+    ]
+
+
+def test_date_of_issue(entry):
+    assert fire_bans.date_of_issue(entry.summary) == datetime.date(2023, 1, 2)
