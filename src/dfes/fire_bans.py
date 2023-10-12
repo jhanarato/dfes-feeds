@@ -1,7 +1,7 @@
 import datetime
 import re
 from dataclasses import dataclass
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 
 
 class ParseException(Exception):
@@ -32,10 +32,6 @@ def make_entry(entry_data) -> Entry:
     )
 
 
-def affected_districts(summary: str) -> list[str]:
-    return ["Carnamah", "Chapman Valley", "Coorow", "Dandaragan"]
-
-
 def date_of_issue(summary: str) -> datetime.date:
     soup = BeautifulSoup(summary)
     tags = soup.find_all("span", string=re.compile("^Date of issue:"))
@@ -47,3 +43,9 @@ def date_of_issue(summary: str) -> datetime.date:
     date_str = contents.removeprefix("Date of issue: ").rstrip()
     date_time = datetime.datetime.strptime(date_str, "%d %B %Y")
     return date_time.date()
+
+
+def affected_regions(summary: str) -> list[str]:
+    soup = BeautifulSoup(summary)
+    tags = soup.find_all('strong', string=re.compile("Region:$"))
+    return [tag.string.removesuffix(" Region:") for tag in tags]
