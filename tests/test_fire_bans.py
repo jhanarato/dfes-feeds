@@ -27,3 +27,7 @@ def test_entry_summary(entry):
 
 def test_entry_published(entry):
     assert entry.published == datetime.date(2023, 1, 2)
+
+
+def test_entry_title(entry):
+    assert entry.title == "Total Fire Ban advice for 3 January 2023"
