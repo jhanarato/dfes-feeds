@@ -28,28 +28,6 @@ def test_date_of_issue(summary):
     assert fire_bans.date_of_issue(summary) == datetime.date(2023, 1, 2)
 
 
-def test_affected_regions(summary):
-    assert fire_bans.affected_regions(summary) == [
-        "Midwest Gascoyne",
-        "Perth Metropolitan",
-        "Goldfields Midlands",
-        "South West",
-        "Great Southern",
-    ]
-
-
-def test_affected_districts(summary):
-    assert fire_bans.affected_districts(summary, "South West") == [
-        "Bunbury",
-        "Capel",
-        "Collie",
-        "Dardanup",
-        "Harvey",
-        "Murray",
-        "Waroona",
-    ]
-
-
 def test_get_region_tag(summary):
     tag = fire_bans.get_region_tag(summary, "South West")
     assert tag.name == "strong"
@@ -81,3 +59,25 @@ def test_date_of_issue_handles_whitespace():
     """
 
     assert fire_bans.date_of_issue(summary_html) == datetime.date(2023, 1, 2)
+
+
+def test_affected_regions(summary):
+    assert fire_bans.affected_regions(summary) == [
+        "Midwest Gascoyne",
+        "Perth Metropolitan",
+        "Goldfields Midlands",
+        "South West",
+        "Great Southern",
+    ]
+
+
+def test_affected_districts(summary):
+    assert fire_bans.affected_districts(summary, "South West") == [
+        "Bunbury",
+        "Capel",
+        "Collie",
+        "Dardanup",
+        "Harvey",
+        "Murray",
+        "Waroona",
+    ]
