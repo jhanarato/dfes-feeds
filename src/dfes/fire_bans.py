@@ -34,15 +34,13 @@ def make_entry(entry_data) -> Entry:
 
 def date_of_issue(summary: str) -> datetime.date:
     soup = BeautifulSoup(summary)
-    tags = soup.find_all("span", string=re.compile("^Date of issue:"))
+    if span_tag := soup.find("span", string=re.compile("^Date of issue:")):
+        contents = span_tag.string
+        date_str = contents.removeprefix("Date of issue: ").rstrip()
+        date_time = datetime.datetime.strptime(date_str, "%d %B %Y")
+        return date_time.date()
 
-    if not tags:
-        raise ParseException("Date of issue tag not found.")
-
-    contents = tags[0].string
-    date_str = contents.removeprefix("Date of issue: ").rstrip()
-    date_time = datetime.datetime.strptime(date_str, "%d %B %Y")
-    return date_time.date()
+    raise ParseException("Date of issue tag not found.")
 
 
 def affected_regions(summary: str) -> list[str]:
