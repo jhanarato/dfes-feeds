@@ -90,8 +90,8 @@ def test_date_of_issue_handles_whitespace():
     assert fire_bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
 
 
-def test_affected_regions(summary):
-    assert fire_bans.affected_regions(summary) == [
+def test_affected_regions(soup):
+    assert fire_bans.affected_regions(soup) == [
         "Midwest Gascoyne",
         "Perth Metropolitan",
         "Goldfields Midlands",

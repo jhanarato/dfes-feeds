@@ -45,8 +45,7 @@ def date_of_issue(soup: BeautifulSoup) -> datetime.date:
     raise ParseException("Date of issue tag not found.")
 
 
-def affected_regions(summary: str) -> list[str]:
-    soup = BeautifulSoup(summary)
+def affected_regions(soup: BeautifulSoup) -> list[str]:
     tags = get_region_tags(soup)
     return [tag.string.removesuffix(" Region:") for tag in tags]
 
