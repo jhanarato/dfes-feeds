@@ -70,14 +70,8 @@ def get_list_after_region_tag(region_tag: Tag) -> Tag:
 
 
 def get_district_tags(list_tag: Tag) -> list[Tag]:
-    tags = []
-    for child in list_tag.children:
-        if isinstance(child, Tag):
-            if child.name == "li":
-                tags.append(child)
-
-    return tags
-
+    return list_tag.find_all('li')
+    
 
 def affected_districts(summary: str, region: str) -> list[str]:
     region_tag = get_region_tag(summary, region)
