@@ -91,3 +91,9 @@ def test_date_of_issue_handles_whitespace():
     """
 
     assert fire_bans.date_of_issue(summary_html) == datetime.date(2023, 1, 2)
+
+
+def test_most_recent_summary():
+    feed_location = "data/2023-01-03/message_TFB.rss"
+    summary = fire_bans.most_recent_summary(feed_location)
+    assert fire_bans.date_of_issue(summary) == datetime.date(2023, 1, 2)

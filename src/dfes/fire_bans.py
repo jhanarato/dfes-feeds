@@ -1,6 +1,8 @@
 import datetime
 import re
 from dataclasses import dataclass
+
+import feedparser
 from bs4 import BeautifulSoup, Tag
 
 
@@ -30,6 +32,16 @@ def make_entry(entry_data) -> Entry:
         title=entry_data["title"],
         summary=entry_data["summary"],
     )
+
+
+def most_recent_summary(feed_location: str) -> str | None:
+    parsed = feedparser.parse(feed_location)
+    entries = parsed['entries']
+
+    if entries:
+        return entries[0]['summary']
+
+    return None
 
 
 def date_of_issue(summary: str) -> datetime.date:
@@ -71,7 +83,7 @@ def get_list_after_region_tag(region_tag: Tag) -> Tag:
 
 def get_district_tags(list_tag: Tag) -> list[Tag]:
     return list_tag.find_all('li')
-    
+
 
 def affected_districts(summary: str, region: str) -> list[str]:
     region_tag = get_region_tag(summary, region)
