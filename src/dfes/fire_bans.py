@@ -34,12 +34,12 @@ def make_entry(entry_data) -> Entry:
     )
 
 
-def most_recent_summary(feed_location: str) -> str | None:
+def get_summary(feed_location: str, index: int = 0) -> str | None:
     parsed = feedparser.parse(feed_location)
     entries = parsed['entries']
 
     if entries:
-        return entries[0]['summary']
+        return entries[index]['summary']
 
     return None
 

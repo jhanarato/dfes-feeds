@@ -95,5 +95,12 @@ def test_date_of_issue_handles_whitespace():
 
 def test_most_recent_summary():
     feed_location = "data/2023-01-03/message_TFB.rss"
-    summary = fire_bans.most_recent_summary(feed_location)
+    summary = fire_bans.get_summary(feed_location)
     assert fire_bans.date_of_issue(summary) == datetime.date(2023, 1, 2)
+
+
+def test_summary_index():
+    feed_location = "data/2023-01-03/message_TFB.rss"
+    summaries = [fire_bans.get_summary(feed_location, index) for index in range(3)]
+    dates = [fire_bans.date_of_issue(summary) for summary in summaries]
+    assert dates == sorted(dates, reverse=True)
