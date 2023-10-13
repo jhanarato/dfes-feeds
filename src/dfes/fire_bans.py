@@ -45,13 +45,13 @@ def date_of_issue(summary: str) -> datetime.date:
 
 def affected_regions(summary: str) -> list[str]:
     soup = BeautifulSoup(summary)
-    tags = soup.find_all('strong', string=re.compile("Region:$"))
+    tags = soup.find_all('strong', string=re.compile("Region:"))
     return [tag.string.removesuffix(" Region:") for tag in tags]
 
 
 def get_region_tag(summary: str, region: str):
     soup = BeautifulSoup(summary)
-    region_tags = soup.find_all('strong', string=re.compile(f"{region} Region:$"))
+    region_tags = soup.find_all('strong', string=re.compile(f"{region} Region:"))
 
     if not region_tags:
         return []
