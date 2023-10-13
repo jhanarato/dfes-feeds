@@ -2,6 +2,7 @@ import datetime
 
 import pytest
 import feedparser
+from bs4 import BeautifulSoup
 
 from dfes import fire_bans
 
@@ -70,10 +71,18 @@ def test_get_next_list_after_region_tag(entry):
     assert fire_bans.get_list_after_region_tag(region_tag).name == "ul"
 
 
-def test_get_district_tags(entry):
-    region_tag = fire_bans.get_region_tag(entry.summary, "South West")
-    list_tag = fire_bans.get_list_after_region_tag(region_tag)
-    assert len(fire_bans.get_district_tags(list_tag)) == 7
+def test_get_district_tags():
+    html = """
+    <ul>
+    <li>Carnamah - All Day</li>   
+    <li>Chapman Valley - All Day</li> 
+    <li>Coorow - All Day</li> 
+    </ul>
+    """
+    soup = BeautifulSoup(html)
+    ul_tag = soup.find("ul")
+
+    assert len(fire_bans.get_district_tags(ul_tag)) == 3
 
 
 def test_date_of_issue_handles_whitespace():
