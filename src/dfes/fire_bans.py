@@ -65,12 +65,10 @@ def get_region_tag(summary: str, region: str):
 
 
 def get_list_after_region_tag(region_tag: Tag) -> Tag:
-    parent_paragraph = region_tag.parent
-    for element in parent_paragraph.next_elements:
-        if isinstance(element, Tag):
-            if element.name == "ul":
-                return element
-    raise ParseException("No district list <ul> found.")
+    if ul_tag := region_tag.find_next('ul'):
+        return ul_tag
+    else:
+        raise ParseException("No district list <ul> found.")
 
 
 def get_district_tags(list_tag: Tag) -> list[Tag]:
