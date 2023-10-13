@@ -76,8 +76,8 @@ def test_date_of_issue(soup):
     assert fire_bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
 
 
-def test_get_region_tag(summary):
-    tag = fire_bans.get_region_tag(summary, "South West")
+def test_get_region_tag(soup):
+    tag = fire_bans.get_region_tag(soup, "South West")
     assert tag.name == "strong"
     assert tag.string == "South West Region:"
 
@@ -100,8 +100,8 @@ def test_affected_regions(soup):
     ]
 
 
-def test_affected_districts(summary):
-    assert fire_bans.affected_districts(summary, "South West") == [
+def test_affected_districts(soup):
+    assert fire_bans.affected_districts(soup, "South West") == [
         "Bunbury",
         "Capel",
         "Collie",

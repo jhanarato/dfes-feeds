@@ -50,13 +50,12 @@ def affected_regions(soup: BeautifulSoup) -> list[str]:
     return [tag.string.removesuffix(" Region:") for tag in tags]
 
 
-def get_region_tag(summary: str, region: str):
-    soup = BeautifulSoup(summary)
+def get_region_tag(soup: BeautifulSoup, region: str):
     return soup.find('strong', string=re.compile(f"{region} Region:"))
 
 
-def affected_districts(summary: str, region: str) -> list[str]:
-    region_tag = get_region_tag(summary, region)
+def affected_districts(soup: BeautifulSoup, region: str) -> list[str]:
+    region_tag = get_region_tag(soup, region)
     district_tags = get_district_tags(region_tag)
 
     districts = [tag.string.removesuffix(" - All Day") for tag in district_tags]
