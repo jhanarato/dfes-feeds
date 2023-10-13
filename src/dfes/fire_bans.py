@@ -1,5 +1,6 @@
 import datetime
 import re
+from dataclasses import dataclass
 
 import feedparser
 from bs4 import BeautifulSoup, Tag
@@ -45,6 +46,15 @@ def date_of_issue(soup: BeautifulSoup) -> datetime.date:
     raise ParseException("Date of issue tag not found.")
 
 
+def date_declared_for(soup: BeautifulSoup) -> datetime.date:
+    prefix = "A Total Fire Ban has been declared for "
+    suffix = " for the local government districts listed below:"
+    tag = soup.find('p', string=re.compile(prefix))
+    contents = tag.string
+    date_str = contents.removeprefix(prefix).removesuffix(suffix)
+    return datetime.datetime.strptime(date_str, "%d %B %Y").date()
+
+
 def affected_regions(soup: BeautifulSoup) -> list[str]:
     tags = get_region_tags(soup)
     return [tag.string.removesuffix(" Region:") for tag in tags]
@@ -61,3 +71,11 @@ def affected_districts(soup: BeautifulSoup, region: str) -> list[str]:
     districts = [tag.string.removesuffix(" - All Day") for tag in district_tags]
 
     return districts
+
+
+@dataclass
+class TotalFireBan:
+    issued: datetime.date
+    declared_for: datetime.date
+    regions: list[str]
+    districts: list[str]

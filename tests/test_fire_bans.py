@@ -90,6 +90,13 @@ def test_date_of_issue_handles_whitespace():
     assert fire_bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
 
 
+def test_date_delclared_for():
+    summary_html = """
+    <p>A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:</p>
+    """
+    assert fire_bans.date_declared_for(BeautifulSoup(summary_html)) == datetime.date(2023, 1, 3)
+
+
 def test_affected_regions(soup):
     assert fire_bans.affected_regions(soup) == [
         "Midwest Gascoyne",
