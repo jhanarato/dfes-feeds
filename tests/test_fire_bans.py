@@ -24,6 +24,20 @@ def summary():
     return fire_bans.get_summary("data/2023-01-03/message_TFB.rss")
 
 
+def test_get_region_tags():
+    summary_html = """
+     <p><strong>Midwest Gascoyne Region:</strong></p>
+     <p><strong>Perth Metropolitan Region:</strong></p>
+     <p><strong>Goldfields Midlands Region:</strong></p>
+    """
+
+    tags = fire_bans.get_region_tags(summary_html)
+    strings = [tag.string for tag in tags]
+    assert strings == ["Midwest Gascoyne Region:",
+                       "Perth Metropolitan Region:",
+                       "Goldfields Midlands Region:",]
+
+
 def test_date_of_issue(summary):
     assert fire_bans.date_of_issue(summary) == datetime.date(2023, 1, 2)
 

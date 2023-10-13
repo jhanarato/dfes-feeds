@@ -20,6 +20,11 @@ def get_summary(feed_location: str, index: int = 0) -> str | None:
     return None
 
 
+def get_region_tags(summary: str) -> list[Tag]:
+    soup = BeautifulSoup(summary)
+    return soup.find_all('strong', string=re.compile("Region:"))
+
+
 def date_of_issue(summary: str) -> datetime.date:
     soup = BeautifulSoup(summary)
     if span_tag := soup.find("span", string=re.compile("Date of issue:")):
