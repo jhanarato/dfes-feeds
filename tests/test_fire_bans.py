@@ -4,8 +4,6 @@ import pytest
 import feedparser
 
 from dfes import fire_bans
-from dfes.fire_bans import affected_regions, affected_districts, get_region_tag, get_list_after_region_tag, \
-    get_district_tags
 
 
 @pytest.fixture
@@ -40,7 +38,7 @@ def test_date_of_issue(entry):
 
 
 def test_affected_regions(entry):
-    assert affected_regions(entry.summary) == [
+    assert fire_bans.affected_regions(entry.summary) == [
         "Midwest Gascoyne",
         "Perth Metropolitan",
         "Goldfields Midlands",
@@ -50,7 +48,7 @@ def test_affected_regions(entry):
 
 
 def test_affected_districts(entry):
-    assert affected_districts(entry.summary, "South West") == [
+    assert fire_bans.affected_districts(entry.summary, "South West") == [
         "Bunbury",
         "Capel",
         "Collie",
@@ -62,17 +60,25 @@ def test_affected_districts(entry):
 
 
 def test_get_region_tag(entry):
-    tag = get_region_tag(entry.summary, "South West")
+    tag = fire_bans.get_region_tag(entry.summary, "South West")
     assert tag.name == "strong"
     assert tag.string == "South West Region:"
 
 
 def test_get_next_list_after_region_tag(entry):
-    region_tag = get_region_tag(entry.summary, "South West")
-    assert get_list_after_region_tag(region_tag).name == "ul"
+    region_tag = fire_bans.get_region_tag(entry.summary, "South West")
+    assert fire_bans.get_list_after_region_tag(region_tag).name == "ul"
 
 
 def test_get_district_tags(entry):
-    region_tag = get_region_tag(entry.summary, "South West")
-    list_tag = get_list_after_region_tag(region_tag)
-    assert len(get_district_tags(list_tag)) == 7
+    region_tag = fire_bans.get_region_tag(entry.summary, "South West")
+    list_tag = fire_bans.get_list_after_region_tag(region_tag)
+    assert len(fire_bans.get_district_tags(list_tag)) == 7
+
+
+def test_date_of_issue_handles_whitespace():
+    summary_html = """
+    <br /><span style="color: #777777;">Date of issue: 02 January 2023 </span>
+    """
+
+    assert fire_bans.date_of_issue(summary_html) == datetime.date(2023, 1, 2)
