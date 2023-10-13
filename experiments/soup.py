@@ -1,6 +1,5 @@
 import feedparser
 from bs4 import BeautifulSoup
-from dfes import fire_bans
 
 # This is probably has all the information we need to extract.
 html = """

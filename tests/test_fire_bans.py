@@ -3,31 +3,31 @@ import datetime
 import pytest
 from bs4 import BeautifulSoup
 
-from dfes import fire_bans
+from dfes import bans
 
 
 def test_most_recent_summary():
     feed_location = "data/2023-01-03/message_TFB.rss"
-    summary = fire_bans.get_summary(feed_location)
+    summary = bans.get_summary(feed_location)
     soup = BeautifulSoup(summary)
-    assert fire_bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
+    assert bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
 
 
 def test_summary_index():
     feed_location = "data/2023-01-03/message_TFB.rss"
-    soups = [fire_bans.get_soup(feed_location, index) for index in range(3)]
-    dates = [fire_bans.date_of_issue(soup) for soup in soups]
+    soups = [bans.get_soup(feed_location, index) for index in range(3)]
+    dates = [bans.date_of_issue(soup) for soup in soups]
     assert dates == sorted(dates, reverse=True)
 
 
 @pytest.fixture
 def summary():
-    return fire_bans.get_summary("data/2023-01-03/message_TFB.rss")
+    return bans.get_summary("data/2023-01-03/message_TFB.rss")
 
 
 @pytest.fixture
 def soup():
-    return fire_bans.get_soup("data/2023-01-03/message_TFB.rss")
+    return bans.get_soup("data/2023-01-03/message_TFB.rss")
 
 
 def test_get_region_tags():
@@ -37,7 +37,7 @@ def test_get_region_tags():
      <p><strong>Goldfields Midlands Region:</strong></p>
     """
 
-    tags = fire_bans.get_region_tags(BeautifulSoup(summary_html))
+    tags = bans.get_region_tags(BeautifulSoup(summary_html))
     strings = [tag.string for tag in tags]
     assert strings == ["Midwest Gascoyne Region:",
                        "Perth Metropolitan Region:",
@@ -50,7 +50,7 @@ def test_missing_region_tags():
     <p><strong>Not what you're looking for</strong></p>
     """
 
-    assert fire_bans.get_region_tags(BeautifulSoup(summary_html)) == []
+    assert bans.get_region_tags(BeautifulSoup(summary_html)) == []
 
 
 def test_get_district_tags_from_region_tag():
@@ -63,8 +63,8 @@ def test_get_district_tags_from_region_tag():
     <li>Coorow - All Day</li> 
     </ul>
     """
-    region_tag = fire_bans.get_region_tags(BeautifulSoup(summary_html))[0]
-    tags = fire_bans.get_district_tags(region_tag)
+    region_tag = bans.get_region_tags(BeautifulSoup(summary_html))[0]
+    tags = bans.get_district_tags(region_tag)
 
     strings = [tag.string for tag in tags]
     assert strings == ["Carnamah - All Day",
@@ -73,11 +73,11 @@ def test_get_district_tags_from_region_tag():
 
 
 def test_date_of_issue(soup):
-    assert fire_bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
+    assert bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
 
 
 def test_get_region_tag(soup):
-    tag = fire_bans.get_region_tag(soup, "South West")
+    tag = bans.get_region_tag(soup, "South West")
     assert tag.name == "strong"
     assert tag.string == "South West Region:"
 
@@ -87,18 +87,18 @@ def test_date_of_issue_handles_whitespace():
     <span style="color: #777777;"> Date of issue: 02 January 2023 </span>
     """
     soup = BeautifulSoup(summary_html)
-    assert fire_bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
+    assert bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
 
 
 def test_date_delclared_for():
     summary_html = """
     <p>A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:</p>
     """
-    assert fire_bans.date_declared_for(BeautifulSoup(summary_html)) == datetime.date(2023, 1, 3)
+    assert bans.date_declared_for(BeautifulSoup(summary_html)) == datetime.date(2023, 1, 3)
 
 
 def test_affected_regions(soup):
-    assert fire_bans.affected_regions(soup) == [
+    assert bans.affected_regions(soup) == [
         "Midwest Gascoyne",
         "Perth Metropolitan",
         "Goldfields Midlands",
@@ -108,7 +108,7 @@ def test_affected_regions(soup):
 
 
 def test_affected_districts(soup):
-    assert fire_bans.affected_districts(soup, "South West") == [
+    assert bans.affected_districts(soup, "South West") == [
         "Bunbury",
         "Capel",
         "Collie",
