@@ -25,20 +25,9 @@ def get_region_tags(summary: str) -> list[Tag]:
     return soup.find_all('strong', string=re.compile("Region:"))
 
 
-def get_district_tags_(region_tag: Tag) -> list[Tag]:
+def get_district_tags(region_tag: Tag) -> list[Tag]:
     ul_tag = region_tag.find_next('ul')
     return ul_tag.find_all('li')
-
-
-def get_list_after_region_tag(region_tag: Tag) -> Tag:
-    if ul_tag := region_tag.find_next('ul'):
-        return ul_tag
-    else:
-        raise ParseException("No district list <ul> found.")
-
-
-def get_district_tags(list_tag: Tag) -> list[Tag]:
-    return list_tag.find_all('li')
 
 
 def date_of_issue(summary: str) -> datetime.date:
@@ -65,8 +54,7 @@ def get_region_tag(summary: str, region: str):
 
 def affected_districts(summary: str, region: str) -> list[str]:
     region_tag = get_region_tag(summary, region)
-    list_tag = get_list_after_region_tag(region_tag)
-    district_tags = get_district_tags(list_tag)
+    district_tags = get_district_tags(region_tag)
 
     districts = [tag.string.removesuffix(" - All Day") for tag in district_tags]
 

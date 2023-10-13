@@ -58,7 +58,7 @@ def test_get_district_tags_from_region_tag():
     </ul>
     """
     region_tag = fire_bans.get_region_tags(summary_html)[0]
-    tags = fire_bans.get_district_tags_(region_tag)
+    tags = fire_bans.get_district_tags(region_tag)
 
     strings = [tag.string for tag in tags]
     assert strings == ["Carnamah - All Day",
@@ -74,25 +74,6 @@ def test_get_region_tag(summary):
     tag = fire_bans.get_region_tag(summary, "South West")
     assert tag.name == "strong"
     assert tag.string == "South West Region:"
-
-
-def test_get_next_list_after_region_tag(summary):
-    region_tag = fire_bans.get_region_tag(summary, "South West")
-    assert fire_bans.get_list_after_region_tag(region_tag).name == "ul"
-
-
-def test_get_district_tags():
-    html = """
-    <ul>
-    <li>Carnamah - All Day</li>   
-    <li>Chapman Valley - All Day</li> 
-    <li>Coorow - All Day</li> 
-    </ul>
-    """
-    soup = BeautifulSoup(html)
-    ul_tag = soup.find("ul")
-
-    assert len(fire_bans.get_district_tags(ul_tag)) == 3
 
 
 def test_date_of_issue_handles_whitespace():
