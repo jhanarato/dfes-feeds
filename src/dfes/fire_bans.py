@@ -1,6 +1,5 @@
 import datetime
 import re
-from dataclasses import dataclass
 
 import feedparser
 from bs4 import BeautifulSoup, Tag
@@ -27,8 +26,7 @@ def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup | None:
     return None
 
 
-def get_region_tags(summary: str) -> list[Tag]:
-    soup = BeautifulSoup(summary)
+def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
     return soup.find_all('strong', string=re.compile("Region:"))
 
 
@@ -48,7 +46,8 @@ def date_of_issue(soup: BeautifulSoup) -> datetime.date:
 
 
 def affected_regions(summary: str) -> list[str]:
-    tags = get_region_tags(summary)
+    soup = BeautifulSoup(summary)
+    tags = get_region_tags(soup)
     return [tag.string.removesuffix(" Region:") for tag in tags]
 
 

@@ -37,7 +37,7 @@ def test_get_region_tags():
      <p><strong>Goldfields Midlands Region:</strong></p>
     """
 
-    tags = fire_bans.get_region_tags(summary_html)
+    tags = fire_bans.get_region_tags(BeautifulSoup(summary_html))
     strings = [tag.string for tag in tags]
     assert strings == ["Midwest Gascoyne Region:",
                        "Perth Metropolitan Region:",
@@ -50,7 +50,7 @@ def test_missing_region_tags():
     <p><strong>Not what you're looking for</strong></p>
     """
 
-    assert fire_bans.get_region_tags(summary_html) == []
+    assert fire_bans.get_region_tags(BeautifulSoup(summary_html)) == []
 
 
 def test_get_district_tags_from_region_tag():
@@ -63,7 +63,7 @@ def test_get_district_tags_from_region_tag():
     <li>Coorow - All Day</li> 
     </ul>
     """
-    region_tag = fire_bans.get_region_tags(summary_html)[0]
+    region_tag = fire_bans.get_region_tags(BeautifulSoup(summary_html))[0]
     tags = fire_bans.get_district_tags(region_tag)
 
     strings = [tag.string for tag in tags]
