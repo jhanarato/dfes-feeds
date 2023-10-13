@@ -78,7 +78,7 @@ def test_get_district_tags(entry):
 
 def test_date_of_issue_handles_whitespace():
     summary_html = """
-    <br /><span style="color: #777777;">Date of issue: 02 January 2023 </span>
+    <span style="color: #777777;"> Date of issue: 02 January 2023 </span>
     """
 
     assert fire_bans.date_of_issue(summary_html) == datetime.date(2023, 1, 2)

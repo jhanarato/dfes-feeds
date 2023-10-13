@@ -34,9 +34,9 @@ def make_entry(entry_data) -> Entry:
 
 def date_of_issue(summary: str) -> datetime.date:
     soup = BeautifulSoup(summary)
-    if span_tag := soup.find("span", string=re.compile("^Date of issue:")):
-        contents = span_tag.string
-        date_str = contents.removeprefix("Date of issue: ").rstrip()
+    if span_tag := soup.find("span", string=re.compile("Date of issue:")):
+        contents = span_tag.string.strip()
+        date_str = contents.removeprefix("Date of issue: ")
         date_time = datetime.datetime.strptime(date_str, "%d %B %Y")
         return date_time.date()
 
