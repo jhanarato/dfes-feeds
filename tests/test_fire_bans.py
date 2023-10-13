@@ -38,6 +38,15 @@ def test_get_region_tags():
                        "Goldfields Midlands Region:",]
 
 
+def test_missing_region_tags():
+    summary_html = """
+    <p></p>
+    <p><strong>Not what you're looking for</strong></p>
+    """
+
+    assert fire_bans.get_region_tags(summary_html) == []
+
+
 def test_date_of_issue(summary):
     assert fire_bans.date_of_issue(summary) == datetime.date(2023, 1, 2)
 
