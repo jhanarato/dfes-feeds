@@ -20,6 +20,13 @@ def get_summary(feed_location: str, index: int = 0) -> str | None:
     return None
 
 
+def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup | None:
+    summary = get_summary(feed_location, index)
+    if summary:
+        return BeautifulSoup(summary)
+    return None
+
+
 def get_region_tags(summary: str) -> list[Tag]:
     soup = BeautifulSoup(summary)
     return soup.find_all('strong', string=re.compile("Region:"))
@@ -30,8 +37,7 @@ def get_district_tags(region_tag: Tag) -> list[Tag]:
     return ul_tag.find_all('li')
 
 
-def date_of_issue(summary: str) -> datetime.date:
-    soup = BeautifulSoup(summary)
+def date_of_issue(soup: BeautifulSoup) -> datetime.date:
     if span_tag := soup.find("span", string=re.compile("Date of issue:")):
         contents = span_tag.string.strip()
         date_str = contents.removeprefix("Date of issue: ")
