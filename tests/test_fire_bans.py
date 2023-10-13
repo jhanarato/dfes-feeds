@@ -47,6 +47,25 @@ def test_missing_region_tags():
     assert fire_bans.get_region_tags(summary_html) == []
 
 
+def test_get_district_tags_from_region_tag():
+    summary_html = """
+    <p><strong>Midwest Gascoyne Region:</strong> 	
+    </p>
+    <ul>
+    <li>Carnamah - All Day</li>   
+    <li>Chapman Valley - All Day</li> 
+    <li>Coorow - All Day</li> 
+    </ul>
+    """
+    region_tag = fire_bans.get_region_tags(summary_html)[0]
+    tags = fire_bans.get_district_tags_(region_tag)
+
+    strings = [tag.string for tag in tags]
+    assert strings == ["Carnamah - All Day",
+                       "Chapman Valley - All Day",
+                       "Coorow - All Day"]
+
+
 def test_date_of_issue(summary):
     assert fire_bans.date_of_issue(summary) == datetime.date(2023, 1, 2)
 

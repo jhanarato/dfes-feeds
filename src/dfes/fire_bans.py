@@ -25,6 +25,22 @@ def get_region_tags(summary: str) -> list[Tag]:
     return soup.find_all('strong', string=re.compile("Region:"))
 
 
+def get_district_tags_(region_tag: Tag) -> list[Tag]:
+    ul_tag = region_tag.find_next('ul')
+    return ul_tag.find_all('li')
+
+
+def get_list_after_region_tag(region_tag: Tag) -> Tag:
+    if ul_tag := region_tag.find_next('ul'):
+        return ul_tag
+    else:
+        raise ParseException("No district list <ul> found.")
+
+
+def get_district_tags(list_tag: Tag) -> list[Tag]:
+    return list_tag.find_all('li')
+
+
 def date_of_issue(summary: str) -> datetime.date:
     soup = BeautifulSoup(summary)
     if span_tag := soup.find("span", string=re.compile("Date of issue:")):
@@ -45,17 +61,6 @@ def affected_regions(summary: str) -> list[str]:
 def get_region_tag(summary: str, region: str):
     soup = BeautifulSoup(summary)
     return soup.find('strong', string=re.compile(f"{region} Region:"))
-
-
-def get_list_after_region_tag(region_tag: Tag) -> Tag:
-    if ul_tag := region_tag.find_next('ul'):
-        return ul_tag
-    else:
-        raise ParseException("No district list <ul> found.")
-
-
-def get_district_tags(list_tag: Tag) -> list[Tag]:
-    return list_tag.find_all('li')
 
 
 def affected_districts(summary: str, region: str) -> list[str]:
