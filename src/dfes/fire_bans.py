@@ -39,15 +39,7 @@ def affected_regions(summary: str) -> list[str]:
 
 def get_region_tag(summary: str, region: str):
     soup = BeautifulSoup(summary)
-    region_tags = soup.find_all('strong', string=re.compile(f"{region} Region:"))
-
-    if not region_tags:
-        return []
-
-    if len(region_tags) > 1:
-        raise ParseException(f"More than one tag for region {region}")
-
-    return region_tags[0]
+    return soup.find('strong', string=re.compile(f"{region} Region:"))
 
 
 def get_list_after_region_tag(region_tag: Tag) -> Tag:
