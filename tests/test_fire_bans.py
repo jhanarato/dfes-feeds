@@ -164,3 +164,18 @@ def test_locations_has_regions(soup):
         "South West",
         "Great Southern",
     }
+
+
+def test_locations_has_districts(soup):
+    districts = [location[1] for location in bans.locations(soup)
+                 if location[0] == "South West"]
+
+    assert districts == [
+        "Bunbury",
+        "Capel",
+        "Collie",
+        "Dardanup",
+        "Harvey",
+        "Murray",
+        "Waroona",
+    ]
