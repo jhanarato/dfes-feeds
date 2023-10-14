@@ -22,7 +22,7 @@ def get_summary(feed_location: str, index: int = 0) -> str | None:
 def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup | None:
     summary = get_summary(feed_location, index)
     if summary:
-        return BeautifulSoup(summary)
+        return BeautifulSoup(summary, features="html.parser")
     return None
 
 
