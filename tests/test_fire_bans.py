@@ -83,19 +83,19 @@ def test_get_region_tag(soup):
 
 
 @pytest.mark.parametrize(
-    "surrounding_text,date_text",
+    "text,extracted",
     [
-        ("3 January 2023", "3 January 2023"),
-        ("13 January 2023", "13 January 2023"),
+        ("3 January 2023", datetime.date(2023, 1, 3)),
+        ("13 January 2023", datetime.date(2023, 1, 13)),
         ("13 January 23", None),
         ("A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:",
-         "3 January 2023"),
-        ("   13 January 2023   ", "13 January 2023"),
-        ("\n13 January 2023\n", "13 January 2023"),
+         datetime.date(2023, 1, 3)),
+        ("   13 January 2023   ", datetime.date(2023, 1, 13)),
+        ("\n13 January 2023\n", datetime.date(2023, 1, 13)),
     ]
 )
-def test_extract_date_text(surrounding_text, date_text):
-    assert bans.extract_date_text(surrounding_text) == date_text
+def test_extract_date(text, extracted):
+    assert bans.extract_date(text) == extracted
 
 
 def test_date_of_issue_handles_whitespace():
