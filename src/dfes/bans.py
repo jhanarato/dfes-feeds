@@ -45,11 +45,7 @@ def extract_date(text: str) -> datetime.date | None:
 
 def date_of_issue(soup: BeautifulSoup) -> datetime.date:
     if span_tag := soup.find("span", string=re.compile("Date of issue:")):
-        contents = span_tag.string.strip()
-        date_str = contents.removeprefix("Date of issue: ")
-        date_time = datetime.datetime.strptime(date_str, "%d %B %Y")
-        return date_time.date()
-
+        return extract_date(span_tag.string)
     raise ParseException("Date of issue tag not found.")
 
 
