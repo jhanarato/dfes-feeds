@@ -59,13 +59,18 @@ def get_region_tag(soup: BeautifulSoup, region: str):
     return soup.find('strong', string=re.compile(f"{region} Region:"))
 
 
+def extract_district(tag: Tag) -> str:
+    return tag.string.removesuffix(" - All Day")
+
+
 def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
     result = []
     region_tags = get_region_tags(soup)
     for region_tag in region_tags:
         region = region_tag.string.removesuffix(" Region:")
         district_tags = get_district_tags(region_tag)
+        districts = [extract_district(tag) for tag in district_tags]
         for district_tag in district_tags:
-            district = district_tag.string.removesuffix(" - All Day")
+            district = extract_district(district_tag)
             result.append((region, district))
     return result

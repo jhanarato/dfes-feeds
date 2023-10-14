@@ -143,3 +143,8 @@ def test_locations_has_districts(soup):
         "Murray",
         "Waroona",
     ]
+
+
+def test_extract_district():
+    tag = BeautifulSoup("<li>Bunbury - All Day</li>").find('li')
+    assert bans.extract_district(tag) == "Bunbury"
