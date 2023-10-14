@@ -71,8 +71,8 @@ def districts(region_tag: Tag) -> list[str]:
 
 def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
     result = []
-    region_tags = get_region_tags(soup)
-    for region_tag in region_tags:
+
+    for region_tag in get_region_tags(soup):
         region = extract_region(region_tag)
         paired = [(region, district) for district in districts(region_tag)]
         result.extend(paired)
