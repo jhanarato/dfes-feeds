@@ -53,13 +53,9 @@ def date_of_issue(soup: BeautifulSoup) -> datetime.date:
 
 
 def date_declared_for(soup: BeautifulSoup) -> datetime.date:
-    prefix = "A Total Fire Ban has been declared for "
-    suffix = " for the local government districts listed below:"
-    tag = soup.find('p', string=re.compile(prefix))
-    contents = tag.string
-    date_str = contents.removeprefix(prefix).removesuffix(suffix)
-    return datetime.date(2023, 1, 3)
-    # return datetime.datetime.strptime(date_str, "%d %B %Y").date()
+    tag = soup.find('p', string=re.compile("A Total Fire Ban has been declared for"))
+    date_str = extract_date_text(tag.string)
+    return datetime.datetime.strptime(date_str, "%d %B %Y").date()
 
 
 def affected_regions(soup: BeautifulSoup) -> list[str]:
