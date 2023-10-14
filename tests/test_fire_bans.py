@@ -76,12 +76,6 @@ def test_date_of_issue(soup):
     assert bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
 
 
-def test_get_region_tag(soup):
-    tag = bans.get_region_tag(soup, "South West")
-    assert tag.name == "strong"
-    assert tag.string == "South West Region:"
-
-
 @pytest.mark.parametrize(
     "text,extracted",
     [

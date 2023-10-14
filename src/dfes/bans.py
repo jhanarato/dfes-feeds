@@ -55,10 +55,6 @@ def date_declared_for(soup: BeautifulSoup) -> datetime.date | None:
     return None
 
 
-def get_region_tag(soup: BeautifulSoup, region: str):
-    return soup.find('strong', string=re.compile(f"{region} Region:"))
-
-
 def extract_district(tag: Tag) -> str:
     return tag.string.removesuffix(" - All Day")
 
