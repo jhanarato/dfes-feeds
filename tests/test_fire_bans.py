@@ -87,9 +87,11 @@ def test_get_region_tag(soup):
     [
         ("3 January 2023", "3 January 2023"),
         ("13 January 2023", "13 January 2023"),
+        ("13 January 23", None),
         ("A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:",
          "3 January 2023"),
-
+        ("   13 January 2023   ", "13 January 2023"),
+        ("\n13 January 2023\n", "13 January 2023"),
     ]
 )
 def test_extract_date_text(surrounding_text, date_text):
