@@ -1,6 +1,5 @@
 import datetime
 import re
-from dataclasses import dataclass
 
 import feedparser
 from bs4 import BeautifulSoup, Tag
@@ -56,22 +55,8 @@ def date_declared_for(soup: BeautifulSoup) -> datetime.date | None:
     return None
 
 
-def affected_regions(soup: BeautifulSoup) -> list[str]:
-    tags = get_region_tags(soup)
-    return [tag.string.removesuffix(" Region:") for tag in tags]
-
-
 def get_region_tag(soup: BeautifulSoup, region: str):
     return soup.find('strong', string=re.compile(f"{region} Region:"))
-
-
-def affected_districts(soup: BeautifulSoup, region: str) -> list[str]:
-    region_tag = get_region_tag(soup, region)
-    district_tags = get_district_tags(region_tag)
-
-    districts = [tag.string.removesuffix(" - All Day") for tag in district_tags]
-
-    return districts
 
 
 def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
@@ -84,20 +69,3 @@ def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
             district = district_tag.string.removesuffix(" - All Day")
             result.append((region, district))
     return result
-
-
-@dataclass
-class TotalFireBans:
-    issued: datetime.date
-    declared_for: datetime.date
-    regions: list[str]
-
-
-def total_fire_bans(source: str) -> TotalFireBans:
-    soup = get_soup(source)
-
-    return TotalFireBans(
-        issued=date_of_issue(soup),
-        declared_for=datetime.date(2023, 1, 3),
-        regions=affected_regions(soup),
-    )

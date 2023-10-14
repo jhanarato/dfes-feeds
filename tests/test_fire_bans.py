@@ -119,42 +119,6 @@ def test_date_declared_for_with_full_soup(soup):
     assert bans.date_declared_for(soup) == datetime.date(2023, 1, 3)
 
 
-def test_affected_districts(soup):
-    assert bans.affected_districts(soup, "South West") == [
-        "Bunbury",
-        "Capel",
-        "Collie",
-        "Dardanup",
-        "Harvey",
-        "Murray",
-        "Waroona",
-    ]
-
-
-@pytest.fixture
-def total_fire_bans():
-    feed_source = "data/2023-01-03/message_TFB.rss"
-    return bans.total_fire_bans(feed_source)
-
-
-def test_bans_issued(total_fire_bans):
-    assert total_fire_bans.issued == datetime.date(2023, 1, 2)
-
-
-def test_bans_declared_for(total_fire_bans):
-    assert total_fire_bans.declared_for == datetime.date(2023, 1, 3)
-
-
-def test_bans_regions(total_fire_bans):
-    assert total_fire_bans.regions == [
-        "Midwest Gascoyne",
-        "Perth Metropolitan",
-        "Goldfields Midlands",
-        "South West",
-        "Great Southern",
-    ]
-
-
 def test_locations_has_regions(soup):
     regions = {location[0] for location in bans.locations(soup)}
     assert regions == {
