@@ -70,7 +70,8 @@ def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
         region = region_tag.string.removesuffix(" Region:")
         district_tags = get_district_tags(region_tag)
         districts = [extract_district(tag) for tag in district_tags]
-        for district_tag in district_tags:
-            district = extract_district(district_tag)
+
+        for district in districts:
             result.append((region, district))
+
     return result
