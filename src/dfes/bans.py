@@ -1,6 +1,7 @@
 import datetime
 import itertools
 import re
+from dataclasses import dataclass
 
 import feedparser
 from bs4 import BeautifulSoup, Tag
@@ -74,5 +75,23 @@ def region_locations(region_tag: Tag) -> list[tuple[str, str]]:
 
 
 def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
-    all_regions = [region_locations(region_tag) for region_tag in get_region_tags(soup)]
+    all_regions = [region_locations(region_tag)
+                   for region_tag in get_region_tags(soup)]
+
     return list(itertools.chain(*all_regions))
+
+
+@dataclass
+class TotalFireBans:
+    issued: datetime.date
+    declared_for: datetime.date
+    locations: list[tuple[str, str]]
+
+
+def total_fire_bans(feed_location: str) -> TotalFireBans:
+    soup = get_soup(feed_location)
+    return TotalFireBans(
+        issued=date_of_issue(soup),
+        declared_for=date_declared_for(soup),
+        locations=locations(soup),
+    )

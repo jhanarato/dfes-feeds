@@ -147,3 +147,11 @@ def test_extract_district():
 def test_extract_region():
     tag = BeautifulSoup("<strong>Midwest Gascoyne Region:</strong>").find('strong')
     assert bans.extract_region(tag) == "Midwest Gascoyne"
+
+
+def test_aggregate_data():
+    feed_location = "data/2023-01-03/message_TFB.rss"
+    tfbs = bans.total_fire_bans(feed_location)
+    assert tfbs.issued == datetime.date(2023, 1, 2)
+    assert tfbs.declared_for == datetime.date(2023, 1, 3)
+    assert ("South West", "Capel") in tfbs.locations
