@@ -64,17 +64,18 @@ def extract_region(tag: Tag) -> str:
 
 
 def districts(region_tag: Tag) -> list[str]:
-    district_tags = get_district_tags(region_tag)
-    districts = [extract_district(tag) for tag in district_tags]
-    return districts
+    return [extract_district(tag) for tag in get_district_tags(region_tag)]
+
+
+def region_locations(region_tag: Tag) -> list[tuple[str, str]]:
+    return [(extract_region(region_tag), district)
+            for district in districts(region_tag)]
 
 
 def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
     result = []
 
     for region_tag in get_region_tags(soup):
-        region = extract_region(region_tag)
-        paired = [(region, district) for district in districts(region_tag)]
-        result.extend(paired)
+        result.extend(region_locations(region_tag))
 
     return result
