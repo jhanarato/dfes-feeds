@@ -82,6 +82,14 @@ def test_get_region_tag(soup):
     assert tag.string == "South West Region:"
 
 
+@pytest.mark.parametrize(
+    "surrounding_text,date_text",
+    [("3 January 2023", "3 January 2023")]
+)
+def test_extract_date_text(surrounding_text, date_text):
+    assert bans.extract_date_text(surrounding_text) == date_text
+
+
 def test_date_of_issue_handles_whitespace():
     summary_html = """
     <span style="color: #777777;"> Date of issue: 02 January 2023 </span>
@@ -97,14 +105,8 @@ def test_date_delclared_for():
     assert bans.date_declared_for(BeautifulSoup(summary_html)) == datetime.date(2023, 1, 3)
 
 
-def test_affected_regions(soup):
-    assert bans.affected_regions(soup) == [
-        "Midwest Gascoyne",
-        "Perth Metropolitan",
-        "Goldfields Midlands",
-        "South West",
-        "Great Southern",
-    ]
+def test_date_declared_for_with_full_soup(soup):
+    assert bans.date_declared_for(soup) == datetime.date(2023, 1, 3)
 
 
 def test_affected_districts(soup):
@@ -116,4 +118,28 @@ def test_affected_districts(soup):
         "Harvey",
         "Murray",
         "Waroona",
+    ]
+
+
+@pytest.fixture
+def total_fire_bans():
+    feed_source = "data/2023-01-03/message_TFB.rss"
+    return bans.total_fire_bans(feed_source)
+
+
+def test_bans_issued(total_fire_bans):
+    assert total_fire_bans.issued == datetime.date(2023, 1, 2)
+
+
+def test_bans_declared_for(total_fire_bans):
+    assert total_fire_bans.declared_for == datetime.date(2023, 1, 3)
+
+
+def test_bans_regions(total_fire_bans):
+    assert total_fire_bans.regions == [
+        "Midwest Gascoyne",
+        "Perth Metropolitan",
+        "Goldfields Midlands",
+        "South West",
+        "Great Southern",
     ]

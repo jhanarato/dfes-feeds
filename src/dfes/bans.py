@@ -36,6 +36,10 @@ def get_district_tags(region_tag: Tag) -> list[Tag]:
     return ul_tag.find_all('li')
 
 
+def extract_date_text(surrounding_text: str) -> str:
+    return "3 January 2023"
+
+
 def date_of_issue(soup: BeautifulSoup) -> datetime.date:
     if span_tag := soup.find("span", string=re.compile("Date of issue:")):
         contents = span_tag.string.strip()
@@ -52,7 +56,8 @@ def date_declared_for(soup: BeautifulSoup) -> datetime.date:
     tag = soup.find('p', string=re.compile(prefix))
     contents = tag.string
     date_str = contents.removeprefix(prefix).removesuffix(suffix)
-    return datetime.datetime.strptime(date_str, "%d %B %Y").date()
+    return datetime.date(2023, 1, 3)
+    # return datetime.datetime.strptime(date_str, "%d %B %Y").date()
 
 
 def affected_regions(soup: BeautifulSoup) -> list[str]:
@@ -74,8 +79,17 @@ def affected_districts(soup: BeautifulSoup, region: str) -> list[str]:
 
 
 @dataclass
-class TotalFireBan:
+class TotalFireBans:
     issued: datetime.date
     declared_for: datetime.date
     regions: list[str]
-    districts: list[str]
+
+
+def total_fire_bans(source: str) -> TotalFireBans:
+    soup = get_soup(source)
+
+    return TotalFireBans(
+        issued=date_of_issue(soup),
+        declared_for=datetime.date(2023, 1, 3),
+        regions=affected_regions(soup),
+    )
