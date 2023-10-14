@@ -1,4 +1,5 @@
 import datetime
+import itertools
 import re
 
 import feedparser
@@ -74,10 +75,4 @@ def region_locations(region_tag: Tag) -> list[tuple[str, str]]:
 
 def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
     all_regions = [region_locations(region_tag) for region_tag in get_region_tags(soup)]
-
-    result = []
-    for region in all_regions:
-        result.extend(region)
-
-    return result
-
+    return list(itertools.chain(*all_regions))
