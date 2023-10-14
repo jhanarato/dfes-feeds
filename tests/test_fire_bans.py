@@ -153,3 +153,14 @@ def test_bans_regions(total_fire_bans):
         "South West",
         "Great Southern",
     ]
+
+
+def test_locations_has_regions(soup):
+    regions = {location[0] for location in bans.locations(soup)}
+    assert regions == {
+        "Midwest Gascoyne",
+        "Perth Metropolitan",
+        "Goldfields Midlands",
+        "South West",
+        "Great Southern",
+    }

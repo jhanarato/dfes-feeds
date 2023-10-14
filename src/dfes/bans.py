@@ -38,9 +38,10 @@ def get_district_tags(region_tag: Tag) -> list[Tag]:
 
 def extract_date(text: str) -> datetime.date | None:
     if m := re.search(r"\d{1,2} \w+ \d{4}", text):
-        date_str = m.group(0)
-        return datetime.datetime.strptime(date_str, "%d %B %Y").date()
-    return None
+        try:
+            return datetime.datetime.strptime(m.group(0), "%d %B %Y").date()
+        except ValueError:
+            return None
 
 
 def date_of_issue(soup: BeautifulSoup) -> datetime.date | None:
@@ -71,6 +72,18 @@ def affected_districts(soup: BeautifulSoup, region: str) -> list[str]:
     districts = [tag.string.removesuffix(" - All Day") for tag in district_tags]
 
     return districts
+
+
+def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
+    result = []
+    region_tags = get_region_tags(soup)
+    for region_tag in region_tags:
+        region = region_tag.string.removesuffix(" Region:")
+        district_tags = get_district_tags(region_tag)
+        for district_tag in district_tags:
+            district = district_tag.string.removesuffix(" - All Day")
+            result.append((region, district))
+    return result
 
 
 @dataclass
