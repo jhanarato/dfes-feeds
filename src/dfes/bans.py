@@ -37,7 +37,7 @@ def get_district_tags(region_tag: Tag) -> list[Tag]:
 
 
 def extract_date_text(surrounding_text: str) -> str | None:
-    if m := re.search("3 January 2023", surrounding_text):
+    if m := re.search(r"\d+ \w+ \d+", surrounding_text):
         return m.group(0)
     return None
 
