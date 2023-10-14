@@ -43,15 +43,16 @@ def extract_date(text: str) -> datetime.date | None:
     return None
 
 
-def date_of_issue(soup: BeautifulSoup) -> datetime.date:
-    if span_tag := soup.find("span", string=re.compile("Date of issue:")):
-        return extract_date(span_tag.string)
-    raise ParseException("Date of issue tag not found.")
+def date_of_issue(soup: BeautifulSoup) -> datetime.date | None:
+    if issue_tag := soup.find("span", string=re.compile("Date of issue:")):
+        return extract_date(issue_tag.string)
+    return None
 
 
 def date_declared_for(soup: BeautifulSoup) -> datetime.date | None:
-    tag = soup.find('p', string=re.compile("A Total Fire Ban has been declared for"))
-    return extract_date(tag.string)
+    if declared_tag := soup.find('p', string=re.compile("A Total Fire Ban has been declared")):
+        return extract_date(declared_tag.string)
+    return None
 
 
 def affected_regions(soup: BeautifulSoup) -> list[str]:
