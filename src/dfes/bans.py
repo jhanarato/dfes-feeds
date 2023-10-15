@@ -25,6 +25,7 @@ def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup | None:
     summary = get_summary(feed_location, index)
     if summary:
         return BeautifulSoup(summary, features="html.parser")
+    return None
 
 
 def extract_date(text: str) -> datetime.date | None:
@@ -41,17 +42,14 @@ def time_of_issue(soup: BeautifulSoup) -> datetime.time:
 
 
 def date_of_issue(soup: BeautifulSoup) -> datetime.date:
-    issue_tag = soup.find("span", string=re.compile("Date of issue:"))
+    tag = soup.find("span", string=re.compile("Date of issue:"))
 
-    if not issue_tag:
-        raise ParseException("No date of issue found - missing <span> tag")
+    if isinstance(tag, Tag):
+        if contents := tag.string:
+            if issued := extract_date(contents):
+                return issued
 
-    issued = extract_date(issue_tag.string)
-
-    if not issued:
-        raise ParseException("No date of issue found - could not extract date")
-
-    return issued
+    raise ParseException("No date of issue found")
 
 
 def date_declared_for(soup: BeautifulSoup) -> datetime.date:
