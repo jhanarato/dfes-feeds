@@ -68,12 +68,16 @@ def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
 
 
 def get_district_tags(region_tag: Tag) -> list[Tag]:
-    ul_tag = region_tag.find_next('ul')
-    return ul_tag.find_all('li')
+    if tag := region_tag.find_next('ul'):
+        if isinstance(tag, Tag):
+            return tag.find_all('li')
+    return []
 
 
 def extract_district(tag: Tag) -> str:
-    return tag.string.removesuffix(" - All Day")
+    if contents := tag.string:
+        return contents.removesuffix(" - All Day")
+    raise ParseException("Could not extract district")
 
 
 def districts(region_tag: Tag) -> list[str]:
@@ -81,7 +85,10 @@ def districts(region_tag: Tag) -> list[str]:
 
 
 def extract_region(tag: Tag) -> str:
-    return tag.string.removesuffix(" Region:")
+    if contents := tag.string:
+        return contents.removesuffix(" Region:")
+    raise ParseException("Could not extract region")
+
 
 
 def region_locations(region_tag: Tag) -> Iterator[tuple[str, str]]:
