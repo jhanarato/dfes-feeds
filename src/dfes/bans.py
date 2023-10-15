@@ -76,28 +76,25 @@ def extract_district(tag: Tag) -> str:
     return tag.string.removesuffix(" - All Day")
 
 
-def extract_region(tag: Tag) -> str:
-    return tag.string.removesuffix(" Region:")
-
-
 def districts(region_tag: Tag) -> list[str]:
     return [extract_district(tag) for tag in get_district_tags(region_tag)]
+
+
+def extract_region(tag: Tag) -> str:
+    return tag.string.removesuffix(" Region:")
 
 
 def region_locations(region_tag: Tag) -> list[tuple[str, str]]:
     return [(extract_region(region_tag), district) for district in districts(region_tag)]
 
 
-def pairs_by_region(soup) -> list[list[tuple[str, str]]]:
-    return [region_locations(region_tag) for region_tag in get_region_tags(soup)]
-
-
-def flatten_pairs(pairs: list[list[tuple[str, str]]]) -> list[tuple[str, str]]:
+def pairs_by_region(soup) -> list[tuple[str, str]]:
+    pairs = [region_locations(region_tag) for region_tag in get_region_tags(soup)]
     return [location for region_pair in pairs for location in region_pair]
 
 
 def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
-    return flatten_pairs(pairs_by_region(soup))
+    return pairs_by_region(soup)
 
 
 @dataclass
