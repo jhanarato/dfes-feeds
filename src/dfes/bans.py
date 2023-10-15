@@ -1,5 +1,6 @@
 import datetime
 import re
+from collections.abc import Iterator
 from dataclasses import dataclass
 
 import feedparser
@@ -88,13 +89,9 @@ def region_locations(region_tag: Tag) -> list[tuple[str, str]]:
     return [(extract_region(region_tag), district) for district in districts(region_tag)]
 
 
-def pairs_by_region(soup) -> list[tuple[str, str]]:
+def locations(soup: BeautifulSoup) -> Iterator[tuple[str, str]]:
     pairs = [region_locations(region_tag) for region_tag in get_region_tags(soup)]
-    return [location for region_pair in pairs for location in region_pair]
-
-
-def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
-    return pairs_by_region(soup)
+    yield from (location for region_pair in pairs for location in region_pair)
 
 
 @dataclass
