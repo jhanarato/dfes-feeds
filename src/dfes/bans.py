@@ -25,7 +25,6 @@ def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup | None:
     summary = get_summary(feed_location, index)
     if summary:
         return BeautifulSoup(summary, features="html.parser")
-    return None
 
 
 def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
@@ -43,18 +42,35 @@ def extract_date(text: str) -> datetime.date | None:
             return datetime.datetime.strptime(m.group(0), "%d %B %Y").date()
         except ValueError:
             return None
-
-
-def date_of_issue(soup: BeautifulSoup) -> datetime.date | None:
-    if issue_tag := soup.find("span", string=re.compile("Date of issue:")):
-        return extract_date(issue_tag.string)
     return None
 
 
-def date_declared_for(soup: BeautifulSoup) -> datetime.date | None:
-    if declared_tag := soup.find('p', string=re.compile("A Total Fire Ban has been declared")):
-        return extract_date(declared_tag.string)
-    return None
+def date_of_issue(soup: BeautifulSoup) -> datetime.date:
+    issue_tag = soup.find("span", string=re.compile("Date of issue:"))
+
+    if not issue_tag:
+        raise ParseException("No date of issue found - missing <span> tag")
+
+    issued = extract_date(issue_tag.string)
+
+    if not issued:
+        raise ParseException("No date of issue found - could not extract date")
+
+    return issued
+
+
+def date_declared_for(soup: BeautifulSoup) -> datetime.date:
+    declared_tag = soup.find('p', string=re.compile("A Total Fire Ban has been declared"))
+
+    if not declared_tag:
+        raise ParseException("No date declared found - missing tag")
+
+    declared = extract_date(declared_tag.string)
+
+    if not declared:
+        raise ParseException("No date declared found - could not extract date")
+
+    return declared
 
 
 def extract_district(tag: Tag) -> str:
@@ -91,6 +107,7 @@ class TotalFireBans:
 
 def total_fire_bans(feed_location: str) -> TotalFireBans:
     soup = get_soup(feed_location)
+
     return TotalFireBans(
         issued=date_of_issue(soup),
         declared_for=date_declared_for(soup),
