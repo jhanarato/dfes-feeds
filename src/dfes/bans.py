@@ -36,6 +36,10 @@ def extract_date(text: str) -> datetime.date | None:
     return None
 
 
+def time_of_issue(soup: BeautifulSoup) -> datetime.time:
+    return datetime.time(0, 0)
+
+
 def date_of_issue(soup: BeautifulSoup) -> datetime.date:
     issue_tag = soup.find("span", string=re.compile("Date of issue:"))
 
@@ -99,7 +103,8 @@ def locations(soup: BeautifulSoup) -> Iterator[tuple[str, str]]:
 
 @dataclass
 class TotalFireBans:
-    issued: datetime.date
+    date_issued: datetime.date
+    time_issued: datetime.time
     declared_for: datetime.date
     locations: list[tuple[str, str]]
 
@@ -108,7 +113,8 @@ def total_fire_bans(feed_location: str) -> TotalFireBans:
     soup = get_soup(feed_location)
 
     return TotalFireBans(
-        issued=date_of_issue(soup),
+        date_issued=date_of_issue(soup),
+        time_issued=time_of_issue(soup),
         declared_for=date_declared_for(soup),
         locations=list(locations(soup)),
     )

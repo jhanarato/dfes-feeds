@@ -102,6 +102,10 @@ def test_date_of_issue_handles_whitespace():
     assert bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
 
 
+def test_time_of_issue(soup):
+    assert bans.time_of_issue(soup) == datetime.time(0, 0)
+
+
 def test_date_delclared_for():
     summary_html = """
     <p>A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:</p>
@@ -149,9 +153,10 @@ def test_extract_region():
     assert bans.extract_region(tag) == "Midwest Gascoyne"
 
 
-def test_aggregate_data():
+def test_combined_data():
     feed_location = "data/2023-01-03/message_TFB.rss"
-    tfbs = bans.total_fire_bans(feed_location)
-    assert tfbs.issued == datetime.date(2023, 1, 2)
-    assert tfbs.declared_for == datetime.date(2023, 1, 3)
-    assert ("South West", "Capel") in tfbs.locations
+    combined = bans.total_fire_bans(feed_location)
+    assert combined.date_issued == datetime.date(2023, 1, 2)
+    assert combined.time_issued == datetime.time(0, 0)
+    assert combined.declared_for == datetime.date(2023, 1, 3)
+    assert ("South West", "Capel") in combined.locations
