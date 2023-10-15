@@ -26,15 +26,6 @@ def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup | None:
         return BeautifulSoup(summary, features="html.parser")
 
 
-def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
-    return soup.find_all('strong', string=re.compile("Region:"))
-
-
-def get_district_tags(region_tag: Tag) -> list[Tag]:
-    ul_tag = region_tag.find_next('ul')
-    return ul_tag.find_all('li')
-
-
 def extract_date(text: str) -> datetime.date | None:
     if m := re.search(r"\d{1,2} \w+ \d{4}", text):
         try:
@@ -70,6 +61,15 @@ def date_declared_for(soup: BeautifulSoup) -> datetime.date:
         raise ParseException("No date declared found - could not extract date")
 
     return declared
+
+
+def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
+    return soup.find_all('strong', string=re.compile("Region:"))
+
+
+def get_district_tags(region_tag: Tag) -> list[Tag]:
+    ul_tag = region_tag.find_next('ul')
+    return ul_tag.find_all('li')
 
 
 def extract_district(tag: Tag) -> str:
