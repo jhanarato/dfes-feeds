@@ -85,15 +85,19 @@ def districts(region_tag: Tag) -> list[str]:
 
 
 def region_locations(region_tag: Tag) -> list[tuple[str, str]]:
-    return [(extract_region(region_tag), district)
-            for district in districts(region_tag)]
+    return [(extract_region(region_tag), district) for district in districts(region_tag)]
+
+
+def pairs_by_region(soup) -> list[list[tuple[str, str]]]:
+    return [region_locations(region_tag) for region_tag in get_region_tags(soup)]
+
+
+def flatten_pairs(pairs: list[list[tuple[str, str]]]) -> list[tuple[str, str]]:
+    return [location for region_pair in pairs for location in region_pair]
 
 
 def locations(soup: BeautifulSoup) -> list[tuple[str, str]]:
-    pairs_by_region = [region_locations(region_tag)
-                       for region_tag in get_region_tags(soup)]
-
-    return [location for region_pair in pairs_by_region for location in region_pair]
+    return flatten_pairs(pairs_by_region(soup))
 
 
 @dataclass
