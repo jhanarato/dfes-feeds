@@ -93,8 +93,18 @@ def region_pairs(region_tag: Tag) -> Iterator[tuple[str, str]]:
 
 
 def locations(soup: BeautifulSoup) -> Iterator[tuple[str, str]]:
-    pairs = [region_pairs(region_tag) for region_tag in get_region_tags(soup)]
-    yield from (location for region_pair in pairs for location in region_pair)
+    list_of_list_of_pairs = (
+        region_pairs(region_tag)
+        for region_tag in get_region_tags(soup)
+    )
+
+    list_of_pairs = (
+        list_of_pairs
+        for list_of_pairs_for_region in list_of_list_of_pairs
+        for list_of_pairs in list_of_pairs_for_region
+    )
+
+    yield from list_of_pairs
 
 
 @dataclass
