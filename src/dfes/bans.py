@@ -11,21 +11,21 @@ class ParseException(Exception):
     pass
 
 
-def get_summary(feed_location: str, index: int = 0) -> str | None:
+def get_summary(feed_location: str, index: int = 0) -> str:
     parsed = feedparser.parse(feed_location)
     entries = parsed['entries']
 
     if entries:
         return entries[index]['summary']
+    else:
+        raise ParseException("Could not obtain summary")
 
-    return None
 
-
-def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup | None:
+def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
     summary = get_summary(feed_location, index)
     if summary:
         return BeautifulSoup(summary, features="html.parser")
-    return None
+    raise ParseException("Could not parse summary")
 
 
 def extract_date(text: str) -> datetime.date | None:
@@ -88,7 +88,6 @@ def extract_region(tag: Tag) -> str:
     if contents := tag.string:
         return contents.removesuffix(" Region:")
     raise ParseException("Could not extract region")
-
 
 
 def region_locations(region_tag: Tag) -> Iterator[tuple[str, str]]:
