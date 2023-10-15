@@ -155,4 +155,3 @@ def test_aggregate_data():
     assert tfbs.issued == datetime.date(2023, 1, 2)
     assert tfbs.declared_for == datetime.date(2023, 1, 3)
     assert ("South West", "Capel") in tfbs.locations
-
