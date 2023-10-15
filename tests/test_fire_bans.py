@@ -163,9 +163,6 @@ def test_flatten_list_of_list_of_tuples():
         [("e", "f"), ("g", "h")],
     ]
 
-    result = []
-
-    for inner_list in data:
-        result.extend(inner_list)
+    result = [location for sublist in data for location in sublist]
 
     assert result == [("a", "b"), ("c", "d"), ("e", "f"), ("g", "h")]
