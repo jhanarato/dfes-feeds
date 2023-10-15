@@ -156,13 +156,3 @@ def test_aggregate_data():
     assert tfbs.declared_for == datetime.date(2023, 1, 3)
     assert ("South West", "Capel") in tfbs.locations
 
-
-def test_flatten_list_of_list_of_tuples():
-    data: list[list[tuple[str, str]]] = [
-        [("a", "b"), ("c", "d")],
-        [("e", "f"), ("g", "h")],
-    ]
-
-    result = [location for sublist in data for location in sublist]
-
-    assert result == [("a", "b"), ("c", "d"), ("e", "f"), ("g", "h")]
