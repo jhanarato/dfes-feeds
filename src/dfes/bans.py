@@ -85,12 +85,15 @@ def extract_region(tag: Tag) -> str:
     return tag.string.removesuffix(" Region:")
 
 
-def region_locations(region_tag: Tag) -> list[tuple[str, str]]:
-    return [(extract_region(region_tag), district) for district in districts(region_tag)]
+def region_pairs(region_tag: Tag) -> Iterator[tuple[str, str]]:
+    yield from (
+        (extract_region(region_tag), district)
+        for district in districts(region_tag)
+    )
 
 
 def locations(soup: BeautifulSoup) -> Iterator[tuple[str, str]]:
-    pairs = [region_locations(region_tag) for region_tag in get_region_tags(soup)]
+    pairs = [region_pairs(region_tag) for region_tag in get_region_tags(soup)]
     yield from (location for region_pair in pairs for location in region_pair)
 
 
