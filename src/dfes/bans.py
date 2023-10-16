@@ -52,14 +52,6 @@ def find_to_string(found: Tag | NavigableString | None) -> str | None:
             raise ParseException(f"Incompatible type: {type(found)}")
 
 
-def extract_date_from_tag(tag: Tag | NavigableString | None) -> datetime.date | None:
-    if not isinstance(tag, Tag):
-        return None
-    if not tag.string:
-        return None
-    return extract_date(tag.string)
-
-
 def time_of_issue(soup: BeautifulSoup) -> datetime.time:
     tag = soup.find("span", string=re.compile("Date of issue:"))
     return datetime.time(0, 0)
