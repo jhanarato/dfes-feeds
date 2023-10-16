@@ -60,7 +60,7 @@ def date_declared_for(soup: BeautifulSoup) -> datetime.date:
             if declared_date := extract_date(contents):
                 return declared_date
 
-    raise ParseException("No date of issue found")
+    raise ParseException("No date declared for found")
 
 
 def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
