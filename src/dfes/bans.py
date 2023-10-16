@@ -40,6 +40,10 @@ def extract_date(text: str | None) -> datetime.date | None:
     return None
 
 
+def extract_time(text: str | None) -> datetime.time | None:
+    return datetime.time(17, 5)
+
+
 def find_to_string(found: Tag | NavigableString | None) -> str | None:
     match found:
         case None:
@@ -53,8 +57,11 @@ def find_to_string(found: Tag | NavigableString | None) -> str | None:
 
 
 def time_of_issue(soup: BeautifulSoup) -> datetime.time:
-    tag = soup.find("span", string=re.compile("Date of issue:"))
-    return datetime.time(0, 0)
+    return extract_time(
+        find_to_string(
+            soup.find("span", string=re.compile("Time of issue:"))
+        )
+    )
 
 
 def date_of_issue(soup: BeautifulSoup) -> datetime.date | None:

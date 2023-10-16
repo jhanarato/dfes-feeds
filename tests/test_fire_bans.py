@@ -94,6 +94,17 @@ def test_extract_date(text, extracted):
     assert bans.extract_date(text) == extracted
 
 
+@pytest.mark.parametrize(
+    "text,extracted",
+    [
+        ("05:05 PM", datetime.time(17, 5)),
+        #("00:00 AM", datetime.time(0, 0))
+    ]
+)
+def test_extract_time(text, extracted):
+    assert bans.extract_time(text) == extracted
+
+
 def test_no_find_no_string():
     assert bans.find_to_string(None) is None
 
@@ -120,7 +131,10 @@ def test_date_of_issue_handles_whitespace():
 
 
 def test_time_of_issue(soup):
-    assert bans.time_of_issue(soup) == datetime.time(0, 0)
+    summary_html = """
+    <span style="color: #777777;">Time of issue: 05:05 PM </span>
+    """
+    assert bans.time_of_issue(soup) == datetime.time(17, 5)
 
 
 def test_date_delclared_for():
@@ -174,6 +188,6 @@ def test_combined_data():
     feed_location = "data/2023-01-03/message_TFB.rss"
     combined = bans.total_fire_bans(feed_location)
     assert combined.date_issued == datetime.date(2023, 1, 2)
-    assert combined.time_issued == datetime.time(0, 0)
+    assert combined.time_issued == datetime.time(17, 5)
     assert combined.declared_for == datetime.date(2023, 1, 3)
     assert ("South West", "Capel") in combined.locations
