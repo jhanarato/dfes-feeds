@@ -71,12 +71,16 @@ def date_of_issue(soup: BeautifulSoup) -> datetime.date:
 
 
 def date_declared_for(soup: BeautifulSoup) -> datetime.date:
-    tag = soup.find('p', string=re.compile("A Total Fire Ban has been declared"))
+    found = extract_date(
+        find_to_string(
+            soup.find('p', string=re.compile("A Total Fire Ban has been declared"))
+        )
+    )
 
-    if found := extract_date(find_to_string(tag)):
-        return found
+    if not found:
+        raise ParseException("No date declared for found")
 
-    raise ParseException("No date declared for found")
+    return found
 
 
 def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
