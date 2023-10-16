@@ -57,30 +57,20 @@ def time_of_issue(soup: BeautifulSoup) -> datetime.time:
     return datetime.time(0, 0)
 
 
-def date_of_issue(soup: BeautifulSoup) -> datetime.date:
-    found = extract_date(
+def date_of_issue(soup: BeautifulSoup) -> datetime.date | None:
+    return extract_date(
         find_to_string(
             soup.find("span", string=re.compile("Date of issue:"))
         )
     )
 
-    if not found:
-        raise ParseException("No date of issue found")
 
-    return found
-
-
-def date_declared_for(soup: BeautifulSoup) -> datetime.date:
-    found = extract_date(
+def date_declared_for(soup: BeautifulSoup) -> datetime.date | None:
+    return extract_date(
         find_to_string(
             soup.find('p', string=re.compile("A Total Fire Ban has been declared"))
         )
     )
-
-    if not found:
-        raise ParseException("No date declared for found")
-
-    return found
 
 
 def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
@@ -133,9 +123,19 @@ class TotalFireBans:
 def total_fire_bans(feed_location: str) -> TotalFireBans:
     soup = get_soup(feed_location)
 
+    issued_date = date_of_issue(soup)
+
+    if not issued_date:
+        raise ParseException("No date of issue found")
+
+    declared = date_declared_for(soup)
+
+    if not declared:
+        raise ParseException("No date declared for found")
+
     return TotalFireBans(
-        date_issued=date_of_issue(soup),
+        date_issued=issued_date,
         time_issued=time_of_issue(soup),
-        declared_for=date_declared_for(soup),
+        declared_for=declared,
         locations=list(locations(soup)),
     )
