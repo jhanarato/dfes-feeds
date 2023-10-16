@@ -58,12 +58,16 @@ def time_of_issue(soup: BeautifulSoup) -> datetime.time:
 
 
 def date_of_issue(soup: BeautifulSoup) -> datetime.date:
-    tag = soup.find("span", string=re.compile("Date of issue:"))
+    found = extract_date(
+        find_to_string(
+            soup.find("span", string=re.compile("Date of issue:"))
+        )
+    )
 
-    if found := extract_date(find_to_string(tag)):
-        return found
+    if not found:
+        raise ParseException("No date of issue found")
 
-    raise ParseException("No date of issue found")
+    return found
 
 
 def date_declared_for(soup: BeautifulSoup) -> datetime.date:
