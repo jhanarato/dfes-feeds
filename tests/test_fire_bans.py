@@ -94,6 +94,15 @@ def test_extract_date(text, extracted):
     assert bans.extract_date(text) == extracted
 
 
+def test_extract_date_from_tag():
+    summary_html = """
+    <span style="color: #777777;"> Date of issue: 02 January 2023 </span>
+    """
+    tag = BeautifulSoup(summary_html).find("span")
+
+    assert bans.extract_date_from_tag(tag) == datetime.date(2023, 1, 2)
+
+
 def test_date_of_issue_handles_whitespace():
     summary_html = """
     <span style="color: #777777;"> Date of issue: 02 January 2023 </span>

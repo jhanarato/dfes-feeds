@@ -4,7 +4,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 
 import feedparser  # type: ignore
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup, Tag, NavigableString
 
 
 class ParseException(Exception):
@@ -37,6 +37,14 @@ def extract_date(text: str) -> datetime.date | None:
     return None
 
 
+def extract_date_from_tag(tag: Tag | NavigableString | None) -> datetime.date | None:
+    if not isinstance(tag, Tag):
+        return None
+    if not tag.string:
+        return None
+    return extract_date(tag.string)
+
+
 def time_of_issue(soup: BeautifulSoup) -> datetime.time:
     return datetime.time(0, 0)
 
@@ -44,23 +52,19 @@ def time_of_issue(soup: BeautifulSoup) -> datetime.time:
 def date_of_issue(soup: BeautifulSoup) -> datetime.date:
     tag = soup.find("span", string=re.compile("Date of issue:"))
 
-    if isinstance(tag, Tag):
-        if contents := tag.string:
-            if issued := extract_date(contents):
-                return issued
-
-    raise ParseException("No date of issue found")
+    if issue_date := extract_date_from_tag(tag):
+        return issue_date
+    else:
+        raise ParseException("No date of issue found")
 
 
 def date_declared_for(soup: BeautifulSoup) -> datetime.date:
     tag = soup.find('p', string=re.compile("A Total Fire Ban has been declared"))
 
-    if isinstance(tag, Tag):
-        if contents := tag.string:
-            if declared_date := extract_date(contents):
-                return declared_date
-
-    raise ParseException("No date declared for found")
+    if declared_date := extract_date_from_tag(tag):
+        return declared_date
+    else:
+        raise ParseException("No date declared for found")
 
 
 def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
