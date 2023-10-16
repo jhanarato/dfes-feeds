@@ -28,7 +28,10 @@ def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
     raise ParseException("Could not parse summary")
 
 
-def extract_date(text: str) -> datetime.date | None:
+def extract_date(text: str | None) -> datetime.date | None:
+    if text is None:
+        return None
+
     if m := re.search(r"\d{1,2} \w+ \d{4}", text):
         try:
             return datetime.datetime.strptime(m.group(0), "%d %B %Y").date()
@@ -65,10 +68,10 @@ def time_of_issue(soup: BeautifulSoup) -> datetime.time:
 def date_of_issue(soup: BeautifulSoup) -> datetime.date:
     tag = soup.find("span", string=re.compile("Date of issue:"))
 
-    if issue_date := extract_date_from_tag(tag):
-        return issue_date
-    else:
-        raise ParseException("No date of issue found")
+    if found := extract_date(find_to_string(tag)):
+        return found
+
+    raise ParseException("No date of issue found")
 
 
 def date_declared_for(soup: BeautifulSoup) -> datetime.date:
