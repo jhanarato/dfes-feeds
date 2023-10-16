@@ -21,6 +21,18 @@ def get_summary(feed_location: str, index: int = 0) -> str:
         raise ParseException("Could not obtain summary")
 
 
+def find_to_string(found: Tag | NavigableString | None) -> str | None:
+    match found:
+        case None:
+            return None
+        case NavigableString():
+            return found
+        case Tag():
+            return found.string
+        case _:
+            raise ParseException(f"Incompatible type: {type(found)}")
+
+
 def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
     summary = get_summary(feed_location, index)
     if summary:
@@ -41,19 +53,15 @@ def extract_date(text: str | None) -> datetime.date | None:
 
 
 def extract_time(text: str | None) -> datetime.time | None:
-    return datetime.time(17, 5)
+    if text is None:
+        return None
 
-
-def find_to_string(found: Tag | NavigableString | None) -> str | None:
-    match found:
-        case None:
+    if m := re.search(r"\d{2}:\d{2} [A|P]M", text):
+        try:
+            return datetime.datetime.strptime(m.group(0), "%M:%H %p").time()
+        except ValueError:
             return None
-        case NavigableString():
-            return found
-        case Tag():
-            return found.string
-        case _:
-            raise ParseException(f"Incompatible type: {type(found)}")
+    return None
 
 
 def time_of_issue(soup: BeautifulSoup) -> datetime.time:
