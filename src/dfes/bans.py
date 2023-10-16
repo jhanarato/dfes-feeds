@@ -21,6 +21,13 @@ def get_summary(feed_location: str, index: int = 0) -> str:
         raise ParseException("Could not obtain summary")
 
 
+def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
+    summary = get_summary(feed_location, index)
+    if summary:
+        return BeautifulSoup(summary, features="html.parser")
+    raise ParseException("Could not parse summary")
+
+
 def find_to_string(found: Tag | NavigableString | None) -> str | None:
     match found:
         case None:
@@ -31,13 +38,6 @@ def find_to_string(found: Tag | NavigableString | None) -> str | None:
             return found.string
         case _:
             raise ParseException(f"Incompatible type: {type(found)}")
-
-
-def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
-    summary = get_summary(feed_location, index)
-    if summary:
-        return BeautifulSoup(summary, features="html.parser")
-    raise ParseException("Could not parse summary")
 
 
 def extract_date(text: str | None) -> datetime.date | None:
