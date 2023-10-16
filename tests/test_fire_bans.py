@@ -1,7 +1,7 @@
 import datetime
 
 import pytest
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 from dfes import bans
 
@@ -92,6 +92,23 @@ def test_date_of_issue(soup):
 )
 def test_extract_date(text, extracted):
     assert bans.extract_date(text) == extracted
+
+
+def test_no_find_no_string():
+    assert bans.find_to_string(None) is None
+
+
+def test_found_navigable_string():
+    html = "<p>A navigable string</p>"
+    string = BeautifulSoup(html).find("p").string
+    assert isinstance(string, NavigableString)
+    assert bans.find_to_string(string) == "A navigable string"
+
+
+def test_get_tag_contents():
+    html = "<p>A navigable string</p>"
+    tag = BeautifulSoup(html).find("p")
+    assert isinstance(tag, Tag)
 
 
 def test_extract_date_from_tag():
