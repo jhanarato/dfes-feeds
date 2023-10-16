@@ -11,14 +11,13 @@ class ParseException(Exception):
     pass
 
 
-def get_summary(feed_location: str, index: int = 0) -> str:
+def get_summary(feed_location: str, index: int = 0) -> str | None:
     parsed = feedparser.parse(feed_location)
-    entries = parsed['entries']
 
-    if entries:
+    if entries := parsed['entries']:
         return entries[index]['summary']
     else:
-        raise ParseException("Could not obtain summary")
+        return None
 
 
 def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
@@ -64,7 +63,7 @@ def extract_time(text: str | None) -> datetime.time | None:
     return None
 
 
-def time_of_issue(soup: BeautifulSoup) -> datetime.time:
+def time_of_issue(soup: BeautifulSoup) -> datetime.time | None:
     return extract_time(
         find_to_string(
             soup.find("span", string=re.compile("Time of issue:"))
@@ -138,6 +137,11 @@ class TotalFireBans:
 def total_fire_bans(feed_location: str) -> TotalFireBans:
     soup = get_soup(feed_location)
 
+    issued_time = time_of_issue(soup)
+
+    if not issued_time:
+        raise ParseException("No time of issue found")
+
     issued_date = date_of_issue(soup)
 
     if not issued_date:
@@ -150,7 +154,7 @@ def total_fire_bans(feed_location: str) -> TotalFireBans:
 
     return TotalFireBans(
         date_issued=issued_date,
-        time_issued=time_of_issue(soup),
+        time_issued=issued_time,
         declared_for=declared,
         locations=list(locations(soup)),
     )

@@ -191,3 +191,7 @@ def test_combined_data():
     assert combined.time_issued == datetime.time(5, 5)
     assert combined.declared_for == datetime.date(2023, 1, 3)
     assert ("South West", "Capel") in combined.locations
+
+
+def test_rss_has_no_entries():
+    assert bans.get_summary("data/2023-10-14/message_TFB.rss") is None
