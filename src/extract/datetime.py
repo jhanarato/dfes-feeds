@@ -42,6 +42,9 @@ def time_text(text: str | None) -> str | None:
 
 
 def text_to_time(text: str | None) -> time | None:
+    if not text:
+        return None
+
     try:
         return datetime.strptime(text, "%H:%M %p").time()
     except ValueError:
