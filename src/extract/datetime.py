@@ -25,3 +25,9 @@ def extract_time(text: str | None) -> time | None:
             return None
     return None
 
+
+def find_time(text: str | None) -> str | None:
+    if text:
+        if m := re.search(r"\d{2}:\d{2} [A|P]M", text):
+            return m.group(0)
+    return None

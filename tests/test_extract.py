@@ -33,3 +33,17 @@ def test_extract_date(text, extracted):
 )
 def test_extract_time(text, extracted):
     assert extract.datetime.extract_time(text) == extracted
+
+
+@pytest.mark.parametrize(
+    "text,found",
+    [
+        ("05:05 PM", "05:05 PM"),
+        ("10:10 PM", "10:10 PM"),
+        ("00:00 AM", "00:00 AM"),
+        ("00:30 AM", "00:30 AM"),
+        (None, None),
+    ]
+)
+def test_find_time(text, found):
+    assert extract.datetime.find_time(text) == found
