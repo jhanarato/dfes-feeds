@@ -15,18 +15,15 @@ def extract_date(text: str | None) -> date | None:
 
 
 def extract_time(text: str | None) -> time | None:
-    if text is None:
-        return None
-
-    if m := re.search(r"\d{2}:\d{2} [A|P]M", text):
+    if time_as_text := time_text(text):
         try:
-            return datetime.strptime(m.group(0), "%M:%H %p").time()
+            return datetime.strptime(time_as_text, "%M:%H %p").time()
         except ValueError:
             return None
     return None
 
 
-def find_time(text: str | None) -> str | None:
+def time_text(text: str | None) -> str | None:
     if text:
         if m := re.search(r"\d{2}:\d{2} [A|P]M", text):
             return m.group(0)

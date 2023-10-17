@@ -45,5 +45,5 @@ def test_extract_time(text, extracted):
         (None, None),
     ]
 )
-def test_find_time(text, found):
-    assert extract.datetime.find_time(text) == found
+def test_find_time_text(text, found):
+    assert extract.datetime.time_text(text) == found
