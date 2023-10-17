@@ -42,6 +42,8 @@ def test_extract_time(text, extracted):
         ("10:10 PM", "10:10 PM"),
         ("00:00 AM", "00:00 AM"),
         ("00:30 AM", "00:30 AM"),
+        (" 00:30 AM ", "00:30 AM"),
+        ("XXX 00:30 AM YYY", "00:30 AM"),
         (None, None),
     ]
 )
