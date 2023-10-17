@@ -3,18 +3,32 @@ from datetime import date, time, datetime
 
 
 def extract_date(text: str | None) -> date | None:
-    if text is None:
-        return None
+    return text_to_date(
+        date_text(text)
+    )
 
-    if m := re.search(r"\d{1,2} \w+ \d{4}", text):
-        try:
-            return datetime.strptime(m.group(0), "%d %B %Y").date()
-        except ValueError:
-            return None
+
+def date_text(text: str | None) -> str | None:
+    if text:
+        if m := re.search(r"\d{1,2} \w+ \d{4}", text):
+            return m.group(0)
     return None
 
 
+def text_to_date(text: str | None) -> date | None:
+    if not text:
+        return None
+
+    try:
+        return datetime.strptime(text, "%d %B %Y").date()
+    except ValueError:
+        return None
+
+
 def extract_time(text: str | None) -> time | None:
+    if not text:
+        return None
+
     return text_to_time(
         time_text(text)
     )
