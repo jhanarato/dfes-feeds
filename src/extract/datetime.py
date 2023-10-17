@@ -25,6 +25,6 @@ def extract_time(text: str | None) -> time | None:
 
 def time_text(text: str | None) -> str | None:
     if text:
-        if m := re.search(r"\d{2}:\d{2} [A|P]M", text):
+        if m := re.search(r"\d{2}:\d{2} (?:AM|PM)", text):
             return m.group(0)
     return None
