@@ -15,12 +15,9 @@ def extract_date(text: str | None) -> date | None:
 
 
 def extract_time(text: str | None) -> time | None:
-    if time_as_text := time_text(text):
-        try:
-            return datetime.strptime(time_as_text, "%M:%H %p").time()
-        except ValueError:
-            return None
-    return None
+    return text_to_time(
+        time_text(text)
+    )
 
 
 def time_text(text: str | None) -> str | None:

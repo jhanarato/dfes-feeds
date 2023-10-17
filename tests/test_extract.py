@@ -27,7 +27,7 @@ def test_extract_date(text, extracted):
     "text,extracted",
     [
         ("05:05 PM", datetime.time(5, 5)),
-        # ("00:30 AM", datetime.time(0, 30)),
+        ("00:30 AM", datetime.time(0, 30)),
         ("00:00 AM", datetime.time(0, 0)),
     ]
 )
