@@ -62,13 +62,3 @@ def test_find_time_text(text, found):
 )
 def test_text_to_time(text, result):
     assert extract.datetime.text_to_time(text) == result
-
-
-@pytest.mark.parametrize(
-    "date,time,datetime",
-    [
-        (datetime.date(2022, 7, 3), datetime.time(7, 30), datetime.datetime(2022, 7, 3, 7, 30)),
-    ]
-)
-def test_combine_date_time(date, time, datetime):
-    assert datetime.combine(date, time) == datetime

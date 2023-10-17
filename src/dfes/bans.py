@@ -124,7 +124,7 @@ def total_fire_bans(feed_location: str) -> TotalFireBans:
     if not issued_date:
         raise ParseException("No date of issue found")
 
-    issued = datetime.datetime.combine(issued_date, issued_time)
+    issued = datetime.datetime.combine(issued_date, issued_time, datetime.timezone.utc)
 
     declared = date_declared_for(soup)
 

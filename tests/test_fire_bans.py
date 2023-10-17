@@ -158,7 +158,10 @@ def test_extract_region():
 def test_combined_data():
     feed_location = "data/2023-01-03/message_TFB.rss"
     combined = bans.total_fire_bans(feed_location)
-    assert combined.issued == datetime.datetime(2023, 1, 2, 5, 5)
+    assert combined.issued == datetime.datetime(
+        2023, 1, 2, 5, 5,
+        tzinfo=datetime.timezone.utc,
+    )
     assert combined.declared_for == datetime.date(2023, 1, 3)
     assert ("South West", "Capel") in combined.locations
 
