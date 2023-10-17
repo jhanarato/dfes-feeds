@@ -28,3 +28,10 @@ def time_text(text: str | None) -> str | None:
         if m := re.search(r"\d{2}:\d{2} (?:AM|PM)", text):
             return m.group(0)
     return None
+
+
+def text_to_time(text: str | None) -> time | None:
+    try:
+        return datetime.strptime(text, "%H:%M %p").time()
+    except ValueError:
+        return None
