@@ -106,8 +106,7 @@ def locations(soup: BeautifulSoup) -> Iterator[tuple[str, str]]:
 
 @dataclass
 class TotalFireBans:
-    date_issued: datetime.date
-    time_issued: datetime.time
+    issued: datetime.datetime
     declared_for: datetime.date
     locations: list[tuple[str, str]]
 
@@ -125,14 +124,15 @@ def total_fire_bans(feed_location: str) -> TotalFireBans:
     if not issued_date:
         raise ParseException("No date of issue found")
 
+    issued = datetime.datetime.combine(issued_date, issued_time)
+
     declared = date_declared_for(soup)
 
     if not declared:
         raise ParseException("No date declared for found")
 
     return TotalFireBans(
-        date_issued=issued_date,
-        time_issued=issued_time,
+        issued=issued,
         declared_for=declared,
         locations=list(locations(soup)),
     )
