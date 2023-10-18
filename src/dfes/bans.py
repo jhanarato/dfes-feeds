@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from bs4 import BeautifulSoup, Tag, NavigableString
 
 from dfes import feeds
-from dfes.datetime import extract_date, extract_time
+from dfes.date_time import extract_date, extract_time
 from dfes.exceptions import ParseException
 
 

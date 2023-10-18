@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-import feedparser  # type: ignore
+import feedparser
 
 from dfes.exceptions import ParseException
 
