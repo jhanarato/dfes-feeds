@@ -3,7 +3,7 @@ import re
 from collections.abc import Iterator
 from dataclasses import dataclass
 
-import feedparser
+import feedparser  # type: ignore
 from bs4 import BeautifulSoup, Tag, NavigableString
 
 from dfes.datetime import extract_date, extract_time

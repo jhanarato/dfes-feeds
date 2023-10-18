@@ -1,4 +1,4 @@
-import feedparser
+import feedparser  # type: ignore
 
 
 def feed_title(url: str) -> str:
