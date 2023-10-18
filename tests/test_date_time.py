@@ -2,7 +2,7 @@ from datetime import date, time
 
 import pytest
 
-import dfes.date_time
+from dfes import date_time
 
 
 @pytest.mark.parametrize(
@@ -19,7 +19,7 @@ import dfes.date_time
     ]
 )
 def test_extract_date(text, extracted):
-    assert dfes.date_time.extract_date(text) == extracted
+    assert date_time.extract_date(text) == extracted
 
 
 @pytest.mark.parametrize(
@@ -32,7 +32,7 @@ def test_extract_date(text, extracted):
     ]
 )
 def test_extract_time(text, extracted):
-    assert dfes.date_time.extract_time(text) == extracted
+    assert date_time.extract_time(text) == extracted
 
 
 @pytest.mark.parametrize(
@@ -48,7 +48,7 @@ def test_extract_time(text, extracted):
     ]
 )
 def test_find_time_text(text, found):
-    assert dfes.date_time.time_text(text) == found
+    assert date_time.time_text(text) == found
 
 
 @pytest.mark.parametrize(
@@ -60,4 +60,4 @@ def test_find_time_text(text, found):
     ]
 )
 def test_text_to_time(text, result):
-    assert dfes.date_time.text_to_time(text) == result
+    assert date_time.text_to_time(text) == result
