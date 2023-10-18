@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 import dfes.feeds
@@ -34,6 +36,14 @@ def test_rss_has_no_entries(without_entries):
         _ = dfes.feeds.get_summary(without_entries)
 
 
-def test_get_date_published():
-    # assert dfes.feeds.get_published
-    pass
+@pytest.mark.parametrize(
+    "index,date_time",
+    [
+        (0, datetime(2023, 1, 2, 9, 5)),
+        # (1, datetime(2023, 1, 1, 9, 59)),
+        # (2, datetime(2022, 12, 31, 8, 16)),
+        # (3, datetime(2023, 12, 29, 11, 19)),
+    ]
+)
+def test_get_date_published(entries, index, date_time):
+    assert dfes.feeds.published(entries, index) == date_time
