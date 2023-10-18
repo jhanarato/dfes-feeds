@@ -7,13 +7,12 @@ from bs4 import BeautifulSoup, Tag, NavigableString
 
 from dfes.datetime import extract_date, extract_time
 from dfes.exceptions import ParseException
-from dfes.feeds import get_entries, get_summary_xxx
+from dfes.feeds import get_entries, summary
 
 
 def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
     entry = get_entries(feed_location)[index]
-    summary = get_summary_xxx(entry)
-    return BeautifulSoup(summary, features="html.parser")
+    return BeautifulSoup(summary(entry), features="html.parser")
 
 
 def find_to_string(found: Tag | NavigableString | None) -> str | None:

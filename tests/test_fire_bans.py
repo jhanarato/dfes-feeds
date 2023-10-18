@@ -3,13 +3,7 @@ import datetime
 import pytest
 from bs4 import BeautifulSoup, NavigableString, Tag
 
-import dfes.feeds
 from dfes import bans
-
-
-@pytest.fixture
-def summary():
-    return dfes.feeds.get_summary("data/2023-01-03/message_TFB.rss")
 
 
 @pytest.fixture

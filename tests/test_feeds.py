@@ -27,21 +27,9 @@ def test_no_entries(without_entries):
     "index", [0, 1, 2, 3]
 )
 def test_get_existing_summaries(entries, index):
-    summary = dfes.feeds.get_summary(entries, index)
+    entry = dfes.feeds.get_entries(entries)[index]
+    summary = dfes.feeds.summary(entry)
     assert summary[:5] == "<div>"
-
-
-@pytest.mark.parametrize(
-    "index", [-1, 4]
-)
-def test_non_existing_summaries(entries, index):
-    with pytest.raises(IndexError):
-        _ = dfes.feeds.get_summary(entries, index)
-
-
-def test_rss_has_no_entries(without_entries):
-    with pytest.raises(IndexError):
-        _ = dfes.feeds.get_summary(without_entries)
 
 
 @pytest.mark.parametrize(
@@ -59,4 +47,4 @@ def test_get_date_published(entries, index, date_time):
 
 def test_get_summary_from_entry(entries):
     entry = dfes.feeds.get_entries(entries)[0]
-    assert dfes.feeds.get_summary_xxx(entry).startswith("<div>")
+    assert dfes.feeds.summary(entry).startswith("<div>")
