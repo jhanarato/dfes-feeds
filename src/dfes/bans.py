@@ -36,20 +36,22 @@ def time_of_issue(soup: BeautifulSoup) -> time | None:
     )
 
 
-def date_of_issue(soup: BeautifulSoup) -> date | None:
-    return extract_date(
-        find_to_string(
-            soup.find("span", string=re.compile("Date of issue:"))
-        )
-    )
+def date_of_issue(soup: BeautifulSoup) -> date:
+    found = soup.find("span", string=re.compile("Date of issue:"))
+
+    if not found:
+        raise ParseException("No tag for date of issue")
+
+    return extract_date(find_to_string(found))
 
 
-def date_declared_for(soup: BeautifulSoup) -> date | None:
-    return extract_date(
-        find_to_string(
-            soup.find('p', string=re.compile("A Total Fire Ban has been declared"))
-        )
-    )
+def date_declared_for(soup: BeautifulSoup) -> date:
+    found = soup.find('p', string=re.compile("A Total Fire Ban has been declared"))
+
+    if not found:
+        raise ParseException("No tag for declared for date")
+
+    return extract_date(find_to_string(found))
 
 
 def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
