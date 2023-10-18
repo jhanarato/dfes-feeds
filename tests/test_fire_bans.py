@@ -93,6 +93,15 @@ def test_date_of_issue_tag_missing():
         _ = bans.date_of_issue(soup)
 
 
+def test_date_declared_for_tag_missing():
+    summary_html = """
+    <p>This is not the date declared for.</p>
+    """
+    soup = BeautifulSoup(summary_html)
+
+    with pytest.raises(ParseException, match="No tag for declared for date"):
+        _ = bans.date_declared_for(soup)
+
 
 def test_time_of_issue(soup):
     summary_html = """

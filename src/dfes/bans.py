@@ -45,6 +45,7 @@ def date_of_issue(soup: BeautifulSoup) -> date:
     found_string = find_to_string(found)
 
     if not found_string:
+        # This should be impossible.
         raise ParseException("Tag for date of issue has no string")
 
     return extract_date(found_string)
@@ -59,6 +60,7 @@ def date_declared_for(soup: BeautifulSoup) -> date:
     found_string = find_to_string(found)
 
     if not found_string:
+        # This should be impossible.
         raise ParseException("Tag for declared for date has no string")
 
     return extract_date(found_string)
