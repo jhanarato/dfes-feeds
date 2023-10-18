@@ -2,8 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-import dfes.feeds
-from dfes.exceptions import ParseException
+from dfes import feeds, exceptions
 
 
 @pytest.mark.parametrize(
@@ -14,13 +13,13 @@ from dfes.exceptions import ParseException
     ]
 )
 def test_get_entries(file, count):
-    assert len(dfes.feeds.entries(file)) == count
+    assert len(feeds.entries(file)) == count
 
 
 @pytest.fixture
 def entries():
     file = "data/2023-01-03/message_TFB.rss"
-    return dfes.feeds.entries(file)
+    return feeds.entries(file)
 
 
 @pytest.mark.parametrize(
@@ -28,7 +27,7 @@ def entries():
 )
 def test_all_entries_have_summaries(entries, index):
     entry = entries[index]
-    summary = dfes.feeds.summary(entry)
+    summary = feeds.summary(entry)
     assert summary.startswith("<div>")
 
 
@@ -42,19 +41,19 @@ def test_all_entries_have_summaries(entries, index):
     ]
 )
 def test_get_date_published(entries, index, date_time):
-    assert dfes.feeds.published(entries[index]) == date_time
+    assert feeds.published(entries[index]) == date_time
 
 
 def test_published_missing(entries):
     entry = entries[0]
     del entry['dfes_publicationtime']
-    with pytest.raises(ParseException, match="Missing RSS field: dfes_publicationtime"):
-        _ = dfes.feeds.published(entry)
+    with pytest.raises(exceptions.ParseException, match="Missing RSS field: dfes_publicationtime"):
+        _ = feeds.published(entry)
 
 
 def test_published_malformed(entries):
     entry = entries[0]
     entry['dfes_publicationtime'] = "not a timestamp"
 
-    with pytest.raises(ParseException, match="Could not parse publication time"):
-        _ = dfes.feeds.published(entry)
+    with pytest.raises(exceptions.ParseException, match="Could not parse publication time"):
+        _ = feeds.published(entry)
