@@ -3,23 +3,11 @@ import re
 from collections.abc import Iterator
 from dataclasses import dataclass
 
-import feedparser  # type: ignore
 from bs4 import BeautifulSoup, Tag, NavigableString
 
 from dfes.datetime import extract_date, extract_time
-
-
-class ParseException(Exception):
-    pass
-
-
-def get_summary(feed_location: str, index: int = 0) -> str | None:
-    parsed = feedparser.parse(feed_location)
-
-    if entries := parsed['entries']:
-        return entries[index]['summary']
-    else:
-        return None
+from dfes.exceptions import ParseException
+from dfes.feeds import get_summary
 
 
 def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:

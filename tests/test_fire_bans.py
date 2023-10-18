@@ -3,26 +3,13 @@ import datetime
 import pytest
 from bs4 import BeautifulSoup, NavigableString, Tag
 
+import dfes.feeds
 from dfes import bans
-
-
-def test_most_recent_summary():
-    feed_location = "data/2023-01-03/message_TFB.rss"
-    summary = bans.get_summary(feed_location)
-    soup = BeautifulSoup(summary)
-    assert bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
-
-
-def test_summary_index():
-    feed_location = "data/2023-01-03/message_TFB.rss"
-    soups = [bans.get_soup(feed_location, index) for index in range(3)]
-    dates = [bans.date_of_issue(soup) for soup in soups]
-    assert dates == sorted(dates, reverse=True)
 
 
 @pytest.fixture
 def summary():
-    return bans.get_summary("data/2023-01-03/message_TFB.rss")
+    return dfes.feeds.get_summary("data/2023-01-03/message_TFB.rss")
 
 
 @pytest.fixture
@@ -166,5 +153,3 @@ def test_combined_data():
     assert ("South West", "Capel") in combined.locations
 
 
-def test_rss_has_no_entries():
-    assert bans.get_summary("data/2023-10-14/message_TFB.rss") is None
