@@ -4,6 +4,7 @@ import pytest
 from bs4 import BeautifulSoup, NavigableString, Tag
 
 from dfes import bans
+from dfes.exceptions import ParseException
 
 
 @pytest.fixture
@@ -80,6 +81,17 @@ def test_date_of_issue_handles_whitespace():
     """
     soup = BeautifulSoup(summary_html)
     assert bans.date_of_issue(soup) == date(2023, 1, 2)
+
+
+def test_date_of_issue_tag_missing():
+    summary_html = """
+    <p>This is not the date of issue.</p>
+    """
+    soup = BeautifulSoup(summary_html)
+
+    with pytest.raises(ParseException, match="No tag for date of issue"):
+        _ = bans.date_of_issue(soup)
+
 
 
 def test_time_of_issue(soup):
