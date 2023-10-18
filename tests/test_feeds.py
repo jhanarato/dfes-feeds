@@ -15,6 +15,14 @@ def without_entries():
     return "data/2023-10-14/message_TFB.rss"
 
 
+def test_get_entries(entries):
+    assert len(dfes.feeds.get_entries(entries)) == 4
+
+
+def test_no_entries(without_entries):
+    assert dfes.feeds.get_entries(without_entries) == []
+
+
 @pytest.mark.parametrize(
     "index", [0, 1, 2, 3]
 )
@@ -47,3 +55,8 @@ def test_rss_has_no_entries(without_entries):
 )
 def test_get_date_published(entries, index, date_time):
     assert dfes.feeds.published(entries, index) == date_time
+
+
+def test_get_summary_from_entry(entries):
+    entry = dfes.feeds.get_entries(entries)[0]
+    assert dfes.feeds.get_summary_xxx(entry).startswith("<div>")

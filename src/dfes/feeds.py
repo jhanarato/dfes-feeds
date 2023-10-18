@@ -11,6 +11,13 @@ def get_entries(feed_location: str) -> list[dict]:
     return entries
 
 
+def get_summary_xxx(entry: dict) -> str:
+    if summary := entry.get('summary'):
+        return summary
+
+    raise ParseException(f"Entry has no summary.")
+
+
 def get_summary(feed_location: str, index: int = 0) -> str:
 
     parsed = feedparser.parse(feed_location)
