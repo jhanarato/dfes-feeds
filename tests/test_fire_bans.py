@@ -143,7 +143,11 @@ def test_combined_data():
         2023, 1, 2, 5, 5,
         tzinfo=datetime.timezone.utc,
     )
+    assert combined.published == datetime.datetime(2023, 1, 2, 9, 5)
     assert combined.declared_for == datetime.date(2023, 1, 3)
     assert ("South West", "Capel") in combined.locations
 
 
+def test_no_data_to_combine():
+    feed_location = "data/2023-10-14/message_TFB.rss"
+    assert bans.total_fire_bans(feed_location) is None

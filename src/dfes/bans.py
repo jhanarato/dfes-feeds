@@ -5,14 +5,15 @@ from dataclasses import dataclass
 
 from bs4 import BeautifulSoup, Tag, NavigableString
 
+from dfes import feeds
 from dfes.datetime import extract_date, extract_time
 from dfes.exceptions import ParseException
-from dfes.feeds import get_entries, summary
 
 
 def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
-    entry = get_entries(feed_location)[index]
-    return BeautifulSoup(summary(entry), features="html.parser")
+    entry = feeds.entries(feed_location)[index]
+    summary = feeds.summary(entry)
+    return BeautifulSoup(summary, features="html.parser")
 
 
 def find_to_string(found: Tag | NavigableString | None) -> str | None:
@@ -93,12 +94,21 @@ def locations(soup: BeautifulSoup) -> Iterator[tuple[str, str]]:
 @dataclass
 class TotalFireBans:
     issued: datetime.datetime
+    published: datetime.datetime
     declared_for: datetime.date
     locations: list[tuple[str, str]]
 
 
-def total_fire_bans(feed_location: str) -> TotalFireBans:
-    soup = get_soup(feed_location)
+def total_fire_bans(feed_location: str) -> TotalFireBans | None:
+    entries = feeds.entries(feed_location)
+
+    if not entries:
+        return None
+
+    summary = feeds.summary(entries[0])
+    published = feeds.published(entries[0])
+
+    soup = BeautifulSoup(summary, features="html.parser")
 
     issued_time = time_of_issue(soup)
 
@@ -119,6 +129,7 @@ def total_fire_bans(feed_location: str) -> TotalFireBans:
 
     return TotalFireBans(
         issued=issued,
+        published=published,
         declared_for=declared,
         locations=list(locations(soup)),
     )

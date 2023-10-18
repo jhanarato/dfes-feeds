@@ -14,13 +14,13 @@ from dfes.exceptions import ParseException
     ]
 )
 def test_get_entries(file, count):
-    assert len(dfes.feeds.get_entries(file)) == count
+    assert len(dfes.feeds.entries(file)) == count
 
 
 @pytest.fixture
 def entries():
     file = "data/2023-01-03/message_TFB.rss"
-    return dfes.feeds.get_entries(file)
+    return dfes.feeds.entries(file)
 
 
 @pytest.mark.parametrize(

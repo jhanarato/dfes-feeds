@@ -5,7 +5,7 @@ import feedparser  # type: ignore
 from dfes.exceptions import ParseException
 
 
-def get_entries(feed_location: str) -> list[dict]:
+def entries(feed_location: str) -> list[dict]:
     parsed = feedparser.parse(feed_location)
     entries = parsed['entries']
     return entries
