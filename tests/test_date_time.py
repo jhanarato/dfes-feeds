@@ -84,8 +84,20 @@ def test_extract_time(text, extracted):
         ("XXX 00:30 AM YYY", "00:30 AM"),
     ]
 )
-def test_find_time_text(text, found):
+def test_time_text(text, found):
     assert date_time.time_text(text) == found
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "12:12 XM",
+    ]
+)
+def test_time_text_fails(text):
+    with pytest.raises(exceptions.ParseException,
+                       match=f"Failed to find time text in {text}"):
+        _ = date_time.time_text(text)
 
 
 @pytest.mark.parametrize(
@@ -98,3 +110,15 @@ def test_find_time_text(text, found):
 )
 def test_text_to_time(text, result):
     assert date_time.text_to_time(text) == result
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "15:70 AM",
+    ]
+)
+def test_text_to_time_fails(text):
+    with pytest.raises(exceptions.ParseException,
+                       match=f"Failed to parse time: {text}"):
+        _ = date_time.text_to_time(text)
