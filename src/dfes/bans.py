@@ -42,7 +42,12 @@ def date_of_issue(soup: BeautifulSoup) -> date:
     if not found:
         raise ParseException("No tag for date of issue")
 
-    return extract_date(find_to_string(found))
+    found_string = find_to_string(found)
+
+    if not found_string:
+        raise ParseException("Tag for date of issue has no string")
+
+    return extract_date(found_string)
 
 
 def date_declared_for(soup: BeautifulSoup) -> date:
@@ -51,7 +56,12 @@ def date_declared_for(soup: BeautifulSoup) -> date:
     if not found:
         raise ParseException("No tag for declared for date")
 
-    return extract_date(find_to_string(found))
+    found_string = find_to_string(found)
+
+    if not found_string:
+        raise ParseException("Tag for declared for date has no string")
+
+    return extract_date(found_string)
 
 
 def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
