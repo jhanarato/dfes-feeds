@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 
@@ -35,10 +35,10 @@ def test_all_entries_have_summaries(entries, index):
 @pytest.mark.parametrize(
     "index,date_time",
     [
-        (0, datetime(2023, 1, 2, 9, 5)),
-        (1, datetime(2023, 1, 1, 9, 59)),
-        (2, datetime(2022, 12, 31, 8, 16)),
-        (3, datetime(2022, 12, 29, 11, 19)),
+        (0, datetime(2023, 1, 2, 9, 5, tzinfo=timezone.utc)),
+        (1, datetime(2023, 1, 1, 9, 59, tzinfo=timezone.utc)),
+        (2, datetime(2022, 12, 31, 8, 16, tzinfo=timezone.utc)),
+        (3, datetime(2022, 12, 29, 11, 19, tzinfo=timezone.utc)),
     ]
 )
 def test_get_date_published(entries, index, date_time):

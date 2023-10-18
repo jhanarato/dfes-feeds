@@ -143,7 +143,10 @@ def test_combined_data():
         2023, 1, 2, 5, 5,
         tzinfo=datetime.timezone.utc,
     )
-    assert combined.published == datetime.datetime(2023, 1, 2, 9, 5)
+    assert combined.published == datetime.datetime(
+        2023, 1, 2, 9, 5,
+        tzinfo=datetime.timezone.utc
+    )
     assert combined.declared_for == datetime.date(2023, 1, 3)
     assert ("South West", "Capel") in combined.locations
 

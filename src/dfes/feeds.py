@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 import feedparser  # type: ignore
 
@@ -23,7 +23,8 @@ def published(entry: dict) -> datetime:
 
     if text:
         try:
-            return datetime.strptime(text, "%d/%m/%y %H:%M %p")
+            extracted = datetime.strptime(text, "%d/%m/%y %H:%M %p")
+            return extracted.replace(tzinfo=timezone.utc)
         except ValueError:
             raise ParseException("Could not parse publication time")
 
