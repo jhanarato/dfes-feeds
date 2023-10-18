@@ -4,7 +4,7 @@ import dfes.feeds
 
 
 @pytest.fixture
-def with_entries():
+def entries():
     return "data/2023-01-03/message_TFB.rss"
 
 
@@ -16,17 +16,17 @@ def without_entries():
 @pytest.mark.parametrize(
     "index", [0, 1, 2, 3]
 )
-def test_get_existing_summaries(with_entries, index):
-    summary = dfes.feeds.get_summary(with_entries, index)
+def test_get_existing_summaries(entries, index):
+    summary = dfes.feeds.get_summary(entries, index)
     assert summary[:5] == "<div>"
 
 
 @pytest.mark.parametrize(
     "index", [-1, 4]
 )
-def test_non_existing_summaries(with_entries, index):
+def test_non_existing_summaries(entries, index):
     with pytest.raises(IndexError):
-        _ = dfes.feeds.get_summary(with_entries, index)
+        _ = dfes.feeds.get_summary(entries, index)
 
 
 def test_rss_has_no_entries(without_entries):
