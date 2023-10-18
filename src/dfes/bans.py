@@ -28,12 +28,19 @@ def find_to_string(found: Tag | NavigableString | None) -> str | None:
             raise ParseException(f"Incompatible type: {type(found)}")
 
 
-def time_of_issue(soup: BeautifulSoup) -> time | None:
-    return extract_time(
-        find_to_string(
-            soup.find("span", string=re.compile("Time of issue:"))
-        )
-    )
+def time_of_issue(soup: BeautifulSoup) -> time:
+    found = soup.find("span", string=re.compile("Time of issue:"))
+
+    if not found:
+        raise ParseException("No tag for time of issue")
+
+    found_string = find_to_string(found)
+
+    if not found_string:
+        # This should be impossible.
+        raise ParseException("Tag for date of issue has no string")
+
+    return extract_time(found_string)
 
 
 def date_of_issue(soup: BeautifulSoup) -> date:
