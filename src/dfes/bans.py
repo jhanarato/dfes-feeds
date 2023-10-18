@@ -1,7 +1,7 @@
-import datetime
 import re
 from collections.abc import Iterator
 from dataclasses import dataclass
+from datetime import date, time, datetime, timezone
 
 from bs4 import BeautifulSoup, Tag, NavigableString
 
@@ -28,7 +28,7 @@ def find_to_string(found: Tag | NavigableString | None) -> str | None:
             raise ParseException(f"Incompatible type: {type(found)}")
 
 
-def time_of_issue(soup: BeautifulSoup) -> datetime.time | None:
+def time_of_issue(soup: BeautifulSoup) -> time | None:
     return extract_time(
         find_to_string(
             soup.find("span", string=re.compile("Time of issue:"))
@@ -36,7 +36,7 @@ def time_of_issue(soup: BeautifulSoup) -> datetime.time | None:
     )
 
 
-def date_of_issue(soup: BeautifulSoup) -> datetime.date | None:
+def date_of_issue(soup: BeautifulSoup) -> date | None:
     return extract_date(
         find_to_string(
             soup.find("span", string=re.compile("Date of issue:"))
@@ -44,7 +44,7 @@ def date_of_issue(soup: BeautifulSoup) -> datetime.date | None:
     )
 
 
-def date_declared_for(soup: BeautifulSoup) -> datetime.date | None:
+def date_declared_for(soup: BeautifulSoup) -> date | None:
     return extract_date(
         find_to_string(
             soup.find('p', string=re.compile("A Total Fire Ban has been declared"))
@@ -93,9 +93,9 @@ def locations(soup: BeautifulSoup) -> Iterator[tuple[str, str]]:
 
 @dataclass
 class TotalFireBans:
-    issued: datetime.datetime
-    published: datetime.datetime
-    declared_for: datetime.date
+    issued: datetime
+    published: datetime
+    declared_for: date
     locations: list[tuple[str, str]]
 
 
@@ -120,7 +120,7 @@ def total_fire_bans(feed_location: str) -> TotalFireBans | None:
     if not issued_date:
         raise ParseException("No date of issue found")
 
-    issued = datetime.datetime.combine(issued_date, issued_time, datetime.timezone.utc)
+    issued = datetime.combine(issued_date, issued_time, timezone.utc)
 
     declared = date_declared_for(soup)
 

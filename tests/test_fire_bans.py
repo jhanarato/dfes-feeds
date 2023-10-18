@@ -1,4 +1,4 @@
-import datetime
+from datetime import date, time, datetime, timezone
 
 import pytest
 from bs4 import BeautifulSoup, NavigableString, Tag
@@ -54,7 +54,7 @@ def test_get_district_tags_from_region_tag():
 
 
 def test_date_of_issue(soup):
-    assert bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
+    assert bans.date_of_issue(soup) == date(2023, 1, 2)
 
 
 def test_no_find_no_string():
@@ -79,25 +79,25 @@ def test_date_of_issue_handles_whitespace():
     <span style="color: #777777;"> Date of issue: 02 January 2023 </span>
     """
     soup = BeautifulSoup(summary_html)
-    assert bans.date_of_issue(soup) == datetime.date(2023, 1, 2)
+    assert bans.date_of_issue(soup) == date(2023, 1, 2)
 
 
 def test_time_of_issue(soup):
     summary_html = """
     <span style="color: #777777;">Time of issue: 05:05 PM </span>
     """
-    assert bans.time_of_issue(soup) == datetime.time(5, 5)
+    assert bans.time_of_issue(soup) == time(5, 5)
 
 
 def test_date_delclared_for():
     summary_html = """
     <p>A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:</p>
     """
-    assert bans.date_declared_for(BeautifulSoup(summary_html)) == datetime.date(2023, 1, 3)
+    assert bans.date_declared_for(BeautifulSoup(summary_html)) == date(2023, 1, 3)
 
 
 def test_date_declared_for_with_full_soup(soup):
-    assert bans.date_declared_for(soup) == datetime.date(2023, 1, 3)
+    assert bans.date_declared_for(soup) == date(2023, 1, 3)
 
 
 def test_locations_has_regions(soup):
@@ -139,15 +139,9 @@ def test_extract_region():
 def test_combined_data():
     feed_location = "data/2023-01-03/message_TFB.rss"
     combined = bans.total_fire_bans(feed_location)
-    assert combined.issued == datetime.datetime(
-        2023, 1, 2, 5, 5,
-        tzinfo=datetime.timezone.utc,
-    )
-    assert combined.published == datetime.datetime(
-        2023, 1, 2, 9, 5,
-        tzinfo=datetime.timezone.utc
-    )
-    assert combined.declared_for == datetime.date(2023, 1, 3)
+    assert combined.issued == datetime(2023, 1, 2, 5, 5, tzinfo=timezone.utc)
+    assert combined.published == datetime(2023, 1, 2, 9, 5, tzinfo=timezone.utc)
+    assert combined.declared_for == date(2023, 1, 3)
     assert ("South West", "Capel") in combined.locations
 
 
