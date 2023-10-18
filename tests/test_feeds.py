@@ -5,31 +5,30 @@ import pytest
 import dfes.feeds
 
 
+@pytest.mark.parametrize(
+    "file,count",
+    [
+        ("data/2023-10-14/message_TFB.rss", 0),
+        ("data/2023-01-03/message_TFB.rss", 4),
+    ]
+)
+def test_get_entries(file, count):
+    assert len(dfes.feeds.get_entries(file)) == count
+
+
 @pytest.fixture
 def entries():
-    return "data/2023-01-03/message_TFB.rss"
-
-
-@pytest.fixture
-def without_entries():
-    return "data/2023-10-14/message_TFB.rss"
-
-
-def test_get_entries(entries):
-    assert len(dfes.feeds.get_entries(entries)) == 4
-
-
-def test_no_entries(without_entries):
-    assert dfes.feeds.get_entries(without_entries) == []
+    file = "data/2023-01-03/message_TFB.rss"
+    return dfes.feeds.get_entries(file)
 
 
 @pytest.mark.parametrize(
     "index", [0, 1, 2, 3]
 )
-def test_get_existing_summaries(entries, index):
-    entry = dfes.feeds.get_entries(entries)[index]
+def test_all_entries_have_summaries(entries, index):
+    entry = entries[index]
     summary = dfes.feeds.summary(entry)
-    assert summary[:5] == "<div>"
+    assert summary.startswith("<div>")
 
 
 @pytest.mark.parametrize(
@@ -43,8 +42,3 @@ def test_get_existing_summaries(entries, index):
 )
 def test_get_date_published(entries, index, date_time):
     assert dfes.feeds.published(entries, index) == date_time
-
-
-def test_get_summary_from_entry(entries):
-    entry = dfes.feeds.get_entries(entries)[0]
-    assert dfes.feeds.summary(entry).startswith("<div>")
