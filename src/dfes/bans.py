@@ -3,10 +3,10 @@ import re
 from collections.abc import Iterator
 from dataclasses import dataclass
 
-import feedparser  # type: ignore
+import feedparser
 from bs4 import BeautifulSoup, Tag, NavigableString
 
-from extract.datetime import extract_date, extract_time
+from dfes.datetime import extract_date, extract_time
 
 
 class ParseException(Exception):
