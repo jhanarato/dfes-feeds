@@ -42,7 +42,7 @@ def test_find_date_text(text, found):
         "3 January 23",
     ]
 )
-def test_date_text_throws_exception(text):
+def test_date_text_fails(text):
     with pytest.raises(exceptions.ParseException,
                        match=f"Failed to find date text in {text}"):
         _ = date_time.date_text(text)
@@ -55,7 +55,7 @@ def test_date_text_throws_exception(text):
         "13 Yanuary 2023",
     ]
 )
-def test_text_to_date_throws_exception(text):
+def test_text_to_date_fails(text):
     with pytest.raises(exceptions.ParseException,
                        match=f"Failed to parse date: {text}"):
         _ = date_time.text_to_date(text)
