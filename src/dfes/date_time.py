@@ -23,27 +23,20 @@ def text_to_date(text: str) -> date:
         raise ParseException(f"Failed to parse date: {text}")
 
 
-def extract_time(text: str | None) -> time | None:
-    if not text:
-        return None
-
+def extract_time(text: str) -> time:
     return text_to_time(
         time_text(text)
     )
 
 
-def time_text(text: str | None) -> str | None:
-    if text:
-        if m := re.search(r"\d{2}:\d{2} (?:AM|PM)", text):
-            return m.group(0)
-    return None
+def time_text(text: str) -> str:
+    if m := re.search(r"\d{2}:\d{2} (?:AM|PM)", text):
+        return m.group(0)
+    raise ParseException(f"Failed to find time text in {text}")
 
 
-def text_to_time(text: str | None) -> time | None:
-    if not text:
-        return None
-
+def text_to_time(text: str) -> time:
     try:
         return datetime.strptime(text, "%H:%M %p").time()
     except ValueError:
-        return None
+        raise ParseException(f"Failed to parse time: {text}")

@@ -67,7 +67,6 @@ def test_text_to_date_throws_exception(text):
         ("05:05 PM", time(5, 5)),
         ("00:30 AM", time(0, 30)),
         ("00:00 AM", time(0, 0)),
-        (None, None),
     ]
 )
 def test_extract_time(text, extracted):
@@ -83,7 +82,6 @@ def test_extract_time(text, extracted):
         ("00:30 AM", "00:30 AM"),
         (" 00:30 AM ", "00:30 AM"),
         ("XXX 00:30 AM YYY", "00:30 AM"),
-        (None, None),
     ]
 )
 def test_find_time_text(text, found):
