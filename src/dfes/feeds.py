@@ -18,5 +18,13 @@ def summary(entry: dict) -> str:
     raise ParseException(f"Entry has no summary.")
 
 
-def published(feed_location: str, index: int = 0) -> datetime:
-    return datetime(2023, 1, 2, 9, 5)
+def published(entry: dict) -> datetime:
+    text = entry.get('dfes_publicationtime')
+
+    if text:
+        try:
+            return datetime.strptime(text, "%d/%m/%y %H:%M %p")
+        except ValueError:
+            raise ParseException("Could not parse publication time")
+
+    raise ParseException("Missing RSS field: dfes_publicationtime")

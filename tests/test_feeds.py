@@ -3,6 +3,7 @@ from datetime import datetime
 import pytest
 
 import dfes.feeds
+from dfes.exceptions import ParseException
 
 
 @pytest.mark.parametrize(
@@ -35,10 +36,25 @@ def test_all_entries_have_summaries(entries, index):
     "index,date_time",
     [
         (0, datetime(2023, 1, 2, 9, 5)),
-        # (1, datetime(2023, 1, 1, 9, 59)),
-        # (2, datetime(2022, 12, 31, 8, 16)),
-        # (3, datetime(2023, 12, 29, 11, 19)),
+        (1, datetime(2023, 1, 1, 9, 59)),
+        (2, datetime(2022, 12, 31, 8, 16)),
+        (3, datetime(2022, 12, 29, 11, 19)),
     ]
 )
 def test_get_date_published(entries, index, date_time):
-    assert dfes.feeds.published(entries, index) == date_time
+    assert dfes.feeds.published(entries[index]) == date_time
+
+
+def test_published_missing(entries):
+    entry = entries[0]
+    del entry['dfes_publicationtime']
+    with pytest.raises(ParseException, match="Missing RSS field: dfes_publicationtime"):
+        _ = dfes.feeds.published(entry)
+
+
+def test_published_malformed(entries):
+    entry = entries[0]
+    entry['dfes_publicationtime'] = "not a timestamp"
+
+    with pytest.raises(ParseException, match="Could not parse publication time"):
+        _ = dfes.feeds.published(entry)
