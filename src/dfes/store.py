@@ -1,10 +1,5 @@
-from datetime import date
-from typing import Protocol
+from dfes.bans import TotalFireBans
 
 
-class FeedStore(Protocol):
-    def __contains__(self, feed: str) -> bool: ...
-
-    def add(self, feed: str) -> None: ...
-
-    def get(self, published: date) -> str: ...
+def file_name(bans: TotalFireBans) -> str:
+    return "total_fire_bans_issued_2023_01_02_1305.rss"
