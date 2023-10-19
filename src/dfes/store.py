@@ -1,3 +1,5 @@
+from datetime import date
+
 from dfes.bans import TotalFireBans, total_fire_bans
 
 
@@ -13,3 +15,6 @@ class InMemoryStore:
     def add(self, feed: str) -> None:
         bans = total_fire_bans(feed)
         self._feeds[file_name(bans)] = feed
+
+    def retrieve(self, issued: date) -> str:
+        return "<?xml version="

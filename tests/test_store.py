@@ -34,3 +34,9 @@ def test_add_to_memory_store(feed_text):
     store = InMemoryStore()
     store.add(feed_text)
     assert list(store._feeds.keys())[0] == "total_fire_bans_issued_2023_01_02_0505.rss"
+
+
+def test_retrieve_from_in_memory_store(feed_text):
+    store = InMemoryStore()
+    store.add(feed_text)
+    assert store.retrieve(datetime(2023, 1, 2, 5, 5)).startswith("<?xml version=")
