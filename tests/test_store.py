@@ -7,6 +7,12 @@ from dfes.bans import TotalFireBans
 
 
 @pytest.fixture
+def feed_text():
+    with open("data/2023-01-03/message_TFB.rss") as file:
+        return file.read()
+
+
+@pytest.fixture
 def ban():
     return TotalFireBans(
         issued=datetime.fromisoformat("2023-10-15 04:08:00+00:00"),
