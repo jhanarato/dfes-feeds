@@ -28,6 +28,15 @@ def find_to_string(found: Tag | NavigableString | None) -> str | None:
             raise ParseException(f"Incompatible type: {type(found)}")
 
 
+def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:
+    found = soup.find(tag_name, string=re.compile(contains))
+
+    if not isinstance(found, Tag):
+        raise ParseException(f"No <{tag_name}> tag found")
+
+    return found.string.strip()
+
+
 def time_of_issue(soup: BeautifulSoup) -> time:
     found = soup.find("span", string=re.compile("Time of issue:"))
 
