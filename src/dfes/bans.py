@@ -3,7 +3,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import date, time, datetime, timezone
 
-from bs4 import BeautifulSoup, Tag, NavigableString
+from bs4 import BeautifulSoup, Tag
 
 from dfes import feeds
 from dfes.date_time import extract_date, extract_time
@@ -14,18 +14,6 @@ def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
     entry = feeds.entries(feed_location)[index]
     summary = feeds.summary(entry)
     return BeautifulSoup(summary, features="html.parser")
-
-
-def find_to_string(found: Tag | NavigableString | None) -> str | None:
-    match found:
-        case None:
-            return None
-        case NavigableString():
-            return found
-        case Tag():
-            return found.string
-        case _:
-            raise ParseException(f"Incompatible type: {type(found)}")
 
 
 def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:
