@@ -41,18 +41,8 @@ def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:
 
 
 def time_of_issue(soup: BeautifulSoup) -> time:
-    found = soup.find("span", string=re.compile("Time of issue:"))
-
-    if not found:
-        raise ParseException("No tag for time of issue")
-
-    found_string = find_to_string(found)
-
-    if not found_string:
-        # This should be impossible.
-        raise ParseException("Tag for date of issue has no string")
-
-    return extract_time(found_string)
+    contents = find_tag_contents(soup, "span", "Time of issue:")
+    return extract_time(contents)
 
 
 def date_of_issue(soup: BeautifulSoup) -> date:
