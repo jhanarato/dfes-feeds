@@ -1,10 +1,10 @@
-from datetime import date
+from datetime import datetime
 
-from dfes.bans import TotalFireBans, total_fire_bans
+from dfes.bans import total_fire_bans
 
 
-def file_name(bans: TotalFireBans) -> str:
-    date_formatted = bans.issued.strftime("%Y_%m_%d_%H%M")
+def file_name(issued: datetime) -> str:
+    date_formatted = issued.strftime("%Y_%m_%d_%H%M")
     return f"total_fire_bans_issued_{date_formatted}.rss"
 
 
@@ -14,7 +14,7 @@ class InMemoryStore:
 
     def add(self, feed: str) -> None:
         bans = total_fire_bans(feed)
-        self._feeds[file_name(bans)] = feed
+        self._feeds[file_name(bans.issued)] = feed
 
-    def retrieve(self, issued: date) -> str:
-        return "<?xml version="
+    def retrieve(self, issued: datetime) -> str:
+        return self._feeds[file_name(issued)]

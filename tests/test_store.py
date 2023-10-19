@@ -27,7 +27,7 @@ def ban():
 
 
 def test_file_name(ban):
-    assert file_name(ban) == "total_fire_bans_issued_2023_10_15_0408.rss"
+    assert file_name(ban.issued) == "total_fire_bans_issued_2023_10_15_0408.rss"
 
 
 def test_add_to_memory_store(feed_text):
