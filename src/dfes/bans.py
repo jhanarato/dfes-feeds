@@ -34,6 +34,9 @@ def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:
     if not isinstance(found, Tag):
         raise ParseException(f"No <{tag_name}> tag found")
 
+    if not found.string:
+        raise ParseException(f"Tag <{tag_name}> has no contents")
+
     return found.string.strip()
 
 
