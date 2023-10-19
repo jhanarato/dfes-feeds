@@ -101,22 +101,13 @@ def total_fire_bans(feed_location: str) -> TotalFireBans | None:
 
     soup = BeautifulSoup(summary, features="html.parser")
 
-    issued_time = time_of_issue(soup)
-
-    if not issued_time:
-        raise ParseException("No time of issue found")
-
-    issued_date = date_of_issue(soup)
-
-    if not issued_date:
-        raise ParseException("No date of issue found")
-
-    issued = datetime.combine(issued_date, issued_time, timezone.utc)
+    issued = datetime.combine(
+        date_of_issue(soup),
+        time_of_issue(soup),
+        timezone.utc
+    )
 
     declared = date_declared_for(soup)
-
-    if not declared:
-        raise ParseException("No date declared for found")
 
     return TotalFireBans(
         issued=issued,
