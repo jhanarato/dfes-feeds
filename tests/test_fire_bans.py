@@ -1,7 +1,7 @@
 from datetime import date, time, datetime, timezone
 
 import pytest
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup
 
 from dfes import bans
 from dfes.exceptions import ParseException
@@ -70,12 +70,6 @@ def test_find_tag_contents_with_missing_tag():
     with pytest.raises(ParseException,
                        match="No <span> tag found"):
         _ = bans.find_tag_contents(soup, "span", "Date of issue:")
-
-
-def test_get_tag_contents():
-    html = "<p>A navigable string</p>"
-    tag = BeautifulSoup(html).find("p")
-    assert isinstance(tag, Tag)
 
 
 def test_date_of_issue_handles_whitespace():
