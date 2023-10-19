@@ -41,28 +41,18 @@ def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:
 
 
 def time_of_issue(soup: BeautifulSoup) -> time:
-    contents = find_tag_contents(soup, "span", "Time of issue:")
-    return extract_time(contents)
+    text = find_tag_contents(soup, "span", "Time of issue:")
+    return extract_time(text)
 
 
 def date_of_issue(soup: BeautifulSoup) -> date:
-    contents = find_tag_contents(soup, "span", "Date of issue:")
-    return extract_date(contents)
+    text = find_tag_contents(soup, "span", "Date of issue:")
+    return extract_date(text)
 
 
 def date_declared_for(soup: BeautifulSoup) -> date:
-    found = soup.find('p', string=re.compile("A Total Fire Ban has been declared"))
-
-    if not found:
-        raise ParseException("No tag for declared for date")
-
-    found_string = find_to_string(found)
-
-    if not found_string:
-        # This should be impossible.
-        raise ParseException("Tag for declared for date has no string")
-
-    return extract_date(found_string)
+    text = find_tag_contents(soup, "p", "A Total Fire Ban has been declared")
+    return extract_date(text)
 
 
 def get_region_tags(soup: BeautifulSoup) -> list[Tag]:
