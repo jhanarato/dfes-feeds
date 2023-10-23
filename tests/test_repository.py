@@ -8,7 +8,19 @@ def test_file_name():
     assert file_name(issued) == "total_fire_bans_issued_2023_10_15_0408.rss"
 
 
-def test_in_memory_repository_stores_and_retrieves():
-    store = InMemoryRepository()
-    store.add(datetime(2023, 1, 2, 5, 5), "feed test text")
-    assert store.retrieve(datetime(2023, 1, 2, 5, 5)) == "feed test text"
+def test_memory_repository_stores_and_retrieves():
+    repo = InMemoryRepository()
+    repo.add(datetime(2023, 5, 5, 5, 5), "Bans for may 6th")
+    assert repo.retrieve(datetime(2023, 5, 5, 5, 5)) == "Bans for may 6th"
+
+
+def test_memory_repository_lists_issued_bans():
+    repo = InMemoryRepository()
+    repo.add(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
+    repo.add(datetime(2023, 1, 3, 5, 5), "Bans for January 4th")
+    repo.add(datetime(2023, 1, 4, 5, 5), "Bans for January 5th")
+    assert repo.bans_issued() == [
+        datetime(2023, 1, 2, 5, 5),
+        datetime(2023, 1, 3, 5, 5),
+        datetime(2023, 1, 4, 5, 5),
+    ]

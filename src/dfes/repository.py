@@ -15,3 +15,6 @@ class InMemoryRepository:
 
     def retrieve(self, issued: datetime) -> str:
         return self._feeds[issued]
+
+    def bans_issued(self) -> list[datetime]:
+        return list(self._feeds)
