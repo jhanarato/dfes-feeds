@@ -19,8 +19,16 @@ def test_memory_repository_lists_issued_bans():
     repo.add(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
     repo.add(datetime(2023, 1, 3, 5, 5), "Bans for January 4th")
     repo.add(datetime(2023, 1, 4, 5, 5), "Bans for January 5th")
+
     assert repo.bans_issued() == [
         datetime(2023, 1, 2, 5, 5),
         datetime(2023, 1, 3, 5, 5),
         datetime(2023, 1, 4, 5, 5),
     ]
+
+
+def test_memory_repository_complete_workflow():
+    repo = InMemoryRepository()
+    repo.add(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
+    issued_date = repo.bans_issued()[0]
+    assert repo.retrieve(issued_date) == "Bans for January 3rd"
