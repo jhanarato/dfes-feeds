@@ -13,13 +13,13 @@ def soup():
 
 
 def test_get_region_tags():
-    summary_html = """
+    html = """
      <p><strong>Midwest Gascoyne Region:</strong></p>
      <p><strong>Perth Metropolitan Region:</strong></p>
      <p><strong>Goldfields Midlands Region:</strong></p>
     """
 
-    tags = bans.get_region_tags(BeautifulSoup(summary_html))
+    tags = bans.get_region_tags(BeautifulSoup(html))
     strings = [tag.string for tag in tags]
     assert strings == ["Midwest Gascoyne Region:",
                        "Perth Metropolitan Region:",
@@ -27,16 +27,16 @@ def test_get_region_tags():
 
 
 def test_missing_region_tags():
-    summary_html = """
+    html = """
     <p></p>
     <p><strong>Not what you're looking for</strong></p>
     """
 
-    assert bans.get_region_tags(BeautifulSoup(summary_html)) == []
+    assert bans.get_region_tags(BeautifulSoup(html)) == []
 
 
 def test_get_district_tags_from_region_tag():
-    summary_html = """
+    html = """
     <p><strong>Midwest Gascoyne Region:</strong> 	
     </p>
     <ul>
@@ -45,7 +45,7 @@ def test_get_district_tags_from_region_tag():
     <li>Coorow - All Day</li> 
     </ul>
     """
-    region_tag = bans.get_region_tags(BeautifulSoup(summary_html))[0]
+    region_tag = bans.get_region_tags(BeautifulSoup(html))[0]
     tags = bans.get_district_tags(region_tag)
 
     strings = [tag.string for tag in tags]
@@ -54,7 +54,9 @@ def test_get_district_tags_from_region_tag():
                        "Coorow - All Day"]
 
 
-def test_date_of_issue(soup):
+def test_date_of_issue():
+    html = "<span style=\"color: #777777;\"> Date of issue: 02 January 2023 </span>"
+    soup = BeautifulSoup(html)
     assert bans.date_of_issue(soup) == date(2023, 1, 2)
 
 
