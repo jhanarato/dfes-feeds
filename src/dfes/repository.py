@@ -8,17 +8,17 @@ def file_name(issued: datetime) -> str:
 
 class InMemoryRepository:
     def __init__(self):
-        self._feeds = dict()
+        self._ban_feeds = dict()
         self._failed = dict()
 
-    def add(self, issued: datetime, feed_text: str) -> None:
-        self._feeds[issued] = feed_text
+    def add_bans(self, issued: datetime, feed_text: str) -> None:
+        self._ban_feeds[issued] = feed_text
 
-    def retrieve(self, issued: datetime) -> str:
-        return self._feeds[issued]
+    def retrieve_bans(self, issued: datetime) -> str:
+        return self._ban_feeds[issued]
 
-    def bans_issued(self) -> list[datetime]:
-        return list(self._feeds)
+    def list_bans(self) -> list[datetime]:
+        return list(self._ban_feeds)
 
     def add_failed(self, feed_text: str) -> None:
         self._failed[datetime.now()] = feed_text
