@@ -6,7 +6,7 @@ def file_name(issued: datetime) -> str:
     return f"total_fire_bans_issued_{date_formatted}.rss"
 
 
-class InMemoryStore:
+class InMemoryRepository:
     def __init__(self):
         self._feeds = dict()
 
