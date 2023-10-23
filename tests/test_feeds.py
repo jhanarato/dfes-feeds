@@ -5,6 +5,14 @@ import pytest
 from dfes import feeds, exceptions
 
 
+def test_no_entries(xml_feed_no_entry):
+    assert feeds.entries(xml_feed_no_entry) == []
+
+
+def test_one_entry(xml_feed_one_entry):
+    assert len(feeds.entries(xml_feed_one_entry)) == 1
+
+
 @pytest.mark.parametrize(
     "file,count",
     [
