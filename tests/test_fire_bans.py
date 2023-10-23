@@ -3,7 +3,7 @@ from datetime import date, time, datetime, timezone
 import pytest
 from bs4 import BeautifulSoup
 
-from dfes import bans
+from dfes import bans, feeds
 from dfes.exceptions import ParseException
 
 
@@ -119,13 +119,9 @@ def test_extract_region():
 
 def test_combined_data():
     feed_location = "data/2023-01-03/message_TFB.rss"
-    combined = bans.total_fire_bans(feed_location)
+    entry = feeds.entries(feed_location)[0]
+    combined = bans.total_fire_bans(feeds.summary(entry), feeds.published(entry))
     assert combined.issued == datetime(2023, 1, 2, 5, 5, tzinfo=timezone.utc)
     assert combined.published == datetime(2023, 1, 2, 9, 5, tzinfo=timezone.utc)
     assert combined.declared_for == date(2023, 1, 3)
     assert ("South West", "Capel") in combined.locations
-
-
-def test_no_data_to_combine():
-    feed_location = "data/2023-10-14/message_TFB.rss"
-    assert bans.total_fire_bans(feed_location) is None

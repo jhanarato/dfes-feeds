@@ -90,15 +90,7 @@ class TotalFireBans:
     locations: list[tuple[str, str]]
 
 
-def total_fire_bans(feed_location: str) -> TotalFireBans | None:
-    entries = feeds.entries(feed_location)
-
-    if not entries:
-        return None
-
-    summary = feeds.summary(entries[0])
-    published = feeds.published(entries[0])
-
+def total_fire_bans(summary: str, published: datetime) -> TotalFireBans:
     soup = BeautifulSoup(summary, features="html.parser")
 
     issued = datetime.combine(
