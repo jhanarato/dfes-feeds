@@ -61,8 +61,9 @@ def test_date_of_issue():
 
 
 def test_find_tag_contents_ok():
-    html = "<span style=\"color: #777777;\"> Date of issue: 02 January 2023 </span>"
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(
+        "<span style=\"color: #777777;\"> Date of issue: 02 January 2023 </span>"
+    )
     contents = bans.find_tag_contents(soup, "span", "Date of issue:")
     assert contents == "Date of issue: 02 January 2023"
 
@@ -74,26 +75,19 @@ def test_find_tag_contents_with_missing_tag():
         _ = bans.find_tag_contents(soup, "span", "Date of issue:")
 
 
-def test_date_of_issue_handles_whitespace():
-    summary_html = """
-    <span style="color: #777777;"> Date of issue: 02 January 2023 </span>
-    """
-    soup = BeautifulSoup(summary_html)
-    assert bans.date_of_issue(soup) == date(2023, 1, 2)
-
-
 def test_time_of_issue(soup):
-    summary_html = """
-    <span style="color: #777777;">Time of issue: 05:05 PM </span>
-    """
+    soup = BeautifulSoup(
+        "<span style=\"color: #777777;\">Time of issue: 05:05 PM </span>"
+    )
     assert bans.time_of_issue(soup) == time(5, 5)
 
 
 def test_date_delclared_for():
-    summary_html = """
+    soup = BeautifulSoup("""
     <p>A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:</p>
-    """
-    assert bans.date_declared_for(BeautifulSoup(summary_html)) == date(2023, 1, 3)
+    """)
+
+    assert bans.date_declared_for(soup) == date(2023, 1, 3)
 
 
 def test_date_declared_for_with_full_soup(soup):
