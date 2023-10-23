@@ -8,13 +8,7 @@ def test_file_name():
     assert file_name(issued) == "total_fire_bans_issued_2023_10_15_0408.rss"
 
 
-def test_memory_repository_stores_and_retrieves():
-    repo = InMemoryRepository()
-    repo.add(datetime(2023, 5, 5, 5, 5), "Bans for may 6th")
-    assert repo.retrieve(datetime(2023, 5, 5, 5, 5)) == "Bans for may 6th"
-
-
-def test_memory_repository_lists_issued_bans():
+def test_repo_lists_issued_bans():
     repo = InMemoryRepository()
     repo.add(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
     repo.add(datetime(2023, 1, 3, 5, 5), "Bans for January 4th")
@@ -27,8 +21,15 @@ def test_memory_repository_lists_issued_bans():
     ]
 
 
-def test_memory_repository_complete_workflow():
+def test_repo_workflow_for_success():
     repo = InMemoryRepository()
     repo.add(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
     issued_date = repo.bans_issued()[0]
     assert repo.retrieve(issued_date) == "Bans for January 3rd"
+
+
+def test_repo_workflow_for_failure():
+    repo = InMemoryRepository()
+    repo.add_failed("unparseable")
+    retrieved_at = repo.list_failed()[0]
+    assert repo.retrieve_failed(retrieved_at) == "unparseable"
