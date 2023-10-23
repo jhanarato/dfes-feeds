@@ -7,11 +7,6 @@ from dfes import bans
 from dfes.exceptions import ParseException
 
 
-@pytest.fixture
-def soup():
-    return bans.get_soup("data/2023-01-03/message_TFB.rss")
-
-
 def test_get_region_tags():
     html = """
      <p><strong>Midwest Gascoyne Region:</strong></p>
@@ -75,7 +70,7 @@ def test_find_tag_contents_with_missing_tag():
         _ = bans.find_tag_contents(soup, "span", "Date of issue:")
 
 
-def test_time_of_issue(soup):
+def test_time_of_issue():
     soup = BeautifulSoup(
         "<span style=\"color: #777777;\">Time of issue: 05:05 PM </span>"
     )
@@ -90,33 +85,25 @@ def test_date_delclared_for():
     assert bans.date_declared_for(soup) == date(2023, 1, 3)
 
 
-def test_date_declared_for_with_full_soup(soup):
-    assert bans.date_declared_for(soup) == date(2023, 1, 3)
-
-
-def test_locations_has_regions(soup):
-    regions = {location[0] for location in bans.locations(soup)}
-    assert regions == {
-        "Midwest Gascoyne",
-        "Perth Metropolitan",
-        "Goldfields Midlands",
-        "South West",
-        "Great Southern",
-    }
-
-
-def test_locations_has_districts(soup):
-    districts = [location[1] for location in bans.locations(soup)
-                 if location[0] == "South West"]
-
-    assert districts == [
-        "Bunbury",
-        "Capel",
-        "Collie",
-        "Dardanup",
-        "Harvey",
-        "Murray",
-        "Waroona",
+def test_locations():
+    soup = BeautifulSoup("""
+    <p><strong>Midwest Gascoyne Region:</strong></p>
+    <ul>
+    <li>Carnamah - All Day</li>
+    <li>Chapman Valley - All Day</li>
+    <li>Coorow - All Day</li>
+    </ul>
+    
+    <p><strong>Perth Metropolitan Region:</strong></p>
+    <ul>
+    <li>Armadale - All Day</li>
+    </ul>
+    """)
+    assert list(bans.locations(soup)) == [
+        ("Midwest Gascoyne", "Carnamah"),
+        ("Midwest Gascoyne", "Chapman Valley"),
+        ("Midwest Gascoyne", "Coorow"),
+        ("Perth Metropolitan", "Armadale"),
     ]
 
 
