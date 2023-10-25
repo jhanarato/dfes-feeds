@@ -22,7 +22,10 @@ def bans_xml(jinja_env):
 
     return jinja_env.get_template("bans.xml").render(
         regions=regions,
-        published="15/10/23 08:08 AM"
+        published="15/10/23 08:08 AM",
+        time_of_issue="05:06 PM",
+        date_of_issue="15 October 2023",
+        declared_for=""
     )
 
 

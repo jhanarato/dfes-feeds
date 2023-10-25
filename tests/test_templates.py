@@ -20,14 +20,19 @@ def test_ban_has_locations(bans_xml):
     ]
 
 
-def test_generate_feed_with_summary(bans_xml):
-    entry = dfes.feeds.entries(bans_xml)[0]
-    summary = dfes.feeds.summary(entry)
-    published = dfes.feeds.published(entry)
-    tfb = total_fire_bans(summary, published)
-    assert len(tfb.locations) == 4
-
-
 def test_ban_feed_has_published_date(bans_xml):
     entry = dfes.feeds.entries(bans_xml)[0]
     assert dfes.feeds.published(entry) == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
+
+
+def test_feed_creates_dataclass(bans_xml):
+    entry = dfes.feeds.entries(bans_xml)[0]
+
+    summary = dfes.feeds.summary(entry)
+    published = dfes.feeds.published(entry)
+
+    tfb = total_fire_bans(summary, published)
+
+    assert len(tfb.locations) == 4
+    assert tfb.issued == datetime(2023, 10, 15, 5, 6, tzinfo=timezone.utc)
+
