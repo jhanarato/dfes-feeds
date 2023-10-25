@@ -12,6 +12,11 @@ def jinja_env():
 
 
 @pytest.fixture
+def bans_summary_template(jinja_env):
+    return jinja_env.get_template("summary.html")
+
+
+@pytest.fixture
 def bans_one_entry_xml(jinja_env):
     return jinja_env.get_template("bans_one_entry.xml").render()
 

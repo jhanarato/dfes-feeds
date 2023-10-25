@@ -125,3 +125,20 @@ def test_combined_data():
     assert combined.published == datetime(2023, 1, 2, 9, 5, tzinfo=timezone.utc)
     assert combined.declared_for == date(2023, 1, 3)
     assert ("South West", "Capel") in combined.locations
+
+
+def test_bans_summary_template(bans_summary_template):
+    regions = {
+        "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
+        "Perth Metropolitan": ["Armadale"]
+    }
+
+    summary_html = bans_summary_template.render(regions=regions)
+    soup = BeautifulSoup(summary_html)
+
+    assert list(bans.locations(soup)) == [
+        ("Midwest Gascoyne", "Carnamah"),
+        ("Midwest Gascoyne", "Chapman Valley"),
+        ("Midwest Gascoyne", "Coorow"),
+        ("Perth Metropolitan", "Armadale"),
+    ]
