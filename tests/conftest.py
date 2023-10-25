@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 
 import pytest
 from jinja2 import Environment, select_autoescape, FileSystemLoader
@@ -42,12 +42,11 @@ def bans_xml(jinja_env):
         "Perth Metropolitan": ["Armadale"]
     }
 
-    return jinja_env.get_template("bans.xml").render(
+    return generate_bans_xml(
         regions=regions,
-        published="15/10/23 08:08 AM",
-        time_of_issue="05:06 PM",
-        date_of_issue="15 October 2023",
-        declared_for="16 October 2023"
+        published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
+        issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
+        declared_for=date(2023, 10, 16),
     )
 
 
