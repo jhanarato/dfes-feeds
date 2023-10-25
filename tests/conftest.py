@@ -14,15 +14,15 @@ def jinja_env():
 
 
 @pytest.fixture
-def bans_summary_template(jinja_env):
-    return jinja_env.get_template("summary.html")
+def bans_xml(jinja_env):
+    regions = {
+        "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
+        "Perth Metropolitan": ["Armadale"]
+    }
+
+    return jinja_env.get_template("bans.xml").render(regions=regions)
 
 
 @pytest.fixture
-def bans_one_entry_xml(jinja_env):
-    return jinja_env.get_template("bans_one_entry.xml").render()
-
-
-@pytest.fixture
-def bans_no_entry_xml(jinja_env):
-    return jinja_env.get_template("bans_no_entry.xml").render()
+def no_bans_xml(jinja_env):
+    return jinja_env.get_template("no_bans.xml").render()
