@@ -19,8 +19,8 @@ def generate_bans_xml(regions: dict[str, list[str]],
     return env.get_template("bans.xml").render(
         regions=regions,
         published=published.strftime("%d/%m/%y %I:%M %p"),
-        time_of_issue="05:06 PM",
-        date_of_issue="15 October 2023",
+        time_of_issue=issued.strftime("%I:%M %p"),
+        date_of_issue=issued.strftime("%d %B %Y"),
         declared_for="16 October 2023"
     )
 
