@@ -20,7 +20,10 @@ def bans_xml(jinja_env):
         "Perth Metropolitan": ["Armadale"]
     }
 
-    return jinja_env.get_template("bans.xml").render(regions=regions)
+    return jinja_env.get_template("bans.xml").render(
+        regions=regions,
+        published="15/10/23 08:08 AM"
+    )
 
 
 @pytest.fixture
