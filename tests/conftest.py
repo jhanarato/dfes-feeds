@@ -21,7 +21,7 @@ def generate_bans_xml(regions: dict[str, list[str]],
         published=published.strftime("%d/%m/%y %I:%M %p"),
         time_of_issue=issued.strftime("%I:%M %p"),
         date_of_issue=issued.strftime("%d %B %Y"),
-        declared_for="16 October 2023"
+        declared_for=declared_for.strftime("%d %B %Y"),
     )
 
 
