@@ -34,5 +34,5 @@ def test_feed_creates_dataclass(bans_xml):
     tfb = total_fire_bans(summary, published)
 
     assert len(tfb.locations) == 4
-    assert tfb.issued == datetime(2023, 10, 15, 5, 6, tzinfo=timezone.utc)
+    assert tfb.issued == datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
 

@@ -31,7 +31,7 @@ def extract_time(text: str) -> time:
 
 def text_to_time(text: str) -> time:
     try:
-        return datetime.strptime(text, "%H:%M %p").time()
+        return datetime.strptime(text, "%I:%M %p").time()
     except ValueError:
         raise ParseException(f"Failed to parse time: {text}")
 

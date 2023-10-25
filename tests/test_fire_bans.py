@@ -74,7 +74,7 @@ def test_time_of_issue():
     soup = BeautifulSoup(
         "<span style=\"color: #777777;\">Time of issue: 05:05 PM </span>"
     )
-    assert bans.time_of_issue(soup) == time(5, 5)
+    assert bans.time_of_issue(soup) == time(17, 5)
 
 
 def test_date_delclared_for():
@@ -121,7 +121,7 @@ def test_combined_data():
     feed_location = "data/2023-01-03/message_TFB.rss"
     entry = feeds.entries(feed_location)[0]
     combined = bans.total_fire_bans(feeds.summary(entry), feeds.published(entry))
-    assert combined.issued == datetime(2023, 1, 2, 5, 5, tzinfo=timezone.utc)
+    assert combined.issued == datetime(2023, 1, 2, 17, 5, tzinfo=timezone.utc)
     assert combined.published == datetime(2023, 1, 2, 9, 5, tzinfo=timezone.utc)
     assert combined.declared_for == date(2023, 1, 3)
     assert ("South West", "Capel") in combined.locations

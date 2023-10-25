@@ -64,9 +64,9 @@ def test_text_to_date_fails(text):
 @pytest.mark.parametrize(
     "text,extracted",
     [
-        ("05:05 PM", time(5, 5)),
-        ("00:30 AM", time(0, 30)),
-        ("00:00 AM", time(0, 0)),
+        ("05:05 PM", time(17, 5)),
+        ("12:30 AM", time(0, 30)),
+        ("12:00 AM", time(0, 0)),
     ]
 )
 def test_extract_time(text, extracted):
@@ -103,9 +103,9 @@ def test_time_text_fails(text):
 @pytest.mark.parametrize(
     "text,result",
     [
-        ("05:05 PM", time(5, 5)),
-        ("00:30 AM", time(0, 30)),
-        ("00:00 AM", time(0, 0)),
+        ("05:05 PM", time(17, 5)),
+        ("12:30 AM", time(0, 30)),
+        ("12:00 AM", time(0, 0)),
     ]
 )
 def test_text_to_time(text, result):
