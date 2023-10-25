@@ -1,6 +1,28 @@
-import pytest
+from datetime import datetime, date
 
+import pytest
 from jinja2 import Environment, select_autoescape, FileSystemLoader
+
+
+def generate_bans_xml(regions: dict[str, list[str]],
+                      published: datetime,
+                      issued: datetime,
+                      declared_for: date):
+
+    env = Environment(
+        loader=FileSystemLoader("templates/"),
+        autoescape=select_autoescape(),
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
+
+    return env.get_template("bans.xml").render(
+        regions=regions,
+        published=published.strftime("%d/%m/%y %I:%M %p"),
+        time_of_issue="05:06 PM",
+        date_of_issue="15 October 2023",
+        declared_for="16 October 2023"
+    )
 
 
 @pytest.fixture
