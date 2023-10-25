@@ -7,7 +7,9 @@ from jinja2 import Environment, select_autoescape, FileSystemLoader
 def jinja_env():
     return Environment(
         loader=FileSystemLoader("templates/"),
-        autoescape=select_autoescape()
+        autoescape=select_autoescape(),
+        trim_blocks=True,
+        lstrip_blocks=True,
     )
 
 
