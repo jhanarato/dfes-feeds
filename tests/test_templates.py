@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 from bs4 import BeautifulSoup
 
@@ -35,4 +35,4 @@ def test_feed_creates_dataclass(bans_xml):
 
     assert len(tfb.locations) == 4
     assert tfb.issued == datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
-
+    assert tfb.declared_for == date(2023, 10, 16)

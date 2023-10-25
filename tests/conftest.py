@@ -25,7 +25,7 @@ def bans_xml(jinja_env):
         published="15/10/23 08:08 AM",
         time_of_issue="05:06 PM",
         date_of_issue="15 October 2023",
-        declared_for=""
+        declared_for="16 October 2023"
     )
 
 
