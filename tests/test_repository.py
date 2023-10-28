@@ -34,6 +34,6 @@ def test_repo_bans_stored(repo):
 
 
 def test_repo_failure_stored(repo):
-    repo.add_failed("unparseable")
-    retrieved_at = repo.list_failed()[0]
-    assert repo.retrieve_failed(retrieved_at) == "unparseable"
+    timestamp = datetime(2023, 7, 4, 12, 30)
+    repo.add_failed("unparseable", now=timestamp)
+    assert repo.retrieve_failed(timestamp) == "unparseable"

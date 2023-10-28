@@ -40,3 +40,13 @@ def test_should_add_two_different_feeds():
     ingest(vary_published_date(published[1]), repo)
 
     assert repo.list_bans() == published
+
+
+def test_should_store_feed_when_it_fails_to_parse():
+    repo = InMemoryRepository()
+    feed_xml = "gobbledygook"
+    timestamp = datetime(2023, 7, 4, 12, 30)
+    ingest(feed_xml, repo, now=timestamp)
+
+    assert repo.list_bans() == []
+    assert repo.list_failed() == [timestamp]
