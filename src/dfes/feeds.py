@@ -28,18 +28,21 @@ def parse(feed_xml: str) -> Feed:
 
     check(parsed)
 
-    entries = [
-        Entry(
-            entry_published(entry),
-            dfes_published(entry),
-            summary(entry)
-        ) for entry in parsed["entries"]
-    ]
+    entries = [create_entry(entry_data)
+               for entry_data in parsed["entries"]]
 
     return Feed(
         title=parsed["feed"]["title"],
         published=feed_published(parsed),
         entries=entries
+    )
+
+
+def create_entry(entry_data) -> Entry:
+    return Entry(
+        entry_published(entry_data),
+        dfes_published(entry_data),
+        summary(entry_data)
     )
 
 
