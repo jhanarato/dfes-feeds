@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup, Tag
 
 from dfes.date_time import extract_date, extract_time
 from dfes.exceptions import ParseException
-from dfes.feeds import Entry
 
 
 def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:
@@ -83,8 +82,8 @@ class TotalFireBans:
     locations: list[tuple[str, str]]
 
 
-def total_fire_bans(entry: Entry) -> TotalFireBans:
-    soup = BeautifulSoup(entry.summary, features="html.parser")
+def total_fire_bans(summary_html: str) -> TotalFireBans:
+    soup = BeautifulSoup(summary_html, features="html.parser")
 
     issued = datetime.combine(
         date_of_issue(soup),
