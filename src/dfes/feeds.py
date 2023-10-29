@@ -26,11 +26,11 @@ class Feed:
 def parse(feed_xml: str) -> Feed:
     parsed = feedparser.parse(feed_xml)
 
-    if parsed['bozo']:
+    if parsed["bozo"]:
         raise FeedException("Feed is not well formed")
 
     return Feed(
-        title="",
+        title=parsed["feed"]["title"],
         published=feed_published(parsed),
         entries=[]
     )
@@ -44,21 +44,21 @@ def feed_published(parsed: dict) -> datetime:
 def entries(feed_location: str) -> list[dict]:
     parsed = feedparser.parse(feed_location)
 
-    if parsed['bozo']:
+    if parsed["bozo"]:
         raise FeedException("Feed doesn't parse")
 
-    return parsed['entries']
+    return parsed["entries"]
 
 
 def summary(entry: dict) -> str:
-    if value := entry.get('summary'):
+    if value := entry.get("summary"):
         return value
 
     raise FeedException(f"Entry has no summary.")
 
 
 def dfes_published(entry: dict) -> datetime:
-    text = entry.get('dfes_publicationtime')
+    text = entry.get("dfes_publicationtime")
 
     if text:
         try:

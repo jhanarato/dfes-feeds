@@ -34,6 +34,10 @@ def test_published_malformed(bans_xml):
         _ = feeds.dfes_published(entry)
 
 
+def test_empty_feed_has_title(no_bans_xml):
+    assert feeds.parse(no_bans_xml).title == "Total Fire Ban (All Regions)"
+
+
 def test_empty_feed_has_datetime_published(no_bans_xml):
     feed = feeds.parse(no_bans_xml)
     assert feed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
