@@ -27,6 +27,10 @@ class Feed:
 
 def parse(feed_xml: str) -> Feed:
     parsed = feedparser.parse(feed_xml)
+
+    if parsed['bozo']:
+        raise FeedException("Feed is not well formed")
+
     return Feed(
         title="",
         published=feed_published(parsed),

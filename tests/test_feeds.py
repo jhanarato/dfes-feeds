@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import pytest
 
 from dfes import feeds, exceptions
+from dfes.feeds import FeedException
 
 
 def test_no_entries(no_bans_xml):
@@ -36,3 +37,8 @@ def test_published_malformed(bans_xml):
 def test_empty_feed_has_datetime_published(no_bans_xml):
     feed = feeds.parse(no_bans_xml)
     assert feed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
+
+
+def test_bozo_feed_raises_exception():
+    with pytest.raises(FeedException, match="Feed is not well formed"):
+        _ = feeds.parse("Not the expected xml string")
