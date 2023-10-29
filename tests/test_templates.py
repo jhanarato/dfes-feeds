@@ -72,3 +72,4 @@ def test_format_pubdate():
     date_string = "Mon, 16 Oct 2023 08:10:56 GMT"
     dt = datetime(2023, 10, 16, 8, 10, 56)
     assert datetime.strptime(date_string, "%a, %d %b %Y %H:%M:%S GMT") == dt
+    assert dt.strftime("%a, %d %b %Y %H:%M:%S GMT") == date_string
