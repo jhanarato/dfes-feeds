@@ -44,7 +44,7 @@ def test_generate_bans_xml():
         "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
         "Perth Metropolitan": ["Armadale"]
     }
-
+    # Mon, 16 Oct 2023 08:10:56 GMT
     published = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     issued = datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
     declared_for = date(2023, 10, 16)
@@ -78,3 +78,8 @@ def test_format_pubdate():
 def test_set_pubdate_for_no_bans(no_bans_xml):
     parsed = feeds.parse(no_bans_xml)
     assert parsed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
+
+
+def test_set_pubdate_for_bans(bans_xml):
+    parsed = feeds.parse(bans_xml)
+    assert parsed.published == datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)

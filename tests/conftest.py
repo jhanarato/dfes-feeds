@@ -16,9 +16,12 @@ def generate_bans_xml(regions: dict[str, list[str]],
         lstrip_blocks=True,
     )
 
+    feed_published = datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
+
     return env.get_template("bans.xml").render(
         regions=regions,
         published=published.strftime("%d/%m/%y %I:%M %p"),
+        feed_published=feed_published.strftime("%a, %d %b %Y %H:%M:%S GMT"),
         time_of_issue=issued.strftime("%I:%M %p"),
         date_of_issue=issued.strftime("%d %B %Y"),
         declared_for=declared_for.strftime("%d %B %Y"),
