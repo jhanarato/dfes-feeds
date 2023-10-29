@@ -14,16 +14,8 @@ def test_bozo_feed_raises_exception():
 def test_no_entries(no_bans_xml):
     parsed = feeds.parse(no_bans_xml)
     assert parsed.entries == []
-
-
-def test_no_entries_has_title(no_bans_xml):
-    feed = feeds.parse(no_bans_xml)
-    assert feed.title == "Total Fire Ban (All Regions)"
-
-
-def test_empty_feed_has_datetime_published(no_bans_xml):
-    feed = feeds.parse(no_bans_xml)
-    assert feed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
+    assert parsed.title == "Total Fire Ban (All Regions)"
+    assert parsed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
 
 
 def test_get_dfes_published(entry):
