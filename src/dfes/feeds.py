@@ -54,22 +54,6 @@ def entry_published(entry: dict) -> datetime:
     return dt.replace(tzinfo=timezone.utc)
 
 
-def entries(feed_location: str) -> list[dict]:
-    parsed = feedparser.parse(feed_location)
-
-    if parsed["bozo"]:
-        raise FeedException("Feed doesn't parse")
-
-    return parsed["entries"]
-
-
-def summary(entry: dict) -> str:
-    if value := entry.get("summary"):
-        return value
-
-    raise FeedException(f"Entry has no summary.")
-
-
 def dfes_published(entry: dict) -> datetime:
     text = entry.get("dfes_publicationtime")
 
@@ -81,3 +65,19 @@ def dfes_published(entry: dict) -> datetime:
             raise FeedException("Could not parse publication time")
 
     raise FeedException("Missing RSS field: dfes_publicationtime")
+
+
+def summary(entry: dict) -> str:
+    if value := entry.get("summary"):
+        return value
+
+    raise FeedException(f"Entry has no summary.")
+
+
+def entries(feed_location: str) -> list[dict]:
+    parsed = feedparser.parse(feed_location)
+
+    if parsed["bozo"]:
+        raise FeedException("Feed doesn't parse")
+
+    return parsed["entries"]
