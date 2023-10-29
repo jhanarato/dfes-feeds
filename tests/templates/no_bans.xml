@@ -6,7 +6,7 @@
         <link>http://emergency.wa.gov</link>
         <description />
         <language>en-us</language>
-        <pubDate>Sat, 14 Oct 2023 18:16:26 GMT</pubDate>
+        <pubDate>{{feed_published}}</pubDate>
         <lastBuildDate>Sat, 14 Oct 2023 18:16:26 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Whispir RSS Engine</generator>
