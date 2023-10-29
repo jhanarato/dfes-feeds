@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 import dfes.feeds
 from conftest import generate_bans_xml
-from dfes import bans
+from dfes import bans, feeds
 from dfes.bans import total_fire_bans
 
 
@@ -73,3 +73,8 @@ def test_format_pubdate():
     dt = datetime(2023, 10, 16, 8, 10, 56)
     assert datetime.strptime(date_string, "%a, %d %b %Y %H:%M:%S GMT") == dt
     assert dt.strftime("%a, %d %b %Y %H:%M:%S GMT") == date_string
+
+
+def test_set_pubdate_for_no_bans(no_bans_xml):
+    parsed = feeds.parse(no_bans_xml)
+    assert parsed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
