@@ -6,6 +6,7 @@ from jinja2 import Environment, select_autoescape, FileSystemLoader
 
 def generate_bans_xml(regions: dict[str, list[str]],
                       published: datetime,
+                      feed_published: datetime,
                       issued: datetime,
                       declared_for: date):
 
@@ -15,8 +16,6 @@ def generate_bans_xml(regions: dict[str, list[str]],
         trim_blocks=True,
         lstrip_blocks=True,
     )
-
-    feed_published = datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
 
     return env.get_template("bans.xml").render(
         regions=regions,
@@ -45,12 +44,9 @@ def bans_xml(jinja_env):
         "Perth Metropolitan": ["Armadale"]
     }
 
-    return generate_bans_xml(
-        regions=regions,
-        published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
-        issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
-        declared_for=date(2023, 10, 16),
-    )
+    return generate_bans_xml(regions=regions, published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
+                             feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
+                             issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc), declared_for=date(2023, 10, 16))
 
 
 @pytest.fixture

@@ -24,8 +24,9 @@ def vary_published_date(published: datetime) -> str:
     return generate_bans_xml(
         regions=regions,
         published=published,
+        feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
         issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
-        declared_for=date(2023, 10, 16),
+        declared_for=date(2023, 10, 16)
     )
 
 
