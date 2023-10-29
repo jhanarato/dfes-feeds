@@ -19,10 +19,8 @@ def test_generate_bans_xml(regions):
         declared_for=declared_for)
 
     entry = feeds.parse(xml).entries[0]
-    summary = entry.summary
-    published = entry.dfes_published
 
-    tfb = total_fire_bans(summary, published)
+    tfb = total_fire_bans(entry)
 
     assert len(tfb.locations) == 4
     assert tfb.issued == issued

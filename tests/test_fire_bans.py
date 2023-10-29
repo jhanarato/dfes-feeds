@@ -119,7 +119,7 @@ def test_extract_region():
 
 def test_combined_data(bans_xml):
     entry = feeds.parse(bans_xml).entries[0]
-    combined = bans.total_fire_bans(entry.summary, entry.dfes_published)
+    combined = bans.total_fire_bans(entry)
     assert combined.issued == datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
     assert combined.published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     assert combined.declared_for == date(2023, 10, 16)
