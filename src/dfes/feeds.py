@@ -44,12 +44,6 @@ def parse(feed_xml: str) -> Feed:
     )
 
 
-def struct_time_to_datetime(st: time.struct_time) -> datetime:
-    timestamp = time.mktime(st)
-    dt = datetime.fromtimestamp(timestamp)
-    return dt.replace(tzinfo=timezone.utc)
-
-
 def feed_published(parsed: dict) -> datetime:
     s_t = parsed['feed']['published_parsed']
     return struct_time_to_datetime(s_t)
@@ -71,6 +65,12 @@ def dfes_published(entry: dict) -> datetime:
             raise FeedException("Could not parse publication time")
 
     raise FeedException("Missing RSS field: dfes_publicationtime")
+
+
+def struct_time_to_datetime(st: time.struct_time) -> datetime:
+    timestamp = time.mktime(st)
+    dt = datetime.fromtimestamp(timestamp)
+    return dt.replace(tzinfo=timezone.utc)
 
 
 def summary(entry: dict) -> str:
