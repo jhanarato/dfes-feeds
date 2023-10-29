@@ -26,12 +26,9 @@ def test_dfes_published_missing(bans_xml):
         _ = feeds.dfes_published(entry)
 
 
-def test_published_malformed(bans_xml):
-    entry = feeds.entries(bans_xml)[0]
-    entry['dfes_publicationtime'] = "not a timestamp"
-
+def test_published_malformed(mangled_dfes_publication):
     with pytest.raises(feeds.FeedException, match="Could not parse publication time"):
-        _ = feeds.dfes_published(entry)
+        _ = feeds.parse(mangled_dfes_publication)
 
 
 def test_empty_feed_has_title(no_bans_xml):

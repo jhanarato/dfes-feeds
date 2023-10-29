@@ -38,12 +38,15 @@ def jinja_env():
 
 
 @pytest.fixture
-def bans_xml(jinja_env):
-    regions = {
+def regions():
+    return {
         "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
         "Perth Metropolitan": ["Armadale"]
     }
 
+
+@pytest.fixture
+def bans_xml(jinja_env, regions):
     return generate_bans_xml(
         regions=regions,
         published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
@@ -61,16 +64,11 @@ def no_bans_xml(jinja_env):
 
 
 @pytest.fixture
-def two_different_feed_dates(jinja_env):
+def two_different_feed_dates(jinja_env, regions):
     feeds_published = [
         datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
         datetime(2023, 10, 17, 8, 10, 56, tzinfo=timezone.utc),
     ]
-
-    regions = {
-        "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
-        "Perth Metropolitan": ["Armadale"]
-    }
 
     return [
         generate_bans_xml(
@@ -82,3 +80,15 @@ def two_different_feed_dates(jinja_env):
         )
         for feed_published in feeds_published
     ]
+
+
+@pytest.fixture
+def mangled_dfes_publication(jinja_env, regions):
+    return jinja_env.get_template("bans.xml").render(
+        regions=regions,
+        published="15/10/23 XXX 08:08 AM",
+        feed_published="Mon, 16 Oct 2023 08:10:56 GMT",
+        time_of_issue="04:08 PM",
+        date_of_issue="15 October 2023",
+        declared_for="16 October 2023",
+    )
