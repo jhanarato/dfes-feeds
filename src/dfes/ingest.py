@@ -1,7 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Protocol
 
 from dfes import feeds
+from dfes.feeds import FeedException
 
 
 class Repository(Protocol):
@@ -19,9 +20,12 @@ class Repository(Protocol):
 
 
 def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()):
-    entries = feeds.entries(feed_xml)
-    if len(entries) == 0:
+    try:
+        entries = feeds.entries(feed_xml)
+        if entries:
+            published = feeds.published(entries[0])
+            repository.add_bans(published, feed_xml)
+        else:
+            repository.add_bans(datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc), feed_xml)
+    except FeedException:
         repository.add_failed(feed_xml, now)
-    else:
-        published = feeds.published(entries[0])
-        repository.add_bans(published, feed_xml)

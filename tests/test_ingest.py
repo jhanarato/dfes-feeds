@@ -50,3 +50,9 @@ def test_should_store_feed_when_it_fails_to_parse():
 
     assert repo.list_bans() == []
     assert repo.list_failed() == [timestamp]
+
+
+def test_should_store_valid_but_empty_feed_in_bans(no_bans_xml):
+    repo = InMemoryRepository()
+    ingest(no_bans_xml, repo)
+    assert repo.list_bans() == [datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)]

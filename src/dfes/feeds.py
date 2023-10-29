@@ -5,8 +5,15 @@ import feedparser
 from dfes.exceptions import ParseException
 
 
+class FeedException(Exception):
+    pass
+
+
 def entries(feed_location: str) -> list[dict]:
     parsed = feedparser.parse(feed_location)
+
+    if parsed['bozo']:
+        raise FeedException("Feed doesn't parse")
 
     return parsed['entries']
 
