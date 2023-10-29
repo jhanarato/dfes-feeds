@@ -23,7 +23,7 @@ def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()
     try:
         entries = feeds.entries(feed_xml)
         if entries:
-            published = feeds.published(entries[0])
+            published = feeds.dfes_published(entries[0])
             repository.add_bans(published, feed_xml)
         else:
             repository.add_bans(datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc), feed_xml)

@@ -120,7 +120,7 @@ def test_extract_region():
 def test_combined_data():
     feed_location = "data/2023-01-03/message_TFB.rss"
     entry = feeds.entries(feed_location)[0]
-    combined = bans.total_fire_bans(feeds.summary(entry), feeds.published(entry))
+    combined = bans.total_fire_bans(feeds.summary(entry), feeds.dfes_published(entry))
     assert combined.issued == datetime(2023, 1, 2, 17, 5, tzinfo=timezone.utc)
     assert combined.published == datetime(2023, 1, 2, 9, 5, tzinfo=timezone.utc)
     assert combined.declared_for == date(2023, 1, 3)

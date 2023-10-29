@@ -4,8 +4,6 @@ from time import mktime
 
 import feedparser
 
-from dfes.exceptions import ParseException
-
 
 class FeedException(Exception):
     pass
@@ -56,10 +54,10 @@ def summary(entry: dict) -> str:
     if value := entry.get('summary'):
         return value
 
-    raise ParseException(f"Entry has no summary.")
+    raise FeedException(f"Entry has no summary.")
 
 
-def published(entry: dict) -> datetime:
+def dfes_published(entry: dict) -> datetime:
     text = entry.get('dfes_publicationtime')
 
     if text:
@@ -67,6 +65,6 @@ def published(entry: dict) -> datetime:
             extracted = datetime.strptime(text, "%d/%m/%y %H:%M %p")
             return extracted.replace(tzinfo=timezone.utc)
         except ValueError:
-            raise ParseException("Could not parse publication time")
+            raise FeedException("Could not parse publication time")
 
-    raise ParseException("Missing RSS field: dfes_publicationtime")
+    raise FeedException("Missing RSS field: dfes_publicationtime")
