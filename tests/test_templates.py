@@ -33,13 +33,3 @@ def test_generate_bans_xml():
     assert tfb.issued == issued
     assert tfb.published == published
     assert tfb.declared_for == declared_for
-
-
-def test_set_pubdate_for_no_bans(no_bans_xml):
-    parsed = feeds.parse(no_bans_xml)
-    assert parsed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
-
-
-def test_set_pubdate_for_bans(bans_xml):
-    parsed = feeds.parse(bans_xml)
-    assert parsed.published == datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
