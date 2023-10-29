@@ -2,8 +2,9 @@ from datetime import datetime, timezone
 
 import pytest
 
+import dfes.exceptions
 from dfes import feeds
-from dfes.feeds import FeedException
+from dfes.exceptions import FeedException
 
 
 def test_bozo_feed_raises_exception():
@@ -25,5 +26,5 @@ def test_parse_entry(entry):
 
 
 def test_dfes_published_malformed(mangled_dfes_publication):
-    with pytest.raises(feeds.FeedException, match="Could not parse publication time"):
+    with pytest.raises(dfes.exceptions.FeedException, match="Could not parse publication time"):
         _ = feeds.parse(mangled_dfes_publication)

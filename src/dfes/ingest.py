@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Protocol
 
 from dfes import feeds
-from dfes.feeds import FeedException
+from dfes.exceptions import FeedException
 
 
 class Repository(Protocol):

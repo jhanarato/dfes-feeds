@@ -4,9 +4,7 @@ from datetime import datetime, timezone
 
 import feedparser
 
-
-class FeedException(Exception):
-    pass
+from dfes.exceptions import FeedException
 
 
 @dataclass
