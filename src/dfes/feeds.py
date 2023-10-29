@@ -1,6 +1,6 @@
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from time import mktime
 
 import feedparser
 
@@ -44,14 +44,20 @@ def parse(feed_xml: str) -> Feed:
     )
 
 
-def feed_published(parsed: dict) -> datetime:
-    dt = datetime.fromtimestamp(mktime(parsed['feed']['published_parsed']))
+def struct_time_to_datetime(st: time.struct_time) -> datetime:
+    timestamp = time.mktime(st)
+    dt = datetime.fromtimestamp(timestamp)
     return dt.replace(tzinfo=timezone.utc)
+
+
+def feed_published(parsed: dict) -> datetime:
+    s_t = parsed['feed']['published_parsed']
+    return struct_time_to_datetime(s_t)
 
 
 def entry_published(entry: dict) -> datetime:
-    dt = datetime.fromtimestamp(mktime(entry['published_parsed']))
-    return dt.replace(tzinfo=timezone.utc)
+    s_t = entry['published_parsed']
+    return struct_time_to_datetime(s_t)
 
 
 def dfes_published(entry: dict) -> datetime:
