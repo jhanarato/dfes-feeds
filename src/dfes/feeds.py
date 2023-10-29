@@ -29,15 +29,28 @@ def parse(feed_xml: str) -> Feed:
     if parsed["bozo"]:
         raise FeedException("Feed is not well formed")
 
+    entries_ = [
+        Entry(
+            entry_published(entry),
+            dfes_published(entry),
+            summary(entry)
+        ) for entry in parsed["entries"]
+    ]
+
     return Feed(
         title=parsed["feed"]["title"],
         published=feed_published(parsed),
-        entries=[]
+        entries=entries_
     )
 
 
 def feed_published(parsed: dict) -> datetime:
     dt = datetime.fromtimestamp(mktime(parsed['feed']['published_parsed']))
+    return dt.replace(tzinfo=timezone.utc)
+
+
+def entry_published(entry: dict) -> datetime:
+    dt = datetime.fromtimestamp(mktime(entry['published_parsed']))
     return dt.replace(tzinfo=timezone.utc)
 
 

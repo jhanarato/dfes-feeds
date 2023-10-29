@@ -43,6 +43,14 @@ def test_empty_feed_has_datetime_published(no_bans_xml):
     assert feed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
 
 
+def test_construct_entry(bans_xml):
+    feed = feeds.parse(bans_xml)
+    entry = feed.entries[0]
+    assert entry.published == datetime(2023, 10, 15, 8, 8, 8, tzinfo=timezone.utc)
+    assert entry.dfes_published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
+    assert entry.summary.startswith("<div>")
+
+
 def test_bozo_feed_raises_exception():
     with pytest.raises(FeedException, match="Feed is not well formed"):
         _ = feeds.parse("Not the expected xml string")
