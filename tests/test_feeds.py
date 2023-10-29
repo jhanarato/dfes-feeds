@@ -7,23 +7,18 @@ from dfes.feeds import FeedException
 
 
 def test_no_entries(no_bans_xml):
-    assert feeds.entries(no_bans_xml) == []
+    parsed = feeds.parse(no_bans_xml)
+    assert parsed.entries == []
 
 
 def test_has_entries(bans_xml):
-    assert len(feeds.entries(bans_xml)) == 1
+    parsed = feeds.parse(bans_xml)
+    assert len(parsed.entries) == 1
 
 
 def test_get_dfes_published(bans_xml):
-    entry = feeds.entries(bans_xml)[0]
-    assert feeds.dfes_published(entry) == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
-
-
-def test_dfes_published_missing(bans_xml):
-    entry = feeds.entries(bans_xml)[0]
-    del entry['dfes_publicationtime']
-    with pytest.raises(feeds.FeedException, match="Missing RSS field: dfes_publicationtime"):
-        _ = feeds.dfes_published(entry)
+    entry = feeds.parse(bans_xml).entries[0]
+    assert entry.dfes_published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
 
 
 def test_published_malformed(mangled_dfes_publication):

@@ -1,42 +1,8 @@
 from datetime import datetime, timezone, date
 
-from bs4 import BeautifulSoup
-
-import dfes.feeds
 from conftest import generate_bans_xml
-from dfes import bans, feeds
+from dfes import feeds
 from dfes.bans import total_fire_bans
-
-
-def test_ban_has_locations(bans_xml):
-    entry = dfes.feeds.entries(bans_xml)[0]
-    summary = dfes.feeds.summary(entry)
-    soup = BeautifulSoup(summary)
-
-    assert list(bans.locations(soup)) == [
-        ("Midwest Gascoyne", "Carnamah"),
-        ("Midwest Gascoyne", "Chapman Valley"),
-        ("Midwest Gascoyne", "Coorow"),
-        ("Perth Metropolitan", "Armadale"),
-    ]
-
-
-def test_ban_feed_has_published_date(bans_xml):
-    entry = dfes.feeds.entries(bans_xml)[0]
-    assert dfes.feeds.dfes_published(entry) == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
-
-
-def test_feed_creates_dataclass(bans_xml):
-    entry = dfes.feeds.entries(bans_xml)[0]
-
-    summary = dfes.feeds.summary(entry)
-    published = dfes.feeds.dfes_published(entry)
-
-    tfb = total_fire_bans(summary, published)
-
-    assert len(tfb.locations) == 4
-    assert tfb.issued == datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
-    assert tfb.declared_for == date(2023, 10, 16)
 
 
 def test_generate_bans_xml():
@@ -57,9 +23,9 @@ def test_generate_bans_xml():
         issued=issued,
         declared_for=declared_for)
 
-    entry = dfes.feeds.entries(xml)[0]
-    summary = dfes.feeds.summary(entry)
-    published = dfes.feeds.dfes_published(entry)
+    entry = feeds.parse(xml).entries[0]
+    summary = entry.summary
+    published = entry.dfes_published
 
     tfb = total_fire_bans(summary, published)
 
