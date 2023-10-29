@@ -55,17 +55,17 @@ def check(parsed):
             raise FeedException("Entry published_parsed not available")
 
 
+def feed_published(parsed: dict) -> datetime:
+    s_t = parsed["feed"]["published_parsed"]
+    return struct_time_to_datetime(s_t)
+
+
 def create_entry(entry_data) -> Entry:
     return Entry(
         published=entry_published(entry_data),
         dfes_published=dfes_published(entry_data),
         summary=summary(entry_data)
     )
-
-
-def feed_published(parsed: dict) -> datetime:
-    s_t = parsed["feed"]["published_parsed"]
-    return struct_time_to_datetime(s_t)
 
 
 def entry_published(entry: dict) -> datetime:
@@ -81,14 +81,14 @@ def dfes_published(entry: dict) -> datetime:
         raise FeedException("Could not parse publication time")
 
 
-def struct_time_to_datetime(st: time.struct_time) -> datetime:
-    timestamp = time.mktime(st)
-    dt = datetime.fromtimestamp(timestamp)
-    return dt.replace(tzinfo=timezone.utc)
-
-
 def summary(entry: dict) -> str:
     if value := entry.get("summary"):
         return value
 
     raise FeedException(f"Entry has no summary.")
+
+
+def struct_time_to_datetime(st: time.struct_time) -> datetime:
+    timestamp = time.mktime(st)
+    dt = datetime.fromtimestamp(timestamp)
+    return dt.replace(tzinfo=timezone.utc)
