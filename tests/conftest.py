@@ -3,6 +3,8 @@ from datetime import datetime, date, timezone
 import pytest
 from jinja2 import Environment, select_autoescape, FileSystemLoader
 
+import dfes.feeds
+
 
 def generate_bans_xml(regions: dict[str, list[str]],
                       published: datetime,
@@ -38,6 +40,13 @@ def jinja_env():
 
 
 @pytest.fixture
+def no_bans_xml(jinja_env):
+    return jinja_env.get_template("no_bans.xml").render(
+        feed_published="Sat, 14 Oct 2023 18:16:26 GMT"
+    )
+
+
+@pytest.fixture
 def regions():
     return {
         "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
@@ -57,10 +66,8 @@ def bans_xml(jinja_env, regions):
 
 
 @pytest.fixture
-def no_bans_xml(jinja_env):
-    return jinja_env.get_template("no_bans.xml").render(
-        feed_published="Sat, 14 Oct 2023 18:16:26 GMT"
-    )
+def entry(bans_xml):
+    return dfes.feeds.parse(bans_xml).entries[0]
 
 
 @pytest.fixture
