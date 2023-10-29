@@ -8,14 +8,14 @@ from dfes.repository import InMemoryRepository
 def test_should_add_feed_to_empty_repository(bans_xml):
     repo = InMemoryRepository()
     ingest(bans_xml, repo)
-    assert repo.list_bans() == [datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)]
+    assert repo.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
 
 
 def test_should_not_add_feed_twice(bans_xml):
     repo = InMemoryRepository()
     ingest(bans_xml, repo)
     ingest(bans_xml, repo)
-    assert repo.list_bans() == [datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)]
+    assert repo.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
 
 
 def vary_published_date(published: datetime) -> str:
@@ -30,15 +30,15 @@ def vary_published_date(published: datetime) -> str:
     )
 
 
-def test_should_add_two_different_feeds():
+def test_should_add_two_different_feeds(two_different_feed_dates):
     published = [
-        datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
-        datetime(2023, 10, 16, 8, 8, tzinfo=timezone.utc),
+        datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
+        datetime(2023, 10, 17, 8, 10, 56, tzinfo=timezone.utc),
     ]
 
     repo = InMemoryRepository()
-    ingest(vary_published_date(published[0]), repo)
-    ingest(vary_published_date(published[1]), repo)
+    ingest(two_different_feed_dates[0], repo)
+    ingest(two_different_feed_dates[1], repo)
 
     assert repo.list_bans() == published
 

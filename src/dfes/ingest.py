@@ -22,10 +22,6 @@ class Repository(Protocol):
 def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()):
     try:
         feed = feeds.parse(feed_xml)
-        if feed.entries:
-            published = feed.entries[0].dfes_published
-            repository.add_bans(published, feed_xml)
-        else:
-            repository.add_bans(feed.published, feed_xml)
+        repository.add_bans(feed.published, feed_xml)
     except FeedException:
         repository.add_failed(feed_xml, now)
