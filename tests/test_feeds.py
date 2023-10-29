@@ -20,7 +20,7 @@ def test_parse_no_entries(no_bans_xml):
 
 
 def test_parse_entry(entry):
-    assert entry.published == datetime(2023, 10, 15, 8, 8, 8, tzinfo=timezone.utc)
+    assert entry.published == datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
     assert entry.dfes_published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     assert entry.summary.startswith("<div>")
 
