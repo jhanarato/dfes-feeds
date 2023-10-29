@@ -5,15 +5,8 @@ from datetime import date, time, datetime, timezone
 
 from bs4 import BeautifulSoup, Tag
 
-from dfes import feeds
 from dfes.date_time import extract_date, extract_time
 from dfes.exceptions import ParseException
-
-
-def get_soup(feed_location: str, index: int = 0) -> BeautifulSoup:
-    entry = feeds.entries(feed_location)[index]
-    summary = feeds.summary(entry)
-    return BeautifulSoup(summary, features="html.parser")
 
 
 def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:

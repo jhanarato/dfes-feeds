@@ -117,11 +117,15 @@ def test_extract_region():
     assert bans.extract_region(tag) == "Midwest Gascoyne"
 
 
-def test_combined_data():
-    feed_location = "data/2023-01-03/message_TFB.rss"
-    entry = feeds.entries(feed_location)[0]
-    combined = bans.total_fire_bans(feeds.summary(entry), feeds.dfes_published(entry))
-    assert combined.issued == datetime(2023, 1, 2, 17, 5, tzinfo=timezone.utc)
-    assert combined.published == datetime(2023, 1, 2, 9, 5, tzinfo=timezone.utc)
-    assert combined.declared_for == date(2023, 1, 3)
-    assert ("South West", "Capel") in combined.locations
+def test_combined_data(bans_xml):
+    entry = feeds.parse(bans_xml).entries[0]
+    combined = bans.total_fire_bans(entry.summary, entry.dfes_published)
+    assert combined.issued == datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
+    assert combined.published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
+    assert combined.declared_for == date(2023, 10, 16)
+    assert combined.locations == [
+        ('Midwest Gascoyne', 'Carnamah'),
+        ('Midwest Gascoyne', 'Chapman Valley'),
+        ('Midwest Gascoyne', 'Coorow'),
+        ('Perth Metropolitan', 'Armadale')
+    ]
