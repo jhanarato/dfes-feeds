@@ -38,14 +38,6 @@ def parse(feed_xml: str) -> Feed:
     )
 
 
-def create_entry(entry_data) -> Entry:
-    return Entry(
-        entry_published(entry_data),
-        dfes_published(entry_data),
-        summary(entry_data)
-    )
-
-
 def check(parsed):
     if parsed["bozo"]:
         raise FeedException("Feed is not well formed")
@@ -61,6 +53,14 @@ def check(parsed):
             raise FeedException("dfes_publicationtime not available")
         if not entry.get("published_parsed"):
             raise FeedException("Entry published_parsed not available")
+
+
+def create_entry(entry_data) -> Entry:
+    return Entry(
+        published=entry_published(entry_data),
+        dfes_published=dfes_published(entry_data),
+        summary=summary(entry_data)
+    )
 
 
 def feed_published(parsed: dict) -> datetime:
