@@ -31,3 +31,8 @@ def test_published_malformed(bans_xml):
 
     with pytest.raises(exceptions.ParseException, match="Could not parse publication time"):
         _ = feeds.published(entry)
+
+
+def test_empty_feed_has_datetime_published(no_bans_xml):
+    feed = feeds.parse(no_bans_xml)
+    assert feed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)

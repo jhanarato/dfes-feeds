@@ -1,4 +1,6 @@
+from dataclasses import dataclass
 from datetime import datetime, timezone
+from time import mktime
 
 import feedparser
 
@@ -7,6 +9,34 @@ from dfes.exceptions import ParseException
 
 class FeedException(Exception):
     pass
+
+
+@dataclass
+class Entry:
+    published: datetime
+    dfes_published: datetime
+    summary: str
+
+
+@dataclass
+class Feed:
+    title: str
+    published: datetime
+    entries: list[Entry]
+
+
+def parse(feed_xml: str) -> Feed:
+    parsed = feedparser.parse(feed_xml)
+    return Feed(
+        title="",
+        published=feed_published(parsed),
+        entries=[]
+    )
+
+
+def feed_published(parsed: dict) -> datetime:
+    dt = datetime.fromtimestamp(mktime(parsed['feed']['published_parsed']))
+    return dt.replace(tzinfo=timezone.utc)
 
 
 def entries(feed_location: str) -> list[dict]:
