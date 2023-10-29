@@ -28,7 +28,7 @@ def parse(feed_xml: str) -> Feed:
 
     check(parsed)
 
-    entries_ = [
+    entries = [
         Entry(
             entry_published(entry),
             dfes_published(entry),
@@ -39,7 +39,7 @@ def parse(feed_xml: str) -> Feed:
     return Feed(
         title=parsed["feed"]["title"],
         published=feed_published(parsed),
-        entries=entries_
+        entries=entries
     )
 
 
@@ -47,28 +47,35 @@ def check(parsed):
     if parsed["bozo"]:
         raise FeedException("Feed is not well formed")
 
+    if not parsed.get("feed"):
+        raise FeedException("No feed available")
+
+    if not parsed["feed"].get("published_parsed"):
+        raise FeedException("Feed published_parsed not available")
+
+    for entry in parsed["entries"]:
+        if not entry.get("dfes_publicationtime"):
+            raise FeedException("dfes_publicationtime not available")
+        if not entry.get("published_parsed"):
+            raise FeedException("Entry published_parsed not available")
+
 
 def feed_published(parsed: dict) -> datetime:
-    s_t = parsed['feed']['published_parsed']
+    s_t = parsed["feed"]["published_parsed"]
     return struct_time_to_datetime(s_t)
 
 
 def entry_published(entry: dict) -> datetime:
-    s_t = entry['published_parsed']
+    s_t = entry["published_parsed"]
     return struct_time_to_datetime(s_t)
 
 
 def dfes_published(entry: dict) -> datetime:
-    text = entry.get("dfes_publicationtime")
-
-    if text:
-        try:
-            extracted = datetime.strptime(text, "%d/%m/%y %H:%M %p")
-            return extracted.replace(tzinfo=timezone.utc)
-        except ValueError:
-            raise FeedException("Could not parse publication time")
-
-    raise FeedException("Missing RSS field: dfes_publicationtime")
+    try:
+        extracted = datetime.strptime(entry["dfes_publicationtime"], "%d/%m/%y %H:%M %p")
+        return extracted.replace(tzinfo=timezone.utc)
+    except ValueError:
+        raise FeedException("Could not parse publication time")
 
 
 def struct_time_to_datetime(st: time.struct_time) -> datetime:
