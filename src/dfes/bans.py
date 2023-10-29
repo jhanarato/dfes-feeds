@@ -79,7 +79,6 @@ def locations(soup: BeautifulSoup) -> Iterator[tuple[str, str]]:
 @dataclass
 class TotalFireBans:
     issued: datetime
-    published: datetime
     declared_for: date
     locations: list[tuple[str, str]]
 
@@ -97,7 +96,6 @@ def total_fire_bans(entry: Entry) -> TotalFireBans:
 
     return TotalFireBans(
         issued=issued,
-        published=entry.dfes_published,
         declared_for=declared,
         locations=list(locations(soup)),
     )

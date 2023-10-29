@@ -24,5 +24,4 @@ def test_generate_bans_xml(regions):
 
     assert len(tfb.locations) == 4
     assert tfb.issued == issued
-    assert tfb.published == published
     assert tfb.declared_for == declared_for
