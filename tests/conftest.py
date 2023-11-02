@@ -53,17 +53,8 @@ def no_bans_xml(jinja_env):
 
 
 @pytest.fixture
-def regions():
-    return {
-        "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
-        "Perth Metropolitan": ["Armadale"]
-    }
-
-
-@pytest.fixture
-def bans_xml(jinja_env, regions):
+def bans_xml(jinja_env):
     return generate_bans_xml(
-        regions=regions,
         published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
         feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
         issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
@@ -77,7 +68,12 @@ def entry(bans_xml):
 
 
 @pytest.fixture
-def mangled_dfes_publication(jinja_env, regions):
+def mangled_dfes_publication(jinja_env):
+    regions = {
+        "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
+        "Perth Metropolitan": ["Armadale"]
+    }
+
     return jinja_env.get_template("bans.xml").render(
         regions=regions,
         published="15/10/23 XXX 08:08 AM",

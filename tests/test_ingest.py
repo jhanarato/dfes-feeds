@@ -18,19 +18,12 @@ def test_should_not_add_feed_twice(bans_xml):
     assert repo.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
 
 
-def test_should_add_two_different_feeds(regions):
+def test_should_add_two_different_feeds():
     published_first = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     published_second = datetime(2023, 10, 17, 8, 10, 56, tzinfo=timezone.utc)
 
-    first_feed = generate_bans_xml(
-        regions=regions,
-        feed_published=published_first,
-    )
-
-    second_feed = generate_bans_xml(
-        regions=regions,
-        feed_published=published_second,
-    )
+    first_feed = generate_bans_xml(feed_published=published_first)
+    second_feed = generate_bans_xml(feed_published=published_second)
 
     repo = InMemoryRepository()
     ingest(first_feed, repo)

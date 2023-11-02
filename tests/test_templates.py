@@ -5,7 +5,12 @@ from dfes import feeds
 from dfes.bans import total_fire_bans
 
 
-def test_generate_bans_xml(regions):
+def test_generate_bans_xml():
+    regions = {
+        "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
+        "Perth Metropolitan": ["Armadale"]
+    }
+
     feed_published = datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
     dfes_published = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     issued = datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
