@@ -24,20 +24,25 @@ def test_should_add_two_different_feeds(regions):
         datetime(2023, 10, 17, 8, 10, 56, tzinfo=timezone.utc),
     ]
 
-    feeds = [
-        generate_bans_xml(
-            regions=regions,
-            published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
-            feed_published=feed_published,
-            issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
-            declared_for=date(2023, 10, 16)
-        )
-        for feed_published in published
-    ]
+    first_feed = generate_bans_xml(
+        regions=regions,
+        published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
+        feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
+        issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
+        declared_for=date(2023, 10, 16)
+    )
+
+    second_feed = generate_bans_xml(
+        regions=regions,
+        published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
+        feed_published=datetime(2023, 10, 17, 8, 10, 56, tzinfo=timezone.utc),
+        issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
+        declared_for=date(2023, 10, 16)
+    )
 
     repo = InMemoryRepository()
-    ingest(feeds[0], repo)
-    ingest(feeds[1], repo)
+    ingest(first_feed, repo)
+    ingest(second_feed, repo)
 
     assert repo.list_bans() == published
 
