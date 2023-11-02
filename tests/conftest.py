@@ -6,11 +6,17 @@ from jinja2 import Environment, select_autoescape, FileSystemLoader
 import dfes.feeds
 
 
-def generate_bans_xml(regions: dict[str, list[str]],
+def generate_bans_xml(regions: dict[str, list[str]] | None = None,
                       published: datetime = datetime(2001, 1, 1),
                       feed_published: datetime = datetime(2001, 1, 1),
                       issued: datetime = datetime(2001, 1, 1),
                       declared_for: date = date(2001, 1, 1)):
+
+    if not regions:
+        regions = {
+            "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
+            "Perth Metropolitan": ["Armadale"]
+        }
 
     env = Environment(
         loader=FileSystemLoader("templates/"),
