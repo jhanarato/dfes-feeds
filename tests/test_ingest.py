@@ -1,5 +1,6 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
+from conftest import generate_bans_xml
 from dfes.ingest import ingest
 from dfes.repository import InMemoryRepository
 
@@ -17,15 +18,26 @@ def test_should_not_add_feed_twice(bans_xml):
     assert repo.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
 
 
-def test_should_add_two_different_feeds(two_different_feed_dates):
+def test_should_add_two_different_feeds(regions):
     published = [
         datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
         datetime(2023, 10, 17, 8, 10, 56, tzinfo=timezone.utc),
     ]
 
+    feeds = [
+        generate_bans_xml(
+            regions=regions,
+            published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
+            feed_published=feed_published,
+            issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
+            declared_for=date(2023, 10, 16)
+        )
+        for feed_published in published
+    ]
+
     repo = InMemoryRepository()
-    ingest(two_different_feed_dates[0], repo)
-    ingest(two_different_feed_dates[1], repo)
+    ingest(feeds[0], repo)
+    ingest(feeds[1], repo)
 
     assert repo.list_bans() == published
 
