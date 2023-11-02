@@ -7,9 +7,8 @@ import dfes.feeds
 
 
 def generate_bans_xml(regions: dict[str, list[str]] | None = None,
-                      published: datetime = datetime(2001, 1, 1),
-                      feed_published: datetime = datetime(2001, 1, 1),
-                      issued: datetime = datetime(2001, 1, 1),
+                      dfes_published: datetime = datetime(2001, 1, 1),
+                      feed_published: datetime = datetime(2001, 1, 1), issued: datetime = datetime(2001, 1, 1),
                       declared_for: date = date(2001, 1, 1)):
 
     if not regions:
@@ -27,7 +26,7 @@ def generate_bans_xml(regions: dict[str, list[str]] | None = None,
 
     return env.get_template("bans.xml").render(
         regions=regions,
-        published=published.strftime("%d/%m/%y %I:%M %p"),
+        dfes_published=dfes_published.strftime("%d/%m/%y %I:%M %p"),
         feed_published=feed_published.strftime("%a, %d %b %Y %H:%M:%S GMT"),
         time_of_issue=issued.strftime("%I:%M %p"),
         date_of_issue=issued.strftime("%d %B %Y"),
@@ -54,12 +53,10 @@ def no_bans_xml(jinja_env):
 
 @pytest.fixture
 def bans_xml(jinja_env):
-    return generate_bans_xml(
-        published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
-        feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
-        issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
-        declared_for=date(2023, 10, 16)
-    )
+    return generate_bans_xml(dfes_published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
+                             feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
+                             issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
+                             declared_for=date(2023, 10, 16))
 
 
 @pytest.fixture
@@ -76,7 +73,7 @@ def mangled_dfes_publication(jinja_env):
 
     return jinja_env.get_template("bans.xml").render(
         regions=regions,
-        published="15/10/23 XXX 08:08 AM",
+        dfes_published="15/10/23 XXX 08:08 AM",
         feed_published="Mon, 16 Oct 2023 08:10:56 GMT",
         time_of_issue="04:08 PM",
         date_of_issue="15 October 2023",

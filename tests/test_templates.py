@@ -16,12 +16,8 @@ def test_generate_bans_xml():
     issued = datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
     declared_for = date(2023, 10, 16)
 
-    xml = generate_bans_xml(
-        regions=regions,
-        published=dfes_published,
-        feed_published=feed_published,
-        issued=issued,
-        declared_for=declared_for)
+    xml = generate_bans_xml(regions=regions, dfes_published=dfes_published, feed_published=feed_published,
+                            issued=issued, declared_for=declared_for)
 
     parsed = feeds.parse(xml)
 

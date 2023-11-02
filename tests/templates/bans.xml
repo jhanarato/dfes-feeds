@@ -34,7 +34,7 @@
 </ul>
 {% endfor %}
 </div>]]></description>
-<dfes:publicationTime>{{published}}</dfes:publicationTime>
+<dfes:publicationTime>{{dfes_published}}</dfes:publicationTime>
 <pubDate>{{feed_published}}</pubDate>
 <guid>878860094</guid>
 <geo:long />
