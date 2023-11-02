@@ -1,4 +1,4 @@
-from datetime import datetime, timezone, date
+from datetime import datetime, timezone
 
 from conftest import generate_bans_xml
 from dfes.ingest import ingest
@@ -24,18 +24,12 @@ def test_should_add_two_different_feeds(regions):
 
     first_feed = generate_bans_xml(
         regions=regions,
-        published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
         feed_published=published_first,
-        issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
-        declared_for=date(2023, 10, 16)
     )
 
     second_feed = generate_bans_xml(
         regions=regions,
-        published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
         feed_published=published_second,
-        issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
-        declared_for=date(2023, 10, 16)
     )
 
     repo = InMemoryRepository()

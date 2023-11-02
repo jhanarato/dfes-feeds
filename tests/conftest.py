@@ -7,10 +7,10 @@ import dfes.feeds
 
 
 def generate_bans_xml(regions: dict[str, list[str]],
-                      published: datetime,
-                      feed_published: datetime,
-                      issued: datetime,
-                      declared_for: date):
+                      published: datetime = datetime(2001, 1, 1),
+                      feed_published: datetime = datetime(2001, 1, 1),
+                      issued: datetime = datetime(2001, 1, 1),
+                      declared_for: date = date(2001, 1, 1)):
 
     env = Environment(
         loader=FileSystemLoader("templates/"),
