@@ -46,3 +46,16 @@ def test_should_store_valid_but_empty_feed_in_bans(no_bans_xml):
     repo = InMemoryRepository()
     ingest(no_bans_xml, repo)
     assert repo.list_bans() == [datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)]
+
+
+def test_should_not_store_failed_feed_twice():
+    repo = InMemoryRepository()
+    feed_xml = "gobbledygook"
+
+    first_timestamp = datetime(2023, 7, 4, 1)
+    second_timestamp = datetime(2023, 7, 4, 2)
+
+    ingest(feed_xml, repo, now=first_timestamp)
+    ingest(feed_xml, repo, now=second_timestamp)
+
+    assert repo.list_failed() == [first_timestamp]

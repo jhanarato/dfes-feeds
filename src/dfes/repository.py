@@ -23,7 +23,7 @@ class InMemoryRepository:
     def add_failed(self, feed_text: str, now: datetime) -> None:
         self._failed[now] = feed_text
 
-    def retrieve_failed(self, retrieved_at: datetime):
+    def retrieve_failed(self, retrieved_at: datetime) -> str:
         return self._failed[retrieved_at]
 
     def list_failed(self) -> list[datetime]:
