@@ -25,7 +25,7 @@ def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()
         repository.add_bans(feed.published, feed_xml)
     except ParseException:
         if repository.list_failed():
-            most_recent_timestamp = sorted(repository.list_failed(), reverse=True)[0]
+            most_recent_timestamp = max(repository.list_failed())
             most_recent_feed = repository.retrieve_failed(most_recent_timestamp)
             if most_recent_feed != feed_xml:
                 repository.add_failed(feed_xml, now)
