@@ -6,17 +6,17 @@ from datetime import date, time, datetime, timezone
 from bs4 import BeautifulSoup, Tag
 
 from dfes.date_time import extract_date, extract_time
-from dfes.exceptions import ParseException
+from dfes.exceptions import ParsingFailed
 
 
 def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:
     found = soup.find(tag_name, string=re.compile(contains))
 
     if not isinstance(found, Tag):
-        raise ParseException(f"No <{tag_name}> tag found")
+        raise ParsingFailed(f"No <{tag_name}> tag found")
 
     if not found.string:
-        raise ParseException(f"Tag <{tag_name}> has no contents")
+        raise ParsingFailed(f"Tag <{tag_name}> has no contents")
 
     return found.string.strip()
 
@@ -50,7 +50,7 @@ def get_district_tags(region_tag: Tag) -> list[Tag]:
 def extract_district(tag: Tag) -> str:
     if contents := tag.string:
         return contents.removesuffix(" - All Day")
-    raise ParseException("Could not extract district")
+    raise ParsingFailed("Could not extract district")
 
 
 def districts(region_tag: Tag) -> list[str]:
@@ -60,7 +60,7 @@ def districts(region_tag: Tag) -> list[str]:
 def extract_region(tag: Tag) -> str:
     if contents := tag.string:
         return contents.removesuffix(" Region:")
-    raise ParseException("Could not extract region")
+    raise ParsingFailed("Could not extract region")
 
 
 def region_locations(region_tag: Tag) -> Iterator[tuple[str, str]]:

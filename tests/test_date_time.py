@@ -43,7 +43,7 @@ def test_find_date_text(text, found):
     ]
 )
 def test_date_text_fails(text):
-    with pytest.raises(exceptions.ParseException,
+    with pytest.raises(exceptions.ParsingFailed,
                        match=f"Failed to find date text in {text}"):
         _ = date_time.date_text(text)
 
@@ -56,7 +56,7 @@ def test_date_text_fails(text):
     ]
 )
 def test_text_to_date_fails(text):
-    with pytest.raises(exceptions.ParseException,
+    with pytest.raises(exceptions.ParsingFailed,
                        match=f"Failed to parse date: {text}"):
         _ = date_time.text_to_date(text)
 
@@ -95,7 +95,7 @@ def test_time_text(text, found):
     ]
 )
 def test_time_text_fails(text):
-    with pytest.raises(exceptions.ParseException,
+    with pytest.raises(exceptions.ParsingFailed,
                        match=f"Failed to find time text in {text}"):
         _ = date_time.time_text(text)
 
@@ -119,6 +119,6 @@ def test_text_to_time(text, result):
     ]
 )
 def test_text_to_time_fails(text):
-    with pytest.raises(exceptions.ParseException,
+    with pytest.raises(exceptions.ParsingFailed,
                        match=f"Failed to parse time: {text}"):
         _ = date_time.text_to_time(text)

@@ -1,2 +1,2 @@
-class ParseException(Exception):
+class ParsingFailed(Exception):
     pass

@@ -4,7 +4,7 @@ import pytest
 from bs4 import BeautifulSoup
 
 from dfes import bans
-from dfes.exceptions import ParseException
+from dfes.exceptions import ParsingFailed
 
 
 def test_get_region_tags():
@@ -65,7 +65,7 @@ def test_find_tag_contents_ok():
 
 def test_find_tag_contents_with_missing_tag():
     soup = BeautifulSoup("<p>not a span</p>")
-    with pytest.raises(ParseException,
+    with pytest.raises(ParsingFailed,
                        match="No <span> tag found"):
         _ = bans.find_tag_contents(soup, "span", "Date of issue:")
 

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Protocol
 
 from dfes import feeds
-from dfes.exceptions import ParseException
+from dfes.exceptions import ParsingFailed
 
 
 class Repository(Protocol):
@@ -23,7 +23,7 @@ def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()
     try:
         feed = feeds.parse(feed_xml)
         repository.add_bans(feed.published, feed_xml)
-    except ParseException:
+    except ParsingFailed:
         if repository.list_failed():
             most_recent_timestamp = max(repository.list_failed())
             most_recent_feed = repository.retrieve_failed(most_recent_timestamp)

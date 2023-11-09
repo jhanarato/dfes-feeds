@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 import feedparser
 
-from dfes.exceptions import ParseException
+from dfes.exceptions import ParsingFailed
 
 
 @dataclass
@@ -38,19 +38,19 @@ def parse(feed_xml: str) -> Feed:
 
 def check(parsed):
     if parsed["bozo"]:
-        raise ParseException("Feed is not well formed")
+        raise ParsingFailed("Feed is not well formed")
 
     if not parsed.get("feed"):
-        raise ParseException("No feed available")
+        raise ParsingFailed("No feed available")
 
     if not parsed["feed"].get("published_parsed"):
-        raise ParseException("Feed published_parsed not available")
+        raise ParsingFailed("Feed published_parsed not available")
 
     for entry in parsed["entries"]:
         if not entry.get("dfes_publicationtime"):
-            raise ParseException("dfes_publicationtime not available")
+            raise ParsingFailed("dfes_publicationtime not available")
         if not entry.get("published_parsed"):
-            raise ParseException("Entry published_parsed not available")
+            raise ParsingFailed("Entry published_parsed not available")
 
 
 def feed_published(parsed: dict) -> datetime:
@@ -76,14 +76,14 @@ def dfes_published(entry: dict) -> datetime:
         extracted = datetime.strptime(entry["dfes_publicationtime"], "%d/%m/%y %H:%M %p")
         return extracted.replace(tzinfo=timezone.utc)
     except ValueError:
-        raise ParseException("Could not parse publication time")
+        raise ParsingFailed("Could not parse publication time")
 
 
 def summary(entry: dict) -> str:
     if value := entry.get("summary"):
         return value
 
-    raise ParseException(f"Entry has no summary.")
+    raise ParsingFailed(f"Entry has no summary.")
 
 
 def struct_time_to_datetime(st: time.struct_time) -> datetime:
