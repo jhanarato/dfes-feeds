@@ -37,3 +37,8 @@ def test_repo_failure_stored(repo):
     timestamp = datetime(2023, 7, 4, 12, 30)
     repo.add_failed("unparseable", now=timestamp)
     assert repo.retrieve_failed(timestamp) == "unparseable"
+
+
+def test_should_get_none_if_missing(repo):
+    assert repo.retrieve_bans(datetime(2001, 1, 1)) is None
+    assert repo.retrieve_failed(datetime(2001, 1, 1)) is None
