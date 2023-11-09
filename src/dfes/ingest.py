@@ -32,6 +32,6 @@ def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()
 
 
 def most_recent_failed(repository):
-    most_recent_timestamp = max(repository.list_failed())
-    most_recent_feed = repository.retrieve_failed(most_recent_timestamp)
-    return most_recent_feed
+    return repository.retrieve_failed(
+        max(repository.list_failed())
+    )
