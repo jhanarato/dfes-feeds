@@ -24,14 +24,14 @@ def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()
         feed = feeds.parse(feed_xml)
         repository.add_bans(feed.published, feed_xml)
     except ParsingFailed:
-        if repository.list_failed():
-            if feed_xml != most_recent_failed(repository):
-                repository.add_failed(feed_xml, now)
-        else:
+        if feed_xml != most_recent_failed(repository):
             repository.add_failed(feed_xml, now)
 
 
-def most_recent_failed(repository):
+def most_recent_failed(repository) -> str | None:
+    if not repository.list_failed():
+        return None
+
     return repository.retrieve_failed(
         max(repository.list_failed())
     )
