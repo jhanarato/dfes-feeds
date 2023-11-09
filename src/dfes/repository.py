@@ -14,8 +14,8 @@ class InMemoryRepository:
     def add_bans(self, issued: datetime, feed_text: str) -> None:
         self._ban_feeds[issued] = feed_text
 
-    def retrieve_bans(self, issued: datetime) -> str:
-        return self._ban_feeds[issued]
+    def retrieve_bans(self, issued: datetime) -> str | None:
+        return self._ban_feeds.get(issued)
 
     def list_bans(self) -> list[datetime]:
         return list(self._ban_feeds)
@@ -23,8 +23,8 @@ class InMemoryRepository:
     def add_failed(self, feed_text: str, now: datetime) -> None:
         self._failed[now] = feed_text
 
-    def retrieve_failed(self, retrieved_at: datetime) -> str:
-        return self._failed[retrieved_at]
+    def retrieve_failed(self, retrieved_at: datetime) -> str | None:
+        return self._failed.get(retrieved_at)
 
     def list_failed(self) -> list[datetime]:
         return list(self._failed)

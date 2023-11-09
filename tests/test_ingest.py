@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from conftest import generate_bans_xml
-from dfes.ingest import ingest
+from dfes.ingest import ingest, most_recent_failed
 from dfes.repository import InMemoryRepository
 
 
@@ -59,3 +59,8 @@ def test_should_not_store_failed_feed_twice():
     ingest(feed_xml, repo, now=second_timestamp)
 
     assert repo.list_failed() == [first_timestamp]
+
+
+def test_should_be_none_if_failed_is_empty():
+    repo = InMemoryRepository()
+    assert most_recent_failed(repo) is None
