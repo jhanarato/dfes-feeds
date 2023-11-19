@@ -1,8 +1,15 @@
 from datetime import datetime
 from typing import Protocol
 
+import requests
+
 from dfes import feeds
 from dfes.exceptions import ParsingFailed
+from dfes.urls import FIRE_BAN_URL
+
+
+def aquire_rss_feed() -> str:
+    return requests.get(FIRE_BAN_URL).text
 
 
 class Repository(Protocol):
