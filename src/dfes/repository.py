@@ -2,9 +2,18 @@ from datetime import datetime
 from typing import Protocol
 
 
-def file_name(issued: datetime) -> str:
-    date_formatted = issued.strftime("%Y_%m_%d_%H%M")
-    return f"total_fire_bans_issued_{date_formatted}.rss"
+class Repository(Protocol):
+    def add_bans(self, issued: datetime, feed_text: str) -> None: ...
+
+    def retrieve_bans(self, issued: datetime) -> str | None: ...
+
+    def list_bans(self) -> list[datetime]: ...
+
+    def add_failed(self, feed_text: str, now: datetime) -> None: ...
+
+    def retrieve_failed(self, retrieved_at: datetime) -> str | None: ...
+
+    def list_failed(self) -> list[datetime]: ...
 
 
 class InMemoryRepository:
@@ -37,15 +46,6 @@ def most_recent_failed(repository) -> str | None:
     )
 
 
-class Repository(Protocol):
-    def add_bans(self, issued: datetime, feed_text: str) -> None: ...
-
-    def retrieve_bans(self, issued: datetime) -> str | None: ...
-
-    def list_bans(self) -> list[datetime]: ...
-
-    def add_failed(self, feed_text: str, now: datetime) -> None: ...
-
-    def retrieve_failed(self, retrieved_at: datetime) -> str | None: ...
-
-    def list_failed(self) -> list[datetime]: ...
+def file_name(issued: datetime) -> str:
+    date_formatted = issued.strftime("%Y_%m_%d_%H%M")
+    return f"total_fire_bans_issued_{date_formatted}.rss"
