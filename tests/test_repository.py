@@ -5,9 +5,9 @@ import pytest
 from dfes.repository import file_name, InMemoryRepository, most_recent_failed
 
 
-@pytest.fixture(params=[InMemoryRepository()])
+@pytest.fixture(params=[InMemoryRepository])
 def repo(request):
-    return request.param
+    return request.param()
 
 
 def test_file_name():
