@@ -40,7 +40,7 @@ class InMemoryRepository:
         return list(self._failed)
 
 
-def most_recent_failed(repository) -> str | None:
+def most_recent_failed(repository: Repository) -> str | None:
     return repository.retrieve_failed(
         max(repository.list_failed(), default=None)
     )
