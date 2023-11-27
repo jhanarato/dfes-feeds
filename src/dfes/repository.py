@@ -46,6 +46,12 @@ def most_recent_failed(repository: Repository) -> str | None:
     )
 
 
+def most_recent_bans(repository: Repository) -> str | None:
+    return repository.retrieve_bans(
+        max(repository.list_bans(), default=None)
+    )
+
+
 def file_name(issued: datetime) -> str:
     date_formatted = issued.strftime("%Y_%m_%d_%H%M")
     return f"total_fire_bans_issued_{date_formatted}.rss"
