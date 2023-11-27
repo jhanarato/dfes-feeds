@@ -5,6 +5,7 @@ import requests
 
 from dfes import feeds
 from dfes.exceptions import ParsingFailed
+from dfes.repository import most_recent_failed
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -33,9 +34,3 @@ def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()
     except ParsingFailed:
         if feed_xml != most_recent_failed(repository):
             repository.add_failed(feed_xml, now)
-
-
-def most_recent_failed(repository) -> str | None:
-    return repository.retrieve_failed(
-        max(repository.list_failed(), default=None)
-    )

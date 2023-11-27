@@ -28,3 +28,9 @@ class InMemoryRepository:
 
     def list_failed(self) -> list[datetime]:
         return list(self._failed)
+
+
+def most_recent_failed(repository) -> str | None:
+    return repository.retrieve_failed(
+        max(repository.list_failed(), default=None)
+    )
