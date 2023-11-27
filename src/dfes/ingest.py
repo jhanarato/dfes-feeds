@@ -8,7 +8,7 @@ from dfes.exceptions import ParsingFailed
 from dfes.urls import FIRE_BAN_URL
 
 
-def aquire_rss_feed() -> str:
+def aquire_ban_feed() -> str:
     return requests.get(FIRE_BAN_URL).text
 
 

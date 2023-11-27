@@ -4,7 +4,7 @@ import responses
 
 from dfes.bans import total_fire_bans
 from dfes.feeds import parse
-from dfes.ingest import aquire_rss_feed, ingest
+from dfes.ingest import aquire_ban_feed, ingest
 from dfes.repository import InMemoryRepository
 from dfes.urls import FIRE_BAN_URL
 
@@ -13,7 +13,7 @@ def test_integration(bans_xml):
     repo = InMemoryRepository()
     responses.add(responses.GET, FIRE_BAN_URL, body=bans_xml)
 
-    feed_text = aquire_rss_feed()
+    feed_text = aquire_ban_feed()
     ingest(feed_text, repo)
 
     bans_issued = repo.list_bans()[0]
