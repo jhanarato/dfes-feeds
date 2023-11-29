@@ -36,5 +36,3 @@ def test_repo_failure_stored(repository):
 def test_should_get_none_if_missing(repository):
     assert repository.retrieve_bans(datetime(2001, 1, 1)) is None
     assert repository.retrieve_failed(datetime(2001, 1, 1)) is None
-
-
