@@ -1,13 +1,7 @@
 from datetime import datetime
 
-import pytest
-
-from dfes.repository import file_name, InMemoryRepository
-
-
-@pytest.fixture(params=[InMemoryRepository])
-def repo(request):
-    return request.param()
+from conftest import repo
+from dfes.repository import file_name
 
 
 def test_file_name():

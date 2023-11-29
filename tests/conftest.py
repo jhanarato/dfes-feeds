@@ -4,6 +4,7 @@ import pytest
 from jinja2 import Environment, select_autoescape, FileSystemLoader
 
 import dfes.feeds
+from dfes.repository import InMemoryRepository
 
 
 def generate_bans_xml(regions: dict[str, list[str]] | None = None,
@@ -80,3 +81,8 @@ def mangled_dfes_publication(jinja_env):
         date_of_issue="15 October 2023",
         declared_for="16 October 2023",
     )
+
+
+@pytest.fixture(params=[InMemoryRepository])
+def repo(request):
+    return request.param()
