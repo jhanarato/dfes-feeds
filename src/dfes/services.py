@@ -3,7 +3,9 @@ from datetime import datetime
 import requests
 
 from dfes import feeds
+from dfes.bans import TotalFireBans, total_fire_bans
 from dfes.exceptions import ParsingFailed
+from dfes.feeds import parse
 from dfes.repository import Repository
 from dfes.urls import FIRE_BAN_URL
 
@@ -27,7 +29,10 @@ def most_recent_failed(repository: Repository) -> str | None:
     return None
 
 
-def most_recent_bans(repository: Repository) -> str | None:
+def most_recent_bans(repository: Repository) -> TotalFireBans | None:
     if issued_at := max(repository.list_bans(), default=None):
-        return repository.retrieve_bans(issued_at)
+        retrieved = repository.retrieve_bans(issued_at)
+        parsed = parse(retrieved)
+        entry = parsed.entries[0]
+        return total_fire_bans(entry.summary)
     return None
