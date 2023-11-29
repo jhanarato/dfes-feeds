@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 from typing import Protocol
 
 
@@ -46,7 +47,7 @@ def file_name(issued: datetime) -> str:
 
 
 class FileRepository:
-    def __init__(self):
+    def __init__(self, location: Path):
         self._ban_feeds = dict()
         self._failed = dict()
 
