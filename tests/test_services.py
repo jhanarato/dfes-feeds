@@ -4,7 +4,7 @@ import responses
 
 from conftest import generate_bans_xml
 from dfes.repository import InMemoryRepository
-from dfes.services import ingest, aquire_ban_feed
+from dfes.services import ingest, aquire_ban_feed, most_recent_failed, most_recent_bans
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -68,3 +68,25 @@ def test_aquire_ok(bans_xml):
     contents = "<html></html>"
     responses.add(responses.GET, FIRE_BAN_URL, body=contents)
     assert aquire_ban_feed() == contents
+
+
+def test_should_retrieve_most_recent_failure(repo):
+    repo.add_failed("unparseable", now=datetime(2023, 7, 4))
+    repo.add_failed("imparseable", now=datetime(2023, 7, 5))
+
+    assert most_recent_failed(repo) == "imparseable"
+
+
+def test_should_retrieve_most_recent_bans(repo):
+    repo.add_bans(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
+    repo.add_bans(datetime(2023, 1, 3, 5, 5), "Bans for January 4th")
+
+    assert most_recent_bans(repo) == "Bans for January 4th"
+
+
+def test_should_indicate_nothing_failed(repo):
+    assert most_recent_failed(repo) is None
+
+
+def test_should_indicate_no_bans_issued(repo):
+    assert most_recent_bans(repo) is None

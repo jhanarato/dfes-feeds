@@ -3,7 +3,6 @@ from datetime import datetime
 import pytest
 
 from dfes.repository import file_name, InMemoryRepository
-from dfes.services import most_recent_failed, most_recent_bans
 
 
 @pytest.fixture(params=[InMemoryRepository])
@@ -45,23 +44,3 @@ def test_should_get_none_if_missing(repo):
     assert repo.retrieve_failed(datetime(2001, 1, 1)) is None
 
 
-def test_should_retrieve_most_recent_failure(repo):
-    repo.add_failed("unparseable", now=datetime(2023, 7, 4))
-    repo.add_failed("imparseable", now=datetime(2023, 7, 5))
-
-    assert most_recent_failed(repo) == "imparseable"
-
-
-def test_should_retrieve_most_recent_bans(repo):
-    repo.add_bans(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
-    repo.add_bans(datetime(2023, 1, 3, 5, 5), "Bans for January 4th")
-
-    assert most_recent_bans(repo) == "Bans for January 4th"
-
-
-def test_should_indicate_nothing_failed(repo):
-    assert most_recent_failed(repo) is None
-
-
-def test_should_indicate_no_bans_issued(repo):
-    assert most_recent_bans(repo) is None
