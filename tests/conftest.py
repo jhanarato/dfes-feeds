@@ -4,7 +4,7 @@ import pytest
 from jinja2 import Environment, select_autoescape, FileSystemLoader
 
 import dfes.feeds
-from dfes.repository import InMemoryRepository
+from dfes.repository import InMemoryRepository, FileRepository
 
 
 def generate_bans_xml(regions: dict[str, list[str]] | None = None,
@@ -83,10 +83,11 @@ def mangled_dfes_publication(jinja_env):
     )
 
 
-@pytest.fixture(params=["in_memory"])
+@pytest.fixture(params=["in_memory", "file"])
 def repository(request):
     repositories = {
         "in_memory": InMemoryRepository(),
+        "file": FileRepository(),
     }
 
     return repositories[request.param]
