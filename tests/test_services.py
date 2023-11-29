@@ -1,8 +1,8 @@
 from datetime import datetime, timezone
 
 from conftest import generate_bans_xml
-from dfes.ingest import ingest
 from dfes.repository import InMemoryRepository
+from dfes.services import ingest
 
 
 def test_should_add_feed_to_empty_repository(bans_xml):

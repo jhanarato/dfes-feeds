@@ -1,6 +1,6 @@
 import responses
 
-from dfes.ingest import aquire_ban_feed
+from dfes.services import aquire_ban_feed
 from dfes.urls import FIRE_BAN_URL
 
 

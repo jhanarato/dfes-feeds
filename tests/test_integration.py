@@ -4,8 +4,8 @@ import responses
 
 from dfes.bans import total_fire_bans
 from dfes.feeds import parse
-from dfes.ingest import aquire_ban_feed, ingest
 from dfes.repository import InMemoryRepository, most_recent_bans
+from dfes.services import aquire_ban_feed, ingest
 from dfes.urls import FIRE_BAN_URL
 
 
