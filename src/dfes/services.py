@@ -30,9 +30,16 @@ def last_failure(repository: Repository) -> str | None:
 
 
 def last_bans_issued(repository: Repository) -> TotalFireBans | None:
-    if issued_at := max(repository.list_bans(), default=None):
-        retrieved = repository.retrieve_bans(issued_at)
-        parsed = parse(retrieved)
-        entry = parsed.entries[0]
-        return total_fire_bans(entry.summary)
-    return None
+    issued_at = max(repository.list_bans(), default=None)
+    if issued_at is None:
+        return None
+
+    retrieved = repository.retrieve_bans(issued_at)
+
+    if retrieved is None:
+        return None
+
+    parsed = parse(retrieved)
+
+    entry = parsed.entries[0]
+    return total_fire_bans(entry.summary)
