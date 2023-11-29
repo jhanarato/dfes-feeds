@@ -40,18 +40,6 @@ class InMemoryRepository:
         return list(self._failed)
 
 
-def most_recent_failed(repository: Repository) -> str | None:
-    if failed_at := max(repository.list_failed(), default=None):
-        return repository.retrieve_failed(failed_at)
-    return None
-
-
-def most_recent_bans(repository: Repository) -> str | None:
-    if issued_at := max(repository.list_bans(), default=None):
-        return repository.retrieve_bans(issued_at)
-    return None
-
-
 def file_name(issued: datetime) -> str:
     date_formatted = issued.strftime("%Y_%m_%d_%H%M")
     return f"total_fire_bans_issued_{date_formatted}.rss"

@@ -2,7 +2,8 @@ from datetime import datetime
 
 import pytest
 
-from dfes.repository import file_name, InMemoryRepository, most_recent_failed, most_recent_bans
+from dfes.repository import file_name, InMemoryRepository
+from dfes.services import most_recent_failed, most_recent_bans
 
 
 @pytest.fixture(params=[InMemoryRepository])
