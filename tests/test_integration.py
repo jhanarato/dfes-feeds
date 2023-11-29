@@ -13,7 +13,6 @@ def test_integration(bans_xml):
 
     feed_text = aquire_ban_feed()
     ingest(feed_text, repo)
+    bans = most_recent_bans(repo)
 
-    retrieved = most_recent_bans(repo)
-
-    assert retrieved.declared_for == date(2023, 10, 16)
+    assert bans.declared_for == date(2023, 10, 16)
