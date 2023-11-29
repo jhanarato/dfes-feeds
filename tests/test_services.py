@@ -1,8 +1,11 @@
 from datetime import datetime, timezone
 
+import responses
+
 from conftest import generate_bans_xml
 from dfes.repository import InMemoryRepository
-from dfes.services import ingest
+from dfes.services import ingest, aquire_ban_feed
+from dfes.urls import FIRE_BAN_URL
 
 
 def test_should_add_feed_to_empty_repository(bans_xml):
@@ -59,3 +62,9 @@ def test_should_not_store_failed_feed_twice():
     ingest(feed_xml, repo, now=second_timestamp)
 
     assert repo.list_failed() == [first_timestamp]
+
+
+def test_aquire_ok(bans_xml):
+    contents = "<html></html>"
+    responses.add(responses.GET, FIRE_BAN_URL, body=contents)
+    assert aquire_ban_feed() == contents
