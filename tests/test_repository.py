@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from conftest import repo
+from conftest import repository
 from dfes.repository import file_name
 
 
@@ -9,32 +9,32 @@ def test_file_name():
     assert file_name(issued) == "total_fire_bans_issued_2023_10_15_0408.rss"
 
 
-def test_repo_lists_bans(repo):
-    repo.add_bans(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
-    repo.add_bans(datetime(2023, 1, 3, 5, 5), "Bans for January 4th")
-    repo.add_bans(datetime(2023, 1, 4, 5, 5), "Bans for January 5th")
+def test_repo_lists_bans(repository):
+    repository.add_bans(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
+    repository.add_bans(datetime(2023, 1, 3, 5, 5), "Bans for January 4th")
+    repository.add_bans(datetime(2023, 1, 4, 5, 5), "Bans for January 5th")
 
-    assert repo.list_bans() == [
+    assert repository.list_bans() == [
         datetime(2023, 1, 2, 5, 5),
         datetime(2023, 1, 3, 5, 5),
         datetime(2023, 1, 4, 5, 5),
     ]
 
 
-def test_repo_bans_stored(repo):
-    repo.add_bans(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
-    issued_date = repo.list_bans()[0]
-    assert repo.retrieve_bans(issued_date) == "Bans for January 3rd"
+def test_repo_bans_stored(repository):
+    repository.add_bans(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
+    issued_date = repository.list_bans()[0]
+    assert repository.retrieve_bans(issued_date) == "Bans for January 3rd"
 
 
-def test_repo_failure_stored(repo):
+def test_repo_failure_stored(repository):
     timestamp = datetime(2023, 7, 4, 12, 30)
-    repo.add_failed("unparseable", now=timestamp)
-    assert repo.retrieve_failed(timestamp) == "unparseable"
+    repository.add_failed("unparseable", now=timestamp)
+    assert repository.retrieve_failed(timestamp) == "unparseable"
 
 
-def test_should_get_none_if_missing(repo):
-    assert repo.retrieve_bans(datetime(2001, 1, 1)) is None
-    assert repo.retrieve_failed(datetime(2001, 1, 1)) is None
+def test_should_get_none_if_missing(repository):
+    assert repository.retrieve_bans(datetime(2001, 1, 1)) is None
+    assert repository.retrieve_failed(datetime(2001, 1, 1)) is None
 
 

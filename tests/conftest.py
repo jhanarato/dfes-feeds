@@ -84,5 +84,5 @@ def mangled_dfes_publication(jinja_env):
 
 
 @pytest.fixture(params=[InMemoryRepository])
-def repo(request):
+def repository(request):
     return request.param()

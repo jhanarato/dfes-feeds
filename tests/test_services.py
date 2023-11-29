@@ -70,26 +70,26 @@ def test_aquire_ok(bans_xml):
     assert aquire_ban_feed() == contents
 
 
-def test_should_retrieve_most_recent_failure(repo):
-    repo.add_failed("unparseable", now=datetime(2023, 7, 4))
-    repo.add_failed("imparseable", now=datetime(2023, 7, 5))
+def test_should_retrieve_most_recent_failure(repository):
+    repository.add_failed("unparseable", now=datetime(2023, 7, 4))
+    repository.add_failed("imparseable", now=datetime(2023, 7, 5))
 
-    assert last_failure(repo) == "imparseable"
-
-
-def test_should_indicate_nothing_failed(repo):
-    assert last_failure(repo) is None
+    assert last_failure(repository) == "imparseable"
 
 
-def test_should_indicate_no_bans_issued(repo):
-    assert last_bans_issued(repo) is None
+def test_should_indicate_nothing_failed(repository):
+    assert last_failure(repository) is None
 
 
-def test_should_retrieve_most_recent_bans(repo):
+def test_should_indicate_no_bans_issued(repository):
+    assert last_bans_issued(repository) is None
+
+
+def test_should_retrieve_most_recent_bans(repository):
     first = datetime(2023, 1, 1, tzinfo=timezone.utc)
     second = datetime(2023, 1, 2, tzinfo=timezone.utc)
 
-    repo.add_bans(first, generate_bans_xml(issued=first))
-    repo.add_bans(second, generate_bans_xml(issued=second))
+    repository.add_bans(first, generate_bans_xml(issued=first))
+    repository.add_bans(second, generate_bans_xml(issued=second))
 
-    assert last_bans_issued(repo).issued == second
+    assert last_bans_issued(repository).issued == second
