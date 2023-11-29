@@ -56,3 +56,11 @@ def test_should_retrieve_most_recent_bans(repo):
     repo.add_bans(datetime(2023, 1, 3, 5, 5), "Bans for January 4th")
 
     assert most_recent_bans(repo) == "Bans for January 4th"
+
+
+def test_should_indicate_nothing_failed(repo):
+    assert most_recent_failed(repo) is None
+
+
+def test_should_indicate_no_bans_issued(repo):
+    assert most_recent_bans(repo) is None

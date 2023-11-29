@@ -41,15 +41,15 @@ class InMemoryRepository:
 
 
 def most_recent_failed(repository: Repository) -> str | None:
-    return repository.retrieve_failed(
-        max(repository.list_failed(), default=None)
-    )
+    if failed_at := max(repository.list_failed(), default=None):
+        return repository.retrieve_failed(failed_at)
+    return None
 
 
 def most_recent_bans(repository: Repository) -> str | None:
-    return repository.retrieve_bans(
-        max(repository.list_bans(), default=None)
-    )
+    if issued_at := max(repository.list_bans(), default=None):
+        return repository.retrieve_bans(issued_at)
+    return None
 
 
 def file_name(issued: datetime) -> str:
