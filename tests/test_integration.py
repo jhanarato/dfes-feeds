@@ -3,7 +3,7 @@ from datetime import date
 import responses
 
 from dfes.repository import InMemoryRepository
-from dfes.services import aquire_ban_feed, ingest, most_recent_bans
+from dfes.services import aquire_ban_feed, ingest, last_bans_issued
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -13,6 +13,6 @@ def test_integration(bans_xml):
 
     feed_text = aquire_ban_feed()
     ingest(feed_text, repo)
-    bans = most_recent_bans(repo)
+    bans = last_bans_issued(repo)
 
     assert bans.declared_for == date(2023, 10, 16)

@@ -4,7 +4,7 @@ import responses
 
 from conftest import generate_bans_xml
 from dfes.repository import InMemoryRepository
-from dfes.services import ingest, aquire_ban_feed, most_recent_failed, most_recent_bans
+from dfes.services import ingest, aquire_ban_feed, last_failure, last_bans_issued
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -74,15 +74,15 @@ def test_should_retrieve_most_recent_failure(repo):
     repo.add_failed("unparseable", now=datetime(2023, 7, 4))
     repo.add_failed("imparseable", now=datetime(2023, 7, 5))
 
-    assert most_recent_failed(repo) == "imparseable"
+    assert last_failure(repo) == "imparseable"
 
 
 def test_should_indicate_nothing_failed(repo):
-    assert most_recent_failed(repo) is None
+    assert last_failure(repo) is None
 
 
 def test_should_indicate_no_bans_issued(repo):
-    assert most_recent_bans(repo) is None
+    assert last_bans_issued(repo) is None
 
 
 def test_should_retrieve_most_recent_bans(repo):
@@ -92,4 +92,4 @@ def test_should_retrieve_most_recent_bans(repo):
     repo.add_bans(first, generate_bans_xml(issued=first))
     repo.add_bans(second, generate_bans_xml(issued=second))
 
-    assert most_recent_bans(repo).issued == second
+    assert last_bans_issued(repo).issued == second

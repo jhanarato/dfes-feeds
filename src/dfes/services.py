@@ -19,17 +19,17 @@ def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()
         feed = feeds.parse(feed_xml)
         repository.add_bans(feed.published, feed_xml)
     except ParsingFailed:
-        if feed_xml != most_recent_failed(repository):
+        if feed_xml != last_failure(repository):
             repository.add_failed(feed_xml, now)
 
 
-def most_recent_failed(repository: Repository) -> str | None:
+def last_failure(repository: Repository) -> str | None:
     if failed_at := max(repository.list_failed(), default=None):
         return repository.retrieve_failed(failed_at)
     return None
 
 
-def most_recent_bans(repository: Repository) -> TotalFireBans | None:
+def last_bans_issued(repository: Repository) -> TotalFireBans | None:
     if issued_at := max(repository.list_bans(), default=None):
         retrieved = repository.retrieve_bans(issued_at)
         parsed = parse(retrieved)
