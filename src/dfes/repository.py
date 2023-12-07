@@ -42,8 +42,7 @@ class InMemoryRepository:
 
 
 def to_bans_file_name(issued: datetime) -> str:
-    date_formatted = issued.strftime("%Y_%m_%d_%H%M")
-    return f"bans_issued_{date_formatted}.rss"
+    return issued.strftime("bans_issued_%Y_%m_%d_%H%M.rss")
 
 
 def to_bans_issued_date(file_name: str) -> datetime:
