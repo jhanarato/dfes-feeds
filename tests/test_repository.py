@@ -1,23 +1,18 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from conftest import repository
-from dfes.repository import file_name, InMemoryRepository
-
-
-def test_file_name():
-    issued = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
-    assert file_name(issued) == "total_fire_bans_issued_2023_10_15_0408.rss"
+from dfes.repository import to_file_name, InMemoryRepository, to_issued_date
 
 
 def test_repo_lists_bans(repository):
-    repository.add_bans(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
-    repository.add_bans(datetime(2023, 1, 3, 5, 5), "Bans for January 4th")
-    repository.add_bans(datetime(2023, 1, 4, 5, 5), "Bans for January 5th")
+    repository.add_bans(datetime(2023, 1, 2, 5, 5, tzinfo=timezone.utc), "Bans for January 3rd")
+    repository.add_bans(datetime(2023, 1, 3, 5, 5, tzinfo=timezone.utc), "Bans for January 4th")
+    repository.add_bans(datetime(2023, 1, 4, 5, 5, tzinfo=timezone.utc), "Bans for January 5th")
 
     assert repository.list_bans() == [
-        datetime(2023, 1, 2, 5, 5),
-        datetime(2023, 1, 3, 5, 5),
-        datetime(2023, 1, 4, 5, 5),
+        datetime(2023, 1, 2, 5, 5, tzinfo=timezone.utc),
+        datetime(2023, 1, 3, 5, 5, tzinfo=timezone.utc),
+        datetime(2023, 1, 4, 5, 5, tzinfo=timezone.utc),
     ]
 
 
@@ -49,3 +44,13 @@ def test_should_not_persist_when_in_memory():
 
 def test_should_persist_when_on_file_system():
     pass
+
+
+def test_to_file_name():
+    issued = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
+    assert to_file_name(issued) == "total_fire_bans_issued_2023_10_15_0408.rss"
+
+
+def test_to_issued_date():
+    file_name = "total_fire_bans_issued_2023_10_15_0408.rss"
+    assert to_issued_date(file_name) == datetime.fromisoformat("2023-10-15 04:08:00+00:00")

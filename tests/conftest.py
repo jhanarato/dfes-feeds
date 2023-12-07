@@ -83,11 +83,11 @@ def mangled_dfes_publication(jinja_env):
     )
 
 
-@pytest.fixture(params=["in_memory", "file"])
+@pytest.fixture(params=["in_memory", "file_system"])
 def repository(request, tmp_path):
     repositories = {
         "in_memory": InMemoryRepository(),
-        "file": FileRepository(tmp_path),
+        "file_system": FileRepository(tmp_path),
     }
 
     return repositories[request.param]

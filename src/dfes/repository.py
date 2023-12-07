@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Protocol
 
@@ -41,24 +41,39 @@ class InMemoryRepository:
         return list(self._failed)
 
 
-def file_name(issued: datetime) -> str:
+def to_file_name(issued: datetime) -> str:
     date_formatted = issued.strftime("%Y_%m_%d_%H%M")
     return f"total_fire_bans_issued_{date_formatted}.rss"
 
 
+def to_issued_date(file_name: str) -> datetime:
+    dt = datetime.strptime(file_name, "total_fire_bans_issued_%Y_%m_%d_%H%M.rss")
+    return dt.replace(tzinfo=timezone.utc)
+
+
 class FileRepository:
     def __init__(self, location: Path):
-        self._ban_feeds = dict()
+        self._location = location
         self._failed = dict()
 
     def add_bans(self, issued: datetime, feed_text: str) -> None:
-        self._ban_feeds[issued] = feed_text
+        name = self._location / to_file_name(issued)
+        name.write_text(feed_text)
 
     def retrieve_bans(self, issued: datetime) -> str | None:
-        return self._ban_feeds.get(issued)
+        name = self._location / to_file_name(issued)
+        if name.is_file():
+            return name.read_text()
+        else:
+            return None
 
     def list_bans(self) -> list[datetime]:
-        return list(self._ban_feeds)
+        bans = []
+        for child in self._location.iterdir():
+            if child.is_file():
+                issued = to_issued_date(child.name)
+                bans.append(issued)
+        return sorted(bans)
 
     def add_failed(self, feed_text: str, now: datetime) -> None:
         self._failed[now] = feed_text
