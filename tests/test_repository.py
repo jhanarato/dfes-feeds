@@ -72,3 +72,11 @@ def test_to_failed_file_name():
 def test_to_failed_timestamp():
     file_name = "failed_2023_10_15_0408.rss"
     assert to_failed_timestamp(file_name) == datetime.fromisoformat("2023-10-15 04:08:00+00:00")
+
+
+def test_should_store_and_retrieve_ok_and_failed_together(repository):
+    dt = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
+    repository.add_bans(dt, "Bans for January 3rd")
+    repository.add_failed("unparseable", now=dt)
+    assert repository.list_bans() == [dt]
+    assert repository.list_failed() == [dt]

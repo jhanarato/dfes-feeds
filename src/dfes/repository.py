@@ -62,7 +62,6 @@ def to_failed_timestamp(file_name: str) -> datetime:
 class FileRepository:
     def __init__(self, location: Path):
         self._location = location
-        self._failed = dict()
 
     def add_bans(self, issued: datetime, feed_text: str) -> None:
         name = self._location / to_bans_file_name(issued)
@@ -76,15 +75,22 @@ class FileRepository:
             return None
 
     def list_bans(self) -> list[datetime]:
-        file_names = [child.name for child in self._location.iterdir() if child.is_file()]
-        dates = [to_bans_issued_date(name) for name in file_names]
-        return sorted(dates)
+        file_paths = self._location.glob("bans_issued_*.rss")
+        issued_dates = [to_bans_issued_date(file_path.name) for file_path in file_paths]
+        return sorted(issued_dates)
 
     def add_failed(self, feed_text: str, now: datetime) -> None:
-        self._failed[now] = feed_text
+        name = self._location / to_failed_file_name(now)
+        name.write_text(feed_text)
 
     def retrieve_failed(self, retrieved_at: datetime) -> str | None:
-        return self._failed.get(retrieved_at)
+        name = self._location / to_failed_file_name(retrieved_at)
+        if name.is_file():
+            return name.read_text()
+        else:
+            return None
 
     def list_failed(self) -> list[datetime]:
-        return list(self._failed)
+        file_paths = self._location.glob("failed_*.rss")
+        timestamps = [to_failed_timestamp(file_path.name) for file_path in file_paths]
+        return sorted(timestamps)
