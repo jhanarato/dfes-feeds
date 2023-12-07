@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from conftest import repository
-from dfes.repository import file_name
+from dfes.repository import file_name, InMemoryRepository
 
 
 def test_file_name():
@@ -36,3 +36,12 @@ def test_repo_failure_stored(repository):
 def test_should_get_none_if_missing(repository):
     assert repository.retrieve_bans(datetime(2001, 1, 1)) is None
     assert repository.retrieve_failed(datetime(2001, 1, 1)) is None
+
+
+def test_should_not_persist_when_in_memory():
+    repository = InMemoryRepository()
+    assert not repository.list_bans()
+    repository.add_bans(datetime(2001, 1, 1), "Bans for January 3rd")
+    assert repository.list_bans()
+    repository = InMemoryRepository()
+    assert not repository.list_bans()
