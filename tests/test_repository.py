@@ -45,3 +45,7 @@ def test_should_not_persist_when_in_memory():
     assert repository.list_bans()
     repository = InMemoryRepository()
     assert not repository.list_bans()
+
+
+def test_should_persist_when_on_file_system():
+    pass
