@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 from conftest import repository
 from dfes.repository import to_bans_file_name, InMemoryRepository, to_bans_issued_date, FileRepository, \
-    to_failed_file_name
+    to_failed_file_name, to_failed_timestamp
 
 
 def test_repo_lists_bans(repository):
@@ -67,3 +67,8 @@ def test_to_bans_issued_date():
 def test_to_failed_file_name():
     dt = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
     assert to_failed_file_name(dt) == "failed_2023_10_15_0408.rss"
+
+
+def test_to_failed_timestamp():
+    file_name = "failed_2023_10_15_0408.rss"
+    assert to_failed_timestamp(file_name) == datetime.fromisoformat("2023-10-15 04:08:00+00:00")

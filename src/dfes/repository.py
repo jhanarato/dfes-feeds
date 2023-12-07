@@ -54,6 +54,11 @@ def to_failed_file_name(timestamp: datetime) -> str:
     return timestamp.strftime("failed_%Y_%m_%d_%H%M.rss")
 
 
+def to_failed_timestamp(file_name: str) -> datetime:
+    dt = datetime.strptime(file_name, "failed_%Y_%m_%d_%H%M.rss")
+    return dt.replace(tzinfo=timezone.utc)
+
+
 class FileRepository:
     def __init__(self, location: Path):
         self._location = location
