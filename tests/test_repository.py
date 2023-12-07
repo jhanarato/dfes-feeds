@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
 
 from conftest import repository
-from dfes.repository import to_bans_file_name, InMemoryRepository, to_bans_issued_date, FileRepository
+from dfes.repository import to_bans_file_name, InMemoryRepository, to_bans_issued_date, FileRepository, \
+    to_failed_file_name
 
 
 def test_repo_lists_bans(repository):
@@ -53,11 +54,16 @@ def test_should_persist_when_on_file_system(tmp_path):
     assert repository.list_bans() == [datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)]
 
 
-def test_to_file_name():
+def test_to_bans_file_name():
     issued = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
     assert to_bans_file_name(issued) == "bans_issued_2023_10_15_0408.rss"
 
 
-def test_to_issued_date():
+def test_to_bans_issued_date():
     file_name = "bans_issued_2023_10_15_0408.rss"
     assert to_bans_issued_date(file_name) == datetime.fromisoformat("2023-10-15 04:08:00+00:00")
+
+
+def test_to_failed_file_name():
+    dt = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
+    assert to_failed_file_name(dt) == "failed_2023_10_15_0408.rss"

@@ -51,6 +51,10 @@ def to_bans_issued_date(file_name: str) -> datetime:
     return dt.replace(tzinfo=timezone.utc)
 
 
+def to_failed_file_name(timestamp: datetime) -> str:
+    return timestamp.strftime("failed_%Y_%m_%d_%H%M.rss")
+
+
 class FileRepository:
     def __init__(self, location: Path):
         self._location = location
