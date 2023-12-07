@@ -55,9 +55,9 @@ def test_should_persist_when_on_file_system(tmp_path):
 
 def test_to_file_name():
     issued = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
-    assert to_file_name(issued) == "total_fire_bans_issued_2023_10_15_0408.rss"
+    assert to_file_name(issued) == "bans_issued_2023_10_15_0408.rss"
 
 
 def test_to_issued_date():
-    file_name = "total_fire_bans_issued_2023_10_15_0408.rss"
+    file_name = "bans_issued_2023_10_15_0408.rss"
     assert to_issued_date(file_name) == datetime.fromisoformat("2023-10-15 04:08:00+00:00")

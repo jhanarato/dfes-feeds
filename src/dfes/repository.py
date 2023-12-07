@@ -43,11 +43,11 @@ class InMemoryRepository:
 
 def to_file_name(issued: datetime) -> str:
     date_formatted = issued.strftime("%Y_%m_%d_%H%M")
-    return f"total_fire_bans_issued_{date_formatted}.rss"
+    return f"bans_issued_{date_formatted}.rss"
 
 
 def to_issued_date(file_name: str) -> datetime:
-    dt = datetime.strptime(file_name, "total_fire_bans_issued_%Y_%m_%d_%H%M.rss")
+    dt = datetime.strptime(file_name, "bans_issued_%Y_%m_%d_%H%M.rss")
     return dt.replace(tzinfo=timezone.utc)
 
 
