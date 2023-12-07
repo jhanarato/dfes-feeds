@@ -68,12 +68,9 @@ class FileRepository:
             return None
 
     def list_bans(self) -> list[datetime]:
-        bans = []
-        for child in self._location.iterdir():
-            if child.is_file():
-                issued = to_issued_date(child.name)
-                bans.append(issued)
-        return sorted(bans)
+        file_names = [child.name for child in self._location.iterdir() if child.is_file()]
+        dates = [to_issued_date(name) for name in file_names]
+        return sorted(dates)
 
     def add_failed(self, feed_text: str, now: datetime) -> None:
         self._failed[now] = feed_text
