@@ -41,12 +41,12 @@ class InMemoryRepository:
         return list(self._failed)
 
 
-def to_file_name(issued: datetime) -> str:
+def to_bans_file_name(issued: datetime) -> str:
     date_formatted = issued.strftime("%Y_%m_%d_%H%M")
     return f"bans_issued_{date_formatted}.rss"
 
 
-def to_issued_date(file_name: str) -> datetime:
+def to_bans_issued_date(file_name: str) -> datetime:
     dt = datetime.strptime(file_name, "bans_issued_%Y_%m_%d_%H%M.rss")
     return dt.replace(tzinfo=timezone.utc)
 
@@ -57,11 +57,11 @@ class FileRepository:
         self._failed = dict()
 
     def add_bans(self, issued: datetime, feed_text: str) -> None:
-        name = self._location / to_file_name(issued)
+        name = self._location / to_bans_file_name(issued)
         name.write_text(feed_text)
 
     def retrieve_bans(self, issued: datetime) -> str | None:
-        name = self._location / to_file_name(issued)
+        name = self._location / to_bans_file_name(issued)
         if name.is_file():
             return name.read_text()
         else:
@@ -69,7 +69,7 @@ class FileRepository:
 
     def list_bans(self) -> list[datetime]:
         file_names = [child.name for child in self._location.iterdir() if child.is_file()]
-        dates = [to_issued_date(name) for name in file_names]
+        dates = [to_bans_issued_date(name) for name in file_names]
         return sorted(dates)
 
     def add_failed(self, feed_text: str, now: datetime) -> None:
