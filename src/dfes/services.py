@@ -14,7 +14,7 @@ def aquire_ban_feed() -> str:
     return requests.get(FIRE_BAN_URL).text
 
 
-def ingest(feed_xml: str, repository: Repository, now: datetime = datetime.now()):
+def store_feed(feed_xml: str, repository: Repository, now: datetime = datetime.now()):
     try:
         feed = feeds.parse(feed_xml)
         repository.add_bans(feed.published, feed_xml)
