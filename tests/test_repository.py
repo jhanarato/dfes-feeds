@@ -87,3 +87,16 @@ def test_should_create_missing_repository_directory(tmp_path):
     assert not path.exists()
     repository = FileRepository(path)
     assert path.exists()
+
+
+def test_should_allow_use_of_existing_directory(tmp_path):
+    dt = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
+    path = tmp_path / "subdirectory"
+
+    new_repo = FileRepository(path)
+    new_repo.add_bans(dt, "Bans for January 3rd")
+
+    assert path.exists()
+
+    existing_repo = FileRepository(path)
+    assert existing_repo.list_bans() == [dt]
