@@ -80,3 +80,10 @@ def test_should_store_and_retrieve_ok_and_failed_together(repository):
     repository.add_failed("unparseable", now=dt)
     assert repository.list_bans() == [dt]
     assert repository.list_failed() == [dt]
+
+
+def test_should_create_missing_repository_directory(tmp_path):
+    path = tmp_path / "subdirectory" / "another_subdirectory"
+    assert not path.exists()
+    repository = FileRepository(path)
+    assert path.exists()

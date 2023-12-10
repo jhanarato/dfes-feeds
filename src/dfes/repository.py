@@ -59,9 +59,15 @@ def to_failed_timestamp(file_name: str) -> datetime:
     return dt.replace(tzinfo=timezone.utc)
 
 
+def create_if_missing(location: Path) -> None:
+    if not location.exists():
+        location.mkdir(parents=True)
+
+
 class FileRepository:
     def __init__(self, location: Path):
         self._location = location
+        create_if_missing(self._location)
 
     def add_bans(self, issued: datetime, feed_text: str) -> None:
         name = self._location / to_bans_file_name(issued)
