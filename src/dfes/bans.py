@@ -82,7 +82,7 @@ class TotalFireBans:
     locations: list[tuple[str, str]]
 
 
-def total_fire_bans(summary_html: str) -> TotalFireBans:
+def parse_bans(summary_html: str) -> TotalFireBans:
     soup = BeautifulSoup(summary_html, features="html.parser")
 
     issued = datetime.combine(

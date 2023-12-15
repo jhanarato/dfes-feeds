@@ -2,7 +2,7 @@ from datetime import datetime, timezone, date
 
 from conftest import generate_bans_xml
 from dfes import feeds
-from dfes.bans import total_fire_bans
+from dfes.bans import parse_bans
 
 
 def test_generate_bans_xml():
@@ -29,7 +29,7 @@ def test_generate_bans_xml():
     assert entry.published == feed_published
     assert entry.dfes_published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
 
-    tfb = total_fire_bans(entry.summary)
+    tfb = parse_bans(entry.summary)
 
     assert len(tfb.locations) == 4
     assert tfb.issued == issued

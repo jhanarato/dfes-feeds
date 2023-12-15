@@ -4,7 +4,7 @@ from pathlib import Path
 import requests
 
 from dfes import feeds
-from dfes.bans import TotalFireBans, total_fire_bans
+from dfes.bans import TotalFireBans, parse_bans
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse
 from dfes.repository import Repository
@@ -43,7 +43,7 @@ def last_bans_issued(repository: Repository) -> TotalFireBans | None:
     parsed = parse(retrieved)
 
     entry = parsed.entries[0]
-    return total_fire_bans(entry.summary)
+    return parse_bans(entry.summary)
 
 
 def repository_location():
