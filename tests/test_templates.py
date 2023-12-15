@@ -1,11 +1,16 @@
 from datetime import datetime, timezone, date
 
+import pytest
+
 from conftest import generate_bans_xml
 from dfes import feeds
 from dfes.bans import parse_bans
 
 
-def test_generate_bans_xml():
+@pytest.mark.parametrize(
+    "revoked", [True, False]
+)
+def test_generate_bans_xml(revoked):
     regions = {
         "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
         "Perth Metropolitan": ["Armadale"]
@@ -17,7 +22,7 @@ def test_generate_bans_xml():
     declared_for = date(2023, 10, 16)
 
     xml = generate_bans_xml(regions=regions, dfes_published=dfes_published, feed_published=feed_published,
-                            issued=issued, declared_for=declared_for)
+                            issued=issued, declared_for=declared_for, revoked=revoked)
 
     parsed = feeds.parse_feed(xml)
 
@@ -34,3 +39,4 @@ def test_generate_bans_xml():
     assert len(tfb.locations) == 4
     assert tfb.issued == issued
     assert tfb.declared_for == declared_for
+    assert tfb.revoked == revoked

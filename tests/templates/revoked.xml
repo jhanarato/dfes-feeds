@@ -22,7 +22,7 @@
     <br/><span style="color: #777777;">Date of issue: {{date_of_issue}} </span>
 </p>
 
-<p>The Total Fire Ban declared for 10 December 2023 has been revoked for the local government districts listed below:</p>
+<p>The Total Fire Ban declared for {{declared_for}} has been revoked for the local government districts listed below:</p>
 
 {% for region in regions %}
 <p><strong>{{region}} Region:</strong></p>
