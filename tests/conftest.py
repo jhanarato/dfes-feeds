@@ -11,7 +11,8 @@ def generate_bans_xml(regions: dict[str, list[str]] | None = None,
                       dfes_published: datetime = datetime(2001, 1, 1),
                       feed_published: datetime = datetime(2001, 1, 1),
                       issued: datetime = datetime(2001, 1, 1),
-                      declared_for: date = date(2001, 1, 1)):
+                      declared_for: date = date(2001, 1, 1),
+                      revoked=False):
 
     if not regions:
         regions = {
@@ -26,7 +27,12 @@ def generate_bans_xml(regions: dict[str, list[str]] | None = None,
         lstrip_blocks=True,
     )
 
-    return env.get_template("bans.xml").render(
+    if revoked:
+        feed_template = "revoked.xml"
+    else:
+        feed_template = "bans.xml"
+
+    return env.get_template(feed_template).render(
         regions=regions,
         dfes_published=dfes_published.strftime("%d/%m/%y %I:%M %p"),
         feed_published=feed_published.strftime("%a, %d %b %Y %H:%M:%S GMT"),
