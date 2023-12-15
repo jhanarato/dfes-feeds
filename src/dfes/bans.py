@@ -48,6 +48,10 @@ def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:
     return found.string.strip()
 
 
+def tag_exists_containing(soup: BeautifulSoup, tag_name: str, contains: str) -> bool:
+    return soup.find(tag_name, string=re.compile(contains)) is not None
+
+
 def time_of_issue(soup: BeautifulSoup) -> time:
     text = find_tag_contents(soup, "span", "Time of issue:")
     return extract_time(text)
@@ -61,6 +65,16 @@ def date_of_issue(soup: BeautifulSoup) -> date:
 def date_declared_for(soup: BeautifulSoup) -> date:
     text = find_tag_contents(soup, "p", "A Total Fire Ban has been declared")
     return extract_date(text)
+
+
+def bans_are_revoked(soup: BeautifulSoup) -> bool:
+    if tag_exists_containing(soup, "p", "A Total Fire Ban has been declared"):
+        return False
+
+    if tag_exists_containing(soup, "p", "has been revoked"):
+        return True
+
+    raise ParsingFailed(f"Neither declared for nor revoked tag found")
 
 
 def date_revoked_for(soup: BeautifulSoup) -> date:

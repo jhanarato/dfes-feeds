@@ -70,6 +70,18 @@ def test_find_tag_contents_with_missing_tag():
         _ = bans.find_tag_contents(soup, "span", "Date of issue:")
 
 
+@pytest.mark.parametrize(
+    "soup,looking_for,result",
+    [
+        (BeautifulSoup("<p>contents</p>"), "contents", True),
+        (BeautifulSoup("<p>contents</p>"), "mismatch", False),
+    ]
+
+)
+def test_tag_exists_containing(soup, looking_for, result):
+    assert bans.tag_exists_containing(soup, "p", looking_for) is result
+
+
 def test_time_of_issue():
     soup = BeautifulSoup(
         "<span style=\"color: #777777;\">Time of issue: 05:05 PM </span>"
@@ -91,6 +103,17 @@ def test_date_revoked_for():
     """)
 
     assert bans.date_revoked_for(soup) == date(2023, 12, 10)
+
+
+@pytest.mark.parametrize(
+    "tag_contents,revoked", [
+        ("<p>A Total Fire Ban has been declared for 3 January 2023 for the local government districts listed below:</p>", False),
+        ("<p>The Total Fire Ban declared for 10 December 2023 has been revoked for the local government districts listed below:</p>", True)
+
+    ]
+)
+def test_bans_are_revoked(tag_contents, revoked):
+    assert bans.bans_are_revoked(BeautifulSoup(tag_contents)) == revoked
 
 
 def test_locations():
