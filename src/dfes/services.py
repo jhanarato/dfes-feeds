@@ -3,7 +3,6 @@ from pathlib import Path
 
 import requests
 
-from dfes import feeds
 from dfes.bans import TotalFireBans, parse_bans
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed
@@ -17,7 +16,7 @@ def aquire_ban_feed() -> str:
 
 def store_feed(feed_xml: str, repository: Repository, now: datetime = datetime.now()):
     try:
-        feed = feeds.parse_feed(feed_xml)
+        feed = parse_feed(feed_xml)
         repository.add_bans(feed.published, feed_xml)
     except ParsingFailed:
         if feed_xml != last_failure(repository):
