@@ -26,10 +26,13 @@ def parse_bans(summary_html: str) -> TotalFireBans:
         timezone.utc
     )
 
-    declared = date_declared_for(soup)
+    if revoked := bans_are_revoked(soup):
+        declared = date_revoked_for(soup)
+    else:
+        declared = date_declared_for(soup)
 
     return TotalFireBans(
-        revoked=False,
+        revoked=revoked,
         issued=issued,
         declared_for=declared,
         locations=list(locations(soup)),
