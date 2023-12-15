@@ -9,6 +9,31 @@ from dfes.date_time import extract_date, extract_time
 from dfes.exceptions import ParsingFailed
 
 
+@dataclass
+class TotalFireBans:
+    issued: datetime
+    declared_for: date
+    locations: list[tuple[str, str]]
+
+
+def parse_bans(summary_html: str) -> TotalFireBans:
+    soup = BeautifulSoup(summary_html, features="html.parser")
+
+    issued = datetime.combine(
+        date_of_issue(soup),
+        time_of_issue(soup),
+        timezone.utc
+    )
+
+    declared = date_declared_for(soup)
+
+    return TotalFireBans(
+        issued=issued,
+        declared_for=declared,
+        locations=list(locations(soup)),
+    )
+
+
 def find_tag_contents(soup: BeautifulSoup, tag_name: str, contains: str) -> str:
     found = soup.find(tag_name, string=re.compile(contains))
 
@@ -73,28 +98,3 @@ def region_locations(region_tag: Tag) -> Iterator[tuple[str, str]]:
 def locations(soup: BeautifulSoup) -> Iterator[tuple[str, str]]:
     for region_tag in get_region_tags(soup):
         yield from region_locations(region_tag)
-
-
-@dataclass
-class TotalFireBans:
-    issued: datetime
-    declared_for: date
-    locations: list[tuple[str, str]]
-
-
-def parse_bans(summary_html: str) -> TotalFireBans:
-    soup = BeautifulSoup(summary_html, features="html.parser")
-
-    issued = datetime.combine(
-        date_of_issue(soup),
-        time_of_issue(soup),
-        timezone.utc
-    )
-
-    declared = date_declared_for(soup)
-
-    return TotalFireBans(
-        issued=issued,
-        declared_for=declared,
-        locations=list(locations(soup)),
-    )
