@@ -11,6 +11,7 @@ from dfes.exceptions import ParsingFailed
 
 @dataclass
 class TotalFireBans:
+    revoked: bool
     issued: datetime
     declared_for: date
     locations: list[tuple[str, str]]
@@ -28,6 +29,7 @@ def parse_bans(summary_html: str) -> TotalFireBans:
     declared = date_declared_for(soup)
 
     return TotalFireBans(
+        revoked=True,
         issued=issued,
         declared_for=declared,
         locations=list(locations(soup)),
