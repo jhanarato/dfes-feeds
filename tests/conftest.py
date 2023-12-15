@@ -63,7 +63,7 @@ def bans_xml(jinja_env):
 
 @pytest.fixture
 def entry(bans_xml):
-    return dfes.feeds.parse(bans_xml).entries[0]
+    return dfes.feeds.parse_feed(bans_xml).entries[0]
 
 
 @pytest.fixture

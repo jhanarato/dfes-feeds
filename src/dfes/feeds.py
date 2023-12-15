@@ -21,7 +21,7 @@ class Feed:
     entries: list[Entry]
 
 
-def parse(feed_xml: str) -> Feed:
+def parse_feed(feed_xml: str) -> Feed:
     parsed = feedparser.parse(feed_xml)
 
     check(parsed)

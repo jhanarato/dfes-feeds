@@ -19,7 +19,7 @@ def test_generate_bans_xml():
     xml = generate_bans_xml(regions=regions, dfes_published=dfes_published, feed_published=feed_published,
                             issued=issued, declared_for=declared_for)
 
-    parsed = feeds.parse(xml)
+    parsed = feeds.parse_feed(xml)
 
     assert parsed.title == "Total Fire Ban (All Regions)"
     assert parsed.published == feed_published
