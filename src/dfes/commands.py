@@ -20,7 +20,10 @@ def fetch():
 def show():
     repository = FileRepository(repository_location())
     if issued := last_bans_issued(repository):
-        print(f"Last bans issued: {issued.issued}")
+        if issued.revoked:
+            print(f"Last bans revoked: {issued.issued}")
+        else:
+            print(f"Last bans issued: {issued.issued}")
     else:
         print("No bans have been retrieved yet.")
 
