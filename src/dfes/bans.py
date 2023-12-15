@@ -29,7 +29,7 @@ def parse_bans(summary_html: str) -> TotalFireBans:
     declared = date_declared_for(soup)
 
     return TotalFireBans(
-        revoked=True,
+        revoked=False,
         issued=issued,
         declared_for=declared,
         locations=list(locations(soup)),
@@ -60,6 +60,11 @@ def date_of_issue(soup: BeautifulSoup) -> date:
 
 def date_declared_for(soup: BeautifulSoup) -> date:
     text = find_tag_contents(soup, "p", "A Total Fire Ban has been declared")
+    return extract_date(text)
+
+
+def date_revoked_for(soup: BeautifulSoup) -> date:
+    text = find_tag_contents(soup, "p", "has been revoked")
     return extract_date(text)
 
 

@@ -85,6 +85,14 @@ def test_date_delclared_for():
     assert bans.date_declared_for(soup) == date(2023, 1, 3)
 
 
+def test_date_revoked_for():
+    soup = BeautifulSoup("""
+    <p>The Total Fire Ban declared for 10 December 2023 has been revoked for the local government districts listed below:</p>
+    """)
+
+    assert bans.date_revoked_for(soup) == date(2023, 12, 10)
+
+
 def test_locations():
     soup = BeautifulSoup("""
     <p><strong>Midwest Gascoyne Region:</strong></p>
