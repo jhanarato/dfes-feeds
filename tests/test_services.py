@@ -64,7 +64,8 @@ def test_should_not_store_failed_feed_twice():
     assert repo.list_failed() == [first_timestamp]
 
 
-def test_aquire_ok(bans_xml):
+@responses.activate
+def test_aquire_ok():
     contents = "<html></html>"
     responses.add(responses.GET, FIRE_BAN_URL, body=contents)
     assert aquire_ban_feed() == contents

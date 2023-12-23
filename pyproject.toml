@@ -5,9 +5,12 @@ description = "CLI for WA Department of Emergency Services"
 authors = ["Ajahn Jhanarato <jhanarato@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    {include = "dfes", from = "src"}
+]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 bs4 = "^0.0.1"
 feedparser = "^6.0.11"
 click = "^8.1.7"
@@ -17,6 +20,10 @@ requests = "^2.31.0"
 pytest = "^7.4.3"
 Jinja2 = "^3.1.2"
 responses = "^0.24.1"
+pytest-responses = "^0.5.1"
+
+[tool.poetry.scripts]
+dfes = 'dfes.commands:dfes'
 
 [build-system]
 requires = ["poetry-core"]
