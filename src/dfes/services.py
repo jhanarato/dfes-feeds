@@ -46,4 +46,4 @@ def last_bans_issued(repository: Repository) -> TotalFireBans | None:
 
 
 def repository_location():
-    return Path.home() / "dfes"
+    return Path.home() / ".dfes"
