@@ -97,3 +97,8 @@ def repository(request, tmp_path):
     }
 
     return repositories[request.param]
+
+
+@pytest.fixture
+def bad_summary(jinja_env):
+    return jinja_env.get_template("bad_summary.xml").render()

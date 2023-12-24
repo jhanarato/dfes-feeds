@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss
+        xmlns:dfes="http://emergency.wa.gov.au/xmlns/dfes"
+        xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" version="2.0">
+    <channel>
+<title>Total Fire Ban (All Regions)</title>
+<link>http://emergency.wa.gov</link>
+<description />
+<language>en-us</language>
+<pubDate>Sun, 10 Dec 2023 09:48:03 GMT</pubDate>
+<lastBuildDate>Mon, 16 Oct 2023 08:10:56 GMT</lastBuildDate>
+<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+<generator>Whispir RSS Engine</generator>
+<managingEditor>no-reply@whispir.com</managingEditor>
+<webMaster>no-reply@whispir.com</webMaster>
+<ttl>1</ttl>
+<item>
+<title>Total Fire Ban advice for 16 October 2023 </title>
+<link>https://www.emergency.wa.gov.au/#totalfirebans</link>
+<description><![CDATA[<div>This will not parse</div>]]></description>
+<dfes:publicationTime>09/12/23 08:59 AM</dfes:publicationTime>
+<pubDate>Sun, 10 Dec 2023 09:48:03 GMT</pubDate>
+<guid>878860094</guid>
+<geo:long />
+<geo:lat />
+</item>
+</channel>
+</rss>

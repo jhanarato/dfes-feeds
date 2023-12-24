@@ -5,7 +5,7 @@ import requests
 
 from dfes.bans import TotalFireBans, parse_bans
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import parse_feed
+from dfes.feeds import parse_feed, Feed
 from dfes.repository import Repository
 from dfes.urls import FIRE_BAN_URL
 
@@ -17,10 +17,18 @@ def aquire_ban_feed() -> str:
 def store_feed(feed_xml: str, repository: Repository, now: datetime = datetime.now()):
     try:
         feed = parse_feed(feed_xml)
+
+        check_summaries(feed)
+
         repository.add_bans(feed.published, feed_xml)
     except ParsingFailed:
         if feed_xml != last_failure(repository):
             repository.add_failed(feed_xml, now)
+
+
+def check_summaries(feed: Feed):
+    for entry in feed.entries:
+        parse_bans(entry.summary)
 
 
 def last_failure(repository: Repository) -> str | None:

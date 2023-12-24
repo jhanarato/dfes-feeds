@@ -1,10 +1,13 @@
 from datetime import datetime, timezone
 
+import pytest
 import responses
 
 from conftest import generate_bans_xml
+from dfes.exceptions import ParsingFailed
+from dfes.feeds import parse_feed
 from dfes.repository import InMemoryRepository
-from dfes.services import store_feed, aquire_ban_feed, last_failure, last_bans_issued
+from dfes.services import store_feed, aquire_ban_feed, last_failure, last_bans_issued, check_summaries
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -94,3 +97,29 @@ def test_should_retrieve_most_recent_bans(repository):
     repository.add_bans(second, generate_bans_xml(issued=second))
 
     assert last_bans_issued(repository).issued == second
+
+
+def test_should_raise_exception_checking_bad_summary(bad_summary):
+    feed = parse_feed(bad_summary)
+    with pytest.raises(ParsingFailed):
+        check_summaries(feed)
+
+
+def test_should_be_chill_if_summary_is_fine(bans_xml):
+    feed = parse_feed(bans_xml)
+    check_summaries(feed)
+
+
+def test_should_store_bad_summary_in_faield(bad_summary):
+    repository = InMemoryRepository()
+    now = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
+    store_feed(bad_summary, repository, now)
+    assert not repository.list_bans()
+    assert repository.list_failed() == [now]
+
+
+def test_should_store_ok_bans_normally(bans_xml):
+    repository = InMemoryRepository()
+    now = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
+    store_feed(bans_xml, repository, now)
+    assert repository.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
