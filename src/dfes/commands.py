@@ -1,4 +1,5 @@
 import click
+from click import echo
 
 from dfes.repository import FileRepository
 from dfes.services import aquire_ban_feed, store_feed, last_bans_issued, repository_location
@@ -21,11 +22,19 @@ def show():
     repository = FileRepository(repository_location())
     if issued := last_bans_issued(repository):
         if issued.revoked:
-            print(f"Last bans revoked: {issued.issued}")
+            echo(f"Last bans revoked: {issued.issued}")
         else:
-            print(f"Last bans issued: {issued.issued}")
+            echo(f"Last bans issued: {issued.issued}")
     else:
-        print("No bans have been retrieved yet.")
+        echo("No bans have been retrieved yet.")
+
+
+@dfes.command(name="list", help="List the stored feeds for issued bans.")
+def list_():
+    repository = FileRepository(repository_location())
+    issued = repository.list_bans()
+    for issued_date in issued:
+        echo(issued_date.strftime("%c"))
 
 
 if __name__ == '__main__':
