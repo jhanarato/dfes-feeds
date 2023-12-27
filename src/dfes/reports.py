@@ -11,7 +11,14 @@ def template() -> jinja2.Template:
 """Published: {{feed.published.strftime("%d/%m/%Y")}}
 Title: {{feed.title}}
 {% for ban in bans %}
-Bans declared for {{ban.declared_for.strftime("%d/%m/%Y")}}
+Entry #{{ loop.index }}
+Issued {{ban.issued.strftime("%a %d/%m/%Y at %I:%M %p")}}
+{% if ban.revoked -%}
+Bans revoked for {{ban.declared_for.strftime("%d/%m/%Y")}}
+{% else %}
+Total fire bans declared for {{ban.declared_for.strftime("%d/%m/%Y")}}
+{%- endif %}
+
 {% for location in ban.locations %}{{location[0]}} / {{location[1]}}
 {% endfor %}
 {% endfor %}
