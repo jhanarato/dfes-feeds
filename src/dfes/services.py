@@ -55,3 +55,9 @@ def last_bans_issued(repository: Repository) -> TotalFireBans | None:
 
 def repository_location():
     return Path.home() / ".dfes"
+
+
+def all_valid_feeds(repository: Repository) -> list[Feed]:
+    issued_dates = repository.list_bans()
+    feed_text = [repository.retrieve_bans(issued_date) for issued_date in issued_dates]
+    return [parse_feed(feed_text) for feed_text in feed_text]
