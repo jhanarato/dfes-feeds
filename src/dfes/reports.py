@@ -1,8 +1,11 @@
+import csv
+
 import jinja2
 
 from dfes.bans import parse_bans
 from dfes.feeds import parse_feed
 from dfes.repository import Repository
+from dfes.services import all_valid_feeds
 
 
 def template() -> jinja2.Template:
@@ -32,3 +35,34 @@ def bans_for_today(repository: Repository) -> str:
     feed = parse_feed(feed_xml)
     bans = [parse_bans(entry.summary) for entry in feed.entries]
     return template().render(feed=feed, bans=bans)
+
+
+def entries_as_csv(repository: Repository) -> None:
+    with open("entries.csv", "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+
+        writer.writerow([
+            "Feed Published",
+            "Entry Index",
+            "Entry Published",
+            "DFES Published",
+            "Revoked?",
+            "Issued",
+            "Declared For",
+            "Districts",
+        ])
+
+        for feed in all_valid_feeds(repository):
+            for index, entry in enumerate(feed.entries):
+                bans = parse_bans(entry.summary)
+                districts = [location[1] for location in bans.locations]
+                writer.writerow([
+                    feed.published.strftime("%d-%m-%Y %H:%M"),
+                    f"Entry [{index}]",
+                    entry.published.strftime("%d-%m-%Y %H:%M"),
+                    entry.dfes_published.strftime("%d-%m-%Y %H:%M"),
+                    str(bans.revoked),
+                    bans.issued.strftime("%d-%m-%Y %H:%M"),
+                    bans.declared_for.strftime("%d-%m-%Y"),
+                    ", ".join(districts)
+                ])
