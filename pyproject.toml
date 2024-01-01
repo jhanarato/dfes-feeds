@@ -18,6 +18,7 @@ requests = "^2.31.0"
 Jinja2 = "^3.1.2"
 pandas = "^2.1.4"
 numpy = "^1.26.2"
+rich = "^13.7.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
