@@ -58,8 +58,11 @@ def repository_location():
 
 
 def all_valid_feeds(repository: Repository) -> list[Feed]:
-    issued_dates = repository.list_bans()
-    feed_text = [repository.retrieve_bans(issued_date) for issued_date in issued_dates]
+    feed_published_dates = repository.list_bans()
+
+    feed_text = [repository.retrieve_bans(published_date)
+                 for published_date in feed_published_dates]
+
     return [parse_feed(feed_text) for feed_text in feed_text]
 
 
@@ -68,3 +71,10 @@ def all_entries(feeds: list[Feed]) -> list[Entry]:
     for feed in feeds:
         entries.extend(feed.entries)
     return entries
+
+
+def most_recently_issued(repository: Repository) -> TotalFireBans:
+    feeds = all_valid_feeds(repository)
+    entries = all_entries(feeds)
+    bans = [parse_bans(entry.summary) for entry in entries]
+    return max(bans, key=lambda b: b.issued)

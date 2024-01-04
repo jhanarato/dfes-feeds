@@ -7,7 +7,8 @@ from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed
 from dfes.repository import InMemoryRepository
-from dfes.services import store_feed, aquire_ban_feed, last_failure, last_bans_issued, check_summaries
+from dfes.services import store_feed, aquire_ban_feed, last_failure, last_bans_issued, check_summaries, \
+    most_recently_issued
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -123,3 +124,18 @@ def test_should_store_ok_bans_normally(bans_xml):
     now = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     store_feed(bans_xml, repository, now)
     assert repository.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
+
+
+def test_should_get_most_recently_issued(repository):
+    issued_dates = [
+        datetime(2023, 10, 16, tzinfo=timezone.utc),
+        datetime(2023, 10, 17, tzinfo=timezone.utc),
+        datetime(2023, 10, 18, tzinfo=timezone.utc),
+    ]
+
+    for issued_date in issued_dates:
+        repository.add_bans(issued_date, generate_bans_xml(issued=issued_date))
+
+    bans = most_recently_issued(repository)
+
+    assert bans.issued == datetime(2023, 10, 18, tzinfo=timezone.utc)
