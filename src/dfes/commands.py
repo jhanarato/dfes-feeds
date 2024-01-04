@@ -1,9 +1,9 @@
 import click
 from click import echo
 
-from dfes.reports import bans_for_today, entries_as_csv
+from dfes.reports import display_bans, entries_as_csv
 from dfes.repository import FileRepository
-from dfes.services import aquire_ban_feed, store_feed, repository_location
+from dfes.services import aquire_ban_feed, store_feed, repository_location, most_recently_issued
 
 
 @click.group()
@@ -21,7 +21,8 @@ def fetch():
 @dfes.command(help="Show most recently issued bans")
 def show():
     repository = FileRepository(repository_location())
-    echo(bans_for_today(repository))
+    bans = most_recently_issued(repository)
+    display_bans(bans)
 
 
 @dfes.command(name="list", help="List the stored feeds for issued bans.")
