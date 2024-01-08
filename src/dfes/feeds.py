@@ -14,6 +14,7 @@ class Entry:
     dfes_published: datetime
     summary: str
 
+    @property
     def bans(self) -> TotalFireBans:
         return parse_bans(self.summary)
 

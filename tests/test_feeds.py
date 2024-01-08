@@ -44,4 +44,4 @@ def test_entry_has_bans_property():
         summary=summary
     )
 
-    assert entry.bans().issued == issued
+    assert entry.bans.issued == issued
