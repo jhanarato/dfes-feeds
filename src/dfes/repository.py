@@ -64,8 +64,12 @@ def create_if_missing(location: Path) -> None:
         location.mkdir(parents=True)
 
 
+def repository_location():
+    return Path.home() / ".dfes"
+
+
 class FileRepository:
-    def __init__(self, location: Path):
+    def __init__(self, location: Path = repository_location()):
         self._location = location
         create_if_missing(self._location)
 
@@ -100,7 +104,3 @@ class FileRepository:
         file_paths = self._location.glob("failed_*.rss")
         timestamps = [to_failed_timestamp(file_path.name) for file_path in file_paths]
         return sorted(timestamps)
-
-
-def repository_location():
-    return Path.home() / ".dfes"
