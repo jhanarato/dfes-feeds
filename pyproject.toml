@@ -17,12 +17,12 @@ click = "^8.1.7"
 requests = "^2.31.0"
 Jinja2 = "^3.1.2"
 rich = "^13.7.0"
-polars = "^0.20.3"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
 responses = "^0.24.1"
 pytest-responses = "^0.5.1"
+polars = "^0.20.3"
 
 [tool.poetry.scripts]
 dfes = 'dfes.commands:dfes'
