@@ -14,18 +14,26 @@ def to_dataframe(repository: Repository) -> pl.DataFrame:
         "revoked": [],
         "issued": [],
         "declared_for": [],
+        "region": [],
+        "district": [],
     }
 
     for feed in all_valid_feeds(repository):
         for index, entry in enumerate(feed.entries):
             bans = parse_bans(entry.summary)
-
-            data["feed_published"].append(feed.published)
-            data["entry_index"].append(index)
-            data["entry_published"].append(entry.published)
-            data["dfes_published"].append(entry.dfes_published)
-            data["revoked"].append(bans.revoked)
-            data["issued"].append(bans.issued)
-            data["declared_for"].append(bans.declared_for)
+            for location in bans.locations:
+                data["feed_published"].append(feed.published)
+                data["entry_index"].append(index)
+                data["entry_published"].append(entry.published)
+                data["dfes_published"].append(entry.dfes_published)
+                data["revoked"].append(bans.revoked)
+                data["issued"].append(bans.issued)
+                data["declared_for"].append(bans.declared_for)
+                data["region"].append(location[0])
+                data["district"].append(location[1])
 
     return pl.DataFrame(data)
+
+
+def locations_seen(df: pl.DataFrame) -> pl.DataFrame:
+    return df.select(pl.col("region", "district")).sort("region").unique()
