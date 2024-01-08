@@ -2,8 +2,8 @@ import click
 from click import echo
 
 from dfes.reports import display_bans, entries_as_csv
-from dfes.repository import FileRepository
-from dfes.services import aquire_ban_feed, store_feed, repository_location, most_recently_issued
+from dfes.repository import FileRepository, repository_location
+from dfes.services import aquire_ban_feed, store_feed, most_recently_issued
 
 
 @click.group()

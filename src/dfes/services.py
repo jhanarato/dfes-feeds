@@ -1,5 +1,4 @@
 from datetime import datetime
-from pathlib import Path
 
 import requests
 
@@ -51,10 +50,6 @@ def last_bans_issued(repository: Repository) -> TotalFireBans | None:
 
     entry = parsed.entries[0]
     return parse_bans(entry.summary)
-
-
-def repository_location():
-    return Path.home() / ".dfes"
 
 
 def all_valid_feeds(repository: Repository) -> list[Feed]:

@@ -100,3 +100,7 @@ class FileRepository:
         file_paths = self._location.glob("failed_*.rss")
         timestamps = [to_failed_timestamp(file_path.name) for file_path in file_paths]
         return sorted(timestamps)
+
+
+def repository_location():
+    return Path.home() / ".dfes"
