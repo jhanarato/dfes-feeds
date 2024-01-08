@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 
 import feedparser
 
+from dfes.bans import TotalFireBans, parse_bans
 from dfes.exceptions import ParsingFailed
 
 
@@ -12,6 +13,9 @@ class Entry:
     published: datetime
     dfes_published: datetime
     summary: str
+
+    def bans(self) -> TotalFireBans:
+        return parse_bans(self.summary)
 
 
 @dataclass
