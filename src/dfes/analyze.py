@@ -1,11 +1,11 @@
-import polars as ps
+import polars as pl
 
 from dfes.bans import parse_bans
 from dfes.repository import Repository
 from dfes.services import all_valid_feeds
 
 
-def to_dataframe(repository: Repository) -> ps.DataFrame:
+def to_dataframe(repository: Repository) -> pl.DataFrame:
     data = {
         "feed_published": [],
         "entry_index": [],
@@ -28,4 +28,4 @@ def to_dataframe(repository: Repository) -> ps.DataFrame:
             data["issued"].append(bans.issued)
             data["declared_for"].append(bans.declared_for)
 
-    return ps.DataFrame(data)
+    return pl.DataFrame(data)
