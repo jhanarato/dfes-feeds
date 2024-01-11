@@ -42,3 +42,9 @@ def locations_seen(df: pl.DataFrame) -> pl.DataFrame:
 def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
     feeds = df.filter(pl.col("entry_index") == 1).select(pl.col("feed_published")).unique()
     return df.join(feeds, on="feed_published", how="semi")
+
+
+def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
+    return extra_entries(df).select(
+        "feed_published", "entry_index", "entry_published", "issued"
+    ).unique().sort(pl.col("feed_published", "entry_index"))
