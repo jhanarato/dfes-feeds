@@ -37,3 +37,8 @@ def to_dataframe(repository: Repository) -> pl.DataFrame:
 
 def locations_seen(df: pl.DataFrame) -> pl.DataFrame:
     return df.select(pl.col("region", "district")).sort("region").unique()
+
+
+def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
+    feeds = df.filter(pl.col("entry_index") == 1).select(pl.col("feed_published")).unique()
+    return df.join(feeds, on="feed_published", how="semi")
