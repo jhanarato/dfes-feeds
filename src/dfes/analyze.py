@@ -59,3 +59,10 @@ def with_declared_for_interval(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
         (pl.col("declared_for") - pl.col("issued").cast(pl.Date)).alias("interval")
     )
+
+
+def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
+    n_extras = pl.DataFrame(
+        data={"n_extras": [2, 2, 1]}
+    )
+    return pl.concat([df, n_extras], how="horizontal")
