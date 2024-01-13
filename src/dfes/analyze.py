@@ -53,3 +53,9 @@ def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
     return extra_entries(df).select(
         "feed_published", "entry_index", "entry_published", "issued"
     ).unique().sort(pl.col("feed_published", "entry_index"))
+
+
+def with_declared_for_interval(df: pl.DataFrame) -> pl.DataFrame:
+    return df.with_columns(
+        (pl.col("declared_for") - pl.col("issued").cast(pl.Date)).alias("interval")
+    )
