@@ -1,12 +1,14 @@
 from datetime import datetime
 
 import polars as pl
+import pytest
 
 from dfes.analyze import extra_entries
 
 
-def test_extra_entries():
-    df = pl.DataFrame(
+@pytest.fixture
+def entries_data():
+    return pl.DataFrame(
         data={
             "feed_published": [
                 datetime(2000, 1, 1, 1),
@@ -17,7 +19,9 @@ def test_extra_entries():
         }
     )
 
-    assert extra_entries(df).equals(
+
+def test_extra_entries(entries_data):
+    assert extra_entries(entries_data).equals(
         pl.DataFrame(
             data={
                 "feed_published": [
