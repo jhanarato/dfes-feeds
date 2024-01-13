@@ -66,3 +66,9 @@ def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
         pl.all(),
         pl.col("entry_index").count().over("feed_published").alias("n_extras")
     )
+
+
+def filter_extras(df: pl.DataFrame) -> pl.DataFrame:
+    return df.filter(
+        pl.col("entry_index").count().over("feed_published") > 1
+    )
