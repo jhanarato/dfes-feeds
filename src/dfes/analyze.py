@@ -61,6 +61,10 @@ def with_declared_for_interval(df: pl.DataFrame) -> pl.DataFrame:
     )
 
 
+def without_locations(df: pl.DataFrame) -> pl.DataFrame:
+    return df.select(pl.exclude("region", "district")).unique()
+
+
 def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
         pl.all(),
