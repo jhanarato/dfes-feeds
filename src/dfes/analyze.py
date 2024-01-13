@@ -62,7 +62,7 @@ def with_declared_for_interval(df: pl.DataFrame) -> pl.DataFrame:
 
 
 def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
-    n_extras = pl.DataFrame(
-        data={"n_extras": [2, 2, 1]}
+    return df.with_columns(
+        pl.all(),
+        pl.col("entry_index").count().over("feed_published").alias("n_extras")
     )
-    return pl.concat([df, n_extras], how="horizontal")
