@@ -44,7 +44,7 @@ def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
         pl.col("feed_published").is_in(
             df.filter(
                 pl.col("entry_index") > 0
-            )["feed_published"]
+            ).select("feed_published")
         )
     )
 
