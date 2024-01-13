@@ -61,15 +61,15 @@ def with_declared_for_interval(df: pl.DataFrame) -> pl.DataFrame:
     )
 
 
-def get_n_entries(n):
-    return pl.col("entry_index").count().over("feed_published") > n
-
-
 def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
         pl.all(),
         pl.col("entry_index").count().over("feed_published").alias("n_extras")
     )
+
+
+def get_n_entries(n):
+    return pl.col("entry_index").count().over("feed_published") > n
 
 
 def filter_extras(df: pl.DataFrame) -> pl.DataFrame:
