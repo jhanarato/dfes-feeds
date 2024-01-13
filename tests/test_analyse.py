@@ -3,7 +3,7 @@ from datetime import datetime
 import polars as pl
 import pytest
 
-from dfes.analyze import extra_entries, with_n_extras
+from dfes.analyze import extra_entries, with_n_extras, filter_extras
 
 
 @pytest.fixture
@@ -42,3 +42,7 @@ def test_with_n_extras(entries_data):
             data={"n_extras": [2, 2, 1]}
         )
     )
+
+
+def test_filter_extras(entries_data):
+    assert filter_extras(entries_data).equals(extra_entries(entries_data))
