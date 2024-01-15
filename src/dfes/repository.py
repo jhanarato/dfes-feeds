@@ -114,5 +114,6 @@ class Bans(Sequence):
     def __len__(self) -> int:
         return len(self.repository.list_bans())
 
-    def __getitem__(self, published: datetime) -> str:
-        return None
+    def __getitem__(self, index: int) -> str:
+        feed_published = self.repository.list_bans()[index]
+        return self.repository.retrieve_bans(feed_published)

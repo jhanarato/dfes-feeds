@@ -108,6 +108,13 @@ def test_should_allow_use_of_existing_directory(tmp_path):
     assert existing_repo.list_bans() == [dt]
 
 
-def test_bans_sequence_length(three_bans):
-    seq = Bans(three_bans)
-    assert len(seq) == 3
+def test_should_provide_sequence_length(three_bans):
+    assert len(Bans(three_bans)) == 3
+
+
+def test_should_provide_ban_by_index(three_bans):
+    assert Bans(three_bans)[0] == "Bans for January 3rd"
+
+
+def test_should_reverse_sequence(three_bans):
+    assert list(reversed(Bans(three_bans)))[0] == "Bans for January 5th"
