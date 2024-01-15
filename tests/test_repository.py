@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import pytest
 
 from conftest import repository
-from dfes.repository import to_bans_file_name, InMemoryRepository, to_bans_issued_date, FileRepository, \
+from dfes.repository import to_bans_file_name, InMemoryRepository, to_feed_published_date, FileRepository, \
     to_failed_file_name, to_failed_timestamp, Bans
 
 
@@ -67,7 +67,7 @@ def test_to_bans_file_name():
 
 def test_to_bans_issued_date():
     file_name = "bans_issued_2023_10_15_0408.rss"
-    assert to_bans_issued_date(file_name) == datetime.fromisoformat("2023-10-15 04:08:00+00:00")
+    assert to_feed_published_date(file_name) == datetime.fromisoformat("2023-10-15 04:08:00+00:00")
 
 
 def test_to_failed_file_name():

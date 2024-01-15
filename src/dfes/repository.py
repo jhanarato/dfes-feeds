@@ -5,9 +5,9 @@ from typing import Protocol
 
 
 class Repository(Protocol):
-    def add_bans(self, issued: datetime, feed_text: str) -> None: ...
+    def add_bans(self, feed_published: datetime, feed_text: str) -> None: ...
 
-    def retrieve_bans(self, issued: datetime) -> str | None: ...
+    def retrieve_bans(self, feed_published: datetime) -> str | None: ...
 
     def list_bans(self) -> list[datetime]: ...
 
@@ -23,11 +23,11 @@ class InMemoryRepository:
         self._ban_feeds = dict()
         self._failed = dict()
 
-    def add_bans(self, issued: datetime, feed_text: str) -> None:
-        self._ban_feeds[issued] = feed_text
+    def add_bans(self, feed_published: datetime, feed_text: str) -> None:
+        self._ban_feeds[feed_published] = feed_text
 
-    def retrieve_bans(self, issued: datetime) -> str | None:
-        return self._ban_feeds.get(issued)
+    def retrieve_bans(self, feed_published: datetime) -> str | None:
+        return self._ban_feeds.get(feed_published)
 
     def list_bans(self) -> list[datetime]:
         return list(self._ban_feeds)
@@ -42,11 +42,11 @@ class InMemoryRepository:
         return list(self._failed)
 
 
-def to_bans_file_name(issued: datetime) -> str:
-    return issued.strftime("bans_issued_%Y_%m_%d_%H%M.rss")
+def to_bans_file_name(feed_published: datetime) -> str:
+    return feed_published.strftime("bans_issued_%Y_%m_%d_%H%M.rss")
 
 
-def to_bans_issued_date(file_name: str) -> datetime:
+def to_feed_published_date(file_name: str) -> datetime:
     dt = datetime.strptime(file_name, "bans_issued_%Y_%m_%d_%H%M.rss")
     return dt.replace(tzinfo=timezone.utc)
 
@@ -74,12 +74,12 @@ class FileRepository:
         self._location = location
         create_if_missing(self._location)
 
-    def add_bans(self, issued: datetime, feed_text: str) -> None:
-        name = self._location / to_bans_file_name(issued)
+    def add_bans(self, feed_published: datetime, feed_text: str) -> None:
+        name = self._location / to_bans_file_name(feed_published)
         name.write_text(feed_text)
 
-    def retrieve_bans(self, issued: datetime) -> str | None:
-        name = self._location / to_bans_file_name(issued)
+    def retrieve_bans(self, feed_published: datetime) -> str | None:
+        name = self._location / to_bans_file_name(feed_published)
         if name.is_file():
             return name.read_text()
         else:
@@ -87,7 +87,7 @@ class FileRepository:
 
     def list_bans(self) -> list[datetime]:
         file_paths = self._location.glob("bans_issued_*.rss")
-        issued_dates = [to_bans_issued_date(file_path.name) for file_path in file_paths]
+        issued_dates = [to_feed_published_date(file_path.name) for file_path in file_paths]
         return sorted(issued_dates)
 
     def add_failed(self, feed_text: str, now: datetime) -> None:
