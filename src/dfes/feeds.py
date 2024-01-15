@@ -13,10 +13,10 @@ class Entry:
     published: datetime
     dfes_published: datetime
     summary: str
+    bans: TotalFireBans | None = None
 
-    @property
-    def bans(self) -> TotalFireBans:
-        return parse_bans(self.summary)
+    def parse_summary(self):
+        self.bans = parse_bans(self.summary)
 
 
 @dataclass

@@ -32,7 +32,7 @@ def test_dfes_published_malformed(mangled_dfes_publication):
         _ = feeds.parse_feed(mangled_dfes_publication)
 
 
-def test_entry_has_bans_property():
+def test_parse_entry_summary():
     issued = datetime(2000, 1, 2, 3, 4, tzinfo=timezone.utc)
     feed_xml = generate_bans_xml(issued=issued)
 
@@ -41,7 +41,9 @@ def test_entry_has_bans_property():
     entry = Entry(
         published=datetime(2001, 1, 1),
         dfes_published=datetime(2001, 1, 1),
-        summary=summary
+        summary=summary,
     )
+
+    entry.parse_summary()
 
     assert entry.bans.issued == issued
