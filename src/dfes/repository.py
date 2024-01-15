@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Protocol
@@ -104,3 +105,14 @@ class FileRepository:
         file_paths = self._location.glob("failed_*.rss")
         timestamps = [to_failed_timestamp(file_path.name) for file_path in file_paths]
         return sorted(timestamps)
+
+
+class Bans(Sequence):
+    def __init__(self, repository: Repository):
+        self.repository = repository
+
+    def __len__(self) -> int:
+        return len(self.repository.list_bans())
+
+    def __getitem__(self, published: datetime) -> str:
+        return None

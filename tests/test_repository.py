@@ -4,7 +4,7 @@ import pytest
 
 from conftest import repository
 from dfes.repository import to_bans_file_name, InMemoryRepository, to_bans_issued_date, FileRepository, \
-    to_failed_file_name, to_failed_timestamp
+    to_failed_file_name, to_failed_timestamp, Bans
 
 
 @pytest.fixture
@@ -108,5 +108,6 @@ def test_should_allow_use_of_existing_directory(tmp_path):
     assert existing_repo.list_bans() == [dt]
 
 
-def test_bans_sequence_length(repository):
-    pass
+def test_bans_sequence_length(three_bans):
+    seq = Bans(three_bans)
+    assert len(seq) == 3
