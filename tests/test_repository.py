@@ -41,28 +41,28 @@ def test_should_get_none_if_missing(repository):
 
 
 def test_should_not_persist_when_in_memory():
-    issued = datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)
+    feed_published = datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)
     repository = InMemoryRepository()
     assert not repository.list_bans()
-    repository.add_bans(issued, "Bans for January 2nd")
-    assert repository.list_bans() == [issued]
+    repository.add_bans(feed_published, "Bans for January 2nd")
+    assert repository.list_bans() == [feed_published]
     repository = InMemoryRepository()
     assert not repository.list_bans()
 
 
 def test_should_persist_when_on_file_system(tmp_path):
-    issued = datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)
+    feed_published = datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)
     repository = FileRepository(tmp_path)
     assert not repository.list_bans()
-    repository.add_bans(issued, "Bans for January 2nd")
+    repository.add_bans(feed_published, "Bans for January 2nd")
     assert repository.list_bans() == [datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)]
     repository = FileRepository(tmp_path)
     assert repository.list_bans() == [datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)]
 
 
 def test_to_bans_file_name():
-    issued = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
-    assert to_bans_file_name(issued) == "bans_issued_2023_10_15_0408.rss"
+    feed_published = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
+    assert to_bans_file_name(feed_published) == "bans_issued_2023_10_15_0408.rss"
 
 
 def test_to_bans_issued_date():
