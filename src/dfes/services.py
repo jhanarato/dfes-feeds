@@ -37,11 +37,11 @@ def last_failure(repository: Repository) -> str | None:
 
 
 def last_bans_issued(repository: Repository) -> TotalFireBans | None:
-    issued_at = max(repository.list_bans(), default=None)
-    if issued_at is None:
+    feed_published = max(repository.list_bans(), default=None)
+    if feed_published is None:
         return None
 
-    retrieved = repository.retrieve_bans(issued_at)
+    retrieved = repository.retrieve_bans(feed_published)
 
     if retrieved is None:
         return None
