@@ -27,7 +27,7 @@ def store_feed(feed_xml: str, repository: Repository, now: datetime = datetime.n
 
 def check_summaries(feed: Feed):
     for entry in feed.entries:
-        parse_bans(entry.summary)
+        entry.parse_summary()
 
 
 def last_failure(repository: Repository) -> str | None:

@@ -1,11 +1,11 @@
+from collections.abc import Iterable
+
 import polars as pl
 
-from dfes.bans import parse_bans
-from dfes.repository import Repository
-from dfes.services import all_valid_feeds
+from dfes.feeds import Feed
 
 
-def to_dataframe(repository: Repository) -> pl.DataFrame:
+def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
     data = {
         "feed_published": [],
         "entry_index": [],
@@ -18,17 +18,17 @@ def to_dataframe(repository: Repository) -> pl.DataFrame:
         "district": [],
     }
 
-    for feed in all_valid_feeds(repository):
+    for feed in feeds:
         for index, entry in enumerate(feed.entries):
-            bans = parse_bans(entry.summary)
-            for location in bans.locations:
+            entry.parse_summary()
+            for location in entry.bans.locations:
                 data["feed_published"].append(feed.published)
                 data["entry_index"].append(index)
                 data["entry_published"].append(entry.published)
                 data["dfes_published"].append(entry.dfes_published)
-                data["revoked"].append(bans.revoked)
-                data["issued"].append(bans.issued)
-                data["declared_for"].append(bans.declared_for)
+                data["revoked"].append(entry.bans.revoked)
+                data["issued"].append(entry.bans.issued)
+                data["declared_for"].append(entry.bans.declared_for)
                 data["region"].append(location[0])
                 data["district"].append(location[1])
 
