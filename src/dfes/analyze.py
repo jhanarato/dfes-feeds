@@ -70,12 +70,12 @@ def without_locations(df: pl.DataFrame) -> pl.DataFrame:
 def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
         pl.all(),
-        pl.col("entry_index").count().over("feed_published").alias("n_extras")
+        pl.col("entry_index").n_unique().over("feed_published").alias("n_extras")
     )
 
 
 def get_n_entries(n):
-    return pl.col("entry_index").count().over("feed_published") > n
+    return pl.col("entry_index").n_unique().over("feed_published") > n
 
 
 def filter_extras(df: pl.DataFrame) -> pl.DataFrame:

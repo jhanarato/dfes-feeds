@@ -94,15 +94,11 @@ def test_extra_entries(feeds_df):
         ]
 
 
-def test_with_n_extras(entries_data):
-    w = with_n_extras(entries_data)
+def test_with_n_extras(feeds_df):
+    w = with_n_extras(feeds_df)
 
-    assert w.select("n_extras").equals(
-        pl.DataFrame(
-            data={"n_extras": [2, 2, 1]}
-        )
-    )
+    assert w["n_extras"].to_list() == [2, 2, 2, 1, 1, 1]
 
 
-def test_filter_extras(entries_data):
-    assert filter_extras(entries_data).equals(extra_entries(entries_data))
+def test_filter_extras(feeds_df):
+    assert filter_extras(feeds_df).equals(extra_entries(feeds_df))
