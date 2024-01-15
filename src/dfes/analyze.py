@@ -2,7 +2,8 @@ from collections.abc import Iterable
 
 import polars as pl
 
-from dfes.feeds import Feed
+from dfes.feeds import Feed, parse_feed
+from dfes.repository import FileRepository, Bans
 
 
 def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
@@ -82,3 +83,14 @@ def filter_extras(df: pl.DataFrame) -> pl.DataFrame:
     return df.filter(
         get_n_entries(1)
     )
+
+
+def main():
+    repo = FileRepository()
+    feeds = [parse_feed(feed_text) for feed_text in Bans(repo)]
+    df = to_dataframe(feeds)
+    print(arranged_extras(df))
+
+
+if __name__ == "__main__":
+    main()
