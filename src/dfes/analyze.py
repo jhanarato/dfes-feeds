@@ -20,7 +20,9 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
 
     for feed in feeds:
         for index, entry in enumerate(feed.entries):
-            entry.parse_summary()
+            if not entry.bans:
+                entry.parse_summary()
+
             for location in entry.bans.locations:
                 data["feed_published"].append(feed.published)
                 data["entry_index"].append(index)
