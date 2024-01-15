@@ -1,16 +1,22 @@
 from datetime import datetime, timezone
 
+import pytest
+
 from conftest import repository
 from dfes.repository import to_bans_file_name, InMemoryRepository, to_bans_issued_date, FileRepository, \
     to_failed_file_name, to_failed_timestamp
 
 
-def test_repo_lists_bans(repository):
+@pytest.fixture
+def three_bans(repository):
     repository.add_bans(datetime(2023, 1, 2, 5, 5, tzinfo=timezone.utc), "Bans for January 3rd")
     repository.add_bans(datetime(2023, 1, 3, 5, 5, tzinfo=timezone.utc), "Bans for January 4th")
     repository.add_bans(datetime(2023, 1, 4, 5, 5, tzinfo=timezone.utc), "Bans for January 5th")
+    return repository
 
-    assert repository.list_bans() == [
+
+def test_repo_lists_bans(three_bans):
+    assert three_bans.list_bans() == [
         datetime(2023, 1, 2, 5, 5, tzinfo=timezone.utc),
         datetime(2023, 1, 3, 5, 5, tzinfo=timezone.utc),
         datetime(2023, 1, 4, 5, 5, tzinfo=timezone.utc),
@@ -100,3 +106,7 @@ def test_should_allow_use_of_existing_directory(tmp_path):
 
     existing_repo = FileRepository(path)
     assert existing_repo.list_bans() == [dt]
+
+
+def test_bans_sequence_length(repository):
+    pass
