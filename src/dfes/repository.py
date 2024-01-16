@@ -117,3 +117,16 @@ class Bans(Sequence):
     def __getitem__(self, index: int) -> str:
         feed_published = self.repository.list_bans()[index]
         return self.repository.retrieve_bans(feed_published)
+
+
+class Failed(Sequence):
+    def __init__(self, repository: Repository):
+        self.repository = repository
+
+    def __len__(self) -> int:
+        return len(self.repository.list_failed())
+
+    def __getitem__(self, index: int) -> str:
+        feed_published = self.repository.list_failed()[index]
+        return self.repository.retrieve_failed(feed_published)
+    
