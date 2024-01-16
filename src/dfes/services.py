@@ -5,7 +5,7 @@ import requests
 from dfes.bans import TotalFireBans, parse_bans
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed, Feed, Entry
-from dfes.repository import Repository
+from dfes.repository import Repository, Failed
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -31,9 +31,11 @@ def check_summaries(feed: Feed):
 
 
 def last_failure(repository: Repository) -> str | None:
-    if failed_at := max(repository.list_failed(), default=None):
-        return repository.retrieve_failed(failed_at)
-    return None
+    failed = Failed(repository)
+    if not failed:
+        return None
+
+    return failed[-1]
 
 
 def last_bans_issued(repository: Repository) -> TotalFireBans | None:
