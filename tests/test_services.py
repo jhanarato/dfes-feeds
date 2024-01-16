@@ -7,8 +7,10 @@ from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed
 from dfes.repository import InMemoryRepository
-from dfes.services import store_feed, aquire_ban_feed, last_failure, last_bans_issued, check_summaries, \
+from dfes.services import (
+    store_feed, aquire_ban_feed, last_failure, check_summaries,
     most_recently_issued
+)
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -84,20 +86,6 @@ def test_should_retrieve_most_recent_failure(repository):
 
 def test_should_indicate_nothing_failed(repository):
     assert last_failure(repository) is None
-
-
-def test_should_indicate_no_bans_issued(repository):
-    assert last_bans_issued(repository) is None
-
-
-def test_should_retrieve_most_recent_bans(repository):
-    first = datetime(2023, 1, 1, tzinfo=timezone.utc)
-    second = datetime(2023, 1, 2, tzinfo=timezone.utc)
-
-    repository.add_bans(first, generate_bans_xml(issued=first))
-    repository.add_bans(second, generate_bans_xml(issued=second))
-
-    assert last_bans_issued(repository).issued == second
 
 
 def test_should_raise_exception_checking_bad_summary(bad_summary):
