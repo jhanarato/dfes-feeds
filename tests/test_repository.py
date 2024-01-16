@@ -4,7 +4,7 @@ import pytest
 
 from conftest import repository
 from dfes.repository import to_bans_file_name, InMemoryRepository, to_feed_published_date, FileRepository, \
-    to_failed_file_name, to_failed_timestamp, BanFeeds, FailedFeeds
+    to_failed_file_name, to_failed_timestamp, BanFeeds, FailedFeeds, is_bans_file
 
 
 @pytest.fixture
@@ -79,6 +79,18 @@ def test_to_bans_issued_date():
     assert to_feed_published_date(file_name) == datetime.fromisoformat("2023-10-15 04:08:11+00:00")
 
 
+@pytest.mark.parametrize(
+    "file_name,valid",
+    [
+        ("bans_issued_2024_01_07_1127.rss", False),
+        ("bans_issued_2024_01_07_112711.rss", True),
+        ("toadstools.txt", False),
+    ]
+)
+def test_is_bans_file(file_name, valid):
+    assert is_bans_file(file_name) == valid
+
+
 def test_to_failed_file_name():
     dt = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
     assert to_failed_file_name(dt) == "failed_2023_10_15_0408.rss"
@@ -139,3 +151,10 @@ def test_should_provide_failed_by_index(four_failed):
 
 def test_should_reverse_failed_sequence(four_failed):
     assert list(reversed(FailedFeeds(four_failed)))[0] == "Bad feed four"
+
+
+def test_should_list_only_files_with_seconds(tmp_path):
+    repo = FileRepository(tmp_path)
+    without_seconds = tmp_path / "bans_issued_2024_01_07_1127.rss"
+    without_seconds.write_text("Bans for 8th January")
+    assert repo.list_bans() == []

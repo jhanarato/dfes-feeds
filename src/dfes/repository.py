@@ -1,3 +1,4 @@
+import re
 from collections.abc import Sequence
 from datetime import datetime, timezone
 from pathlib import Path
@@ -51,6 +52,13 @@ def to_feed_published_date(file_name: str) -> datetime:
     return dt.replace(tzinfo=timezone.utc)
 
 
+def is_bans_file(file_name: str) -> bool:
+    return re.search(
+        r"bans_issued_\d{4}_\d{2}_\d{2}_\d{6}.rss",
+        file_name
+    ) is not None
+
+
 def to_failed_file_name(timestamp: datetime) -> str:
     return timestamp.strftime("failed_%Y_%m_%d_%H%M.rss")
 
@@ -86,7 +94,12 @@ class FileRepository:
             return None
 
     def list_bans(self) -> list[datetime]:
-        file_paths = self._location.glob("bans_issued_*.rss")
+        file_paths = []
+
+        for child in self._location.iterdir():
+            if is_bans_file(child.name):
+                file_paths.append(child)
+
         issued_dates = [to_feed_published_date(file_path.name) for file_path in file_paths]
         return sorted(issued_dates)
 
