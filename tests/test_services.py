@@ -8,7 +8,7 @@ from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed
 from dfes.repository import InMemoryRepository
 from dfes.services import (
-    store_feed, aquire_ban_feed, last_failure, check_summaries,
+    store_feed, aquire_ban_feed, check_summaries,
     most_recently_issued
 )
 from dfes.urls import FIRE_BAN_URL
@@ -75,17 +75,6 @@ def test_aquire_ok():
     contents = "<html></html>"
     responses.add(responses.GET, FIRE_BAN_URL, body=contents)
     assert aquire_ban_feed() == contents
-
-
-def test_should_retrieve_most_recent_failure(repository):
-    repository.add_failed("unparseable", now=datetime(2023, 7, 4))
-    repository.add_failed("imparseable", now=datetime(2023, 7, 5))
-
-    assert last_failure(repository) == "imparseable"
-
-
-def test_should_indicate_nothing_failed(repository):
-    assert last_failure(repository) is None
 
 
 def test_should_raise_exception_checking_bad_summary(bad_summary):
