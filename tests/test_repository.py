@@ -4,7 +4,7 @@ import pytest
 
 from conftest import repository
 from dfes.repository import to_bans_file_name, InMemoryRepository, to_feed_published_date, FileRepository, \
-    to_failed_file_name, to_failed_timestamp, Bans
+    to_failed_file_name, to_failed_timestamp, Bans, Failed
 
 
 @pytest.fixture
@@ -12,6 +12,15 @@ def three_bans(repository):
     repository.add_bans(datetime(2023, 1, 2, 5, 5, tzinfo=timezone.utc), "Bans for January 3rd")
     repository.add_bans(datetime(2023, 1, 3, 5, 5, tzinfo=timezone.utc), "Bans for January 4th")
     repository.add_bans(datetime(2023, 1, 4, 5, 5, tzinfo=timezone.utc), "Bans for January 5th")
+    return repository
+
+
+@pytest.fixture
+def four_failed(repository):
+    repository.add_failed("Bad feed one", now=datetime(2000, 1, 1))
+    repository.add_failed("Bad feed two", now=datetime(2000, 1, 2))
+    repository.add_failed("Bad feed three", now=datetime(2000, 1, 3))
+    repository.add_failed("Bad feed four", now=datetime(2000, 1, 4))
     return repository
 
 
@@ -108,7 +117,7 @@ def test_should_allow_use_of_existing_directory(tmp_path):
     assert existing_repo.list_bans() == [dt]
 
 
-def test_should_provide_sequence_length(three_bans):
+def test_should_provide_number_of_ban_feeds(three_bans):
     assert len(Bans(three_bans)) == 3
 
 
@@ -116,5 +125,17 @@ def test_should_provide_ban_by_index(three_bans):
     assert Bans(three_bans)[0] == "Bans for January 3rd"
 
 
-def test_should_reverse_sequence(three_bans):
+def test_should_reverse_ban_sequence(three_bans):
     assert list(reversed(Bans(three_bans)))[0] == "Bans for January 5th"
+
+
+def test_should_provide_number_of_failed_feeds(four_failed):
+    assert len(Failed(four_failed)) == 4
+
+
+def test_should_provide_failed_by_index(four_failed):
+    assert Failed(four_failed)[0] == "Bad feed one"
+
+
+def test_should_reverse_failed_sequence(four_failed):
+    assert list(reversed(Failed(four_failed)))[0] == "Bad feed four"

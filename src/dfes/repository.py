@@ -129,4 +129,3 @@ class Failed(Sequence):
     def __getitem__(self, index: int) -> str:
         feed_published = self.repository.list_failed()[index]
         return self.repository.retrieve_failed(feed_published)
-    
