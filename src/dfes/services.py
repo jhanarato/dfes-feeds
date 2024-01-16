@@ -21,7 +21,7 @@ def store_feed(feed_xml: str, repository: Repository, now: datetime = datetime.n
 
         repository.add_bans(feed.published, feed_xml)
     except ParsingFailed:
-        if should_store_failed(repository, feed_xml):
+        if store_failed(repository, feed_xml):
             repository.add_failed(feed_xml, now)
 
 
@@ -30,7 +30,7 @@ def check_summaries(feed: Feed):
         entry.parse_summary()
 
 
-def should_store_failed(repository: Repository, feed_xml: str) -> bool:
+def store_failed(repository: Repository, feed_xml: str) -> bool:
     failed = FailedFeeds(repository)
     return len(failed) == 0 or failed[-1] != feed_xml
 

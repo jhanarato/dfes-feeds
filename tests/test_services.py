@@ -9,7 +9,7 @@ from dfes.feeds import parse_feed
 from dfes.repository import InMemoryRepository, FailedFeeds
 from dfes.services import (
     store_feed, aquire_ban_feed, check_summaries,
-    most_recently_issued, should_store_failed
+    most_recently_issued, store_failed
 )
 from dfes.urls import FIRE_BAN_URL
 
@@ -121,14 +121,14 @@ def test_should_get_most_recently_issued(repository):
 def test_should_always_store_failed_when_repository_empty(repository):
     failed = FailedFeeds(repository)
     assert len(failed) == 0
-    assert should_store_failed(repository, "Add me")
+    assert store_failed(repository, "Add me")
 
 
 def test_should_not_store_failed_when_last_feed_the_same(repository):
     failed = FailedFeeds(repository)
     repository.add_failed("Don't add twice", now=datetime(2001, 1, 1))
     assert len(failed) == 1
-    assert not should_store_failed(repository, "Don't add twice")
+    assert not store_failed(repository, "Don't add twice")
 
 
 def test_should_store_when_different_to_last_feed(repository):
@@ -136,4 +136,4 @@ def test_should_store_when_different_to_last_feed(repository):
     assert len(failed) == 0
     repository.add_failed("Add me", now=datetime(2001, 1, 1))
     assert len(failed) == 1
-    assert should_store_failed(repository, "Add me too")
+    assert store_failed(repository, "Add me too")
