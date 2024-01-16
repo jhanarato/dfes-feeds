@@ -39,6 +39,17 @@ def store_failure(repository: Repository, feed_xml: str, now: datetime) -> None:
         repository.add_failed(feed_xml, now)
 
 
+def should_store_failed(repository: Repository, feed_xml: str) -> bool:
+    failed = Failed(repository)
+    if len(failed) == 0:
+        return True
+
+    if failed[-1] != feed_xml:
+        return True
+
+    return False
+
+
 def all_valid_feeds(repository: Repository) -> list[Feed]:
     feed_published_dates = repository.list_bans()
 
