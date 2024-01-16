@@ -43,11 +43,11 @@ class InMemoryRepository:
 
 
 def to_bans_file_name(feed_published: datetime) -> str:
-    return feed_published.strftime("bans_issued_%Y_%m_%d_%H%M.rss")
+    return feed_published.strftime("bans_issued_%Y_%m_%d_%H%M%S.rss")
 
 
 def to_feed_published_date(file_name: str) -> datetime:
-    dt = datetime.strptime(file_name, "bans_issued_%Y_%m_%d_%H%M.rss")
+    dt = datetime.strptime(file_name, "bans_issued_%Y_%m_%d_%H%M%S.rss")
     return dt.replace(tzinfo=timezone.utc)
 
 

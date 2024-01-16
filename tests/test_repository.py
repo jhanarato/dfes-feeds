@@ -70,13 +70,13 @@ def test_should_persist_when_on_file_system(tmp_path):
 
 
 def test_to_bans_file_name():
-    feed_published = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
-    assert to_bans_file_name(feed_published) == "bans_issued_2023_10_15_0408.rss"
+    feed_published = datetime.fromisoformat("2023-10-15 04:08:11+00:00")
+    assert to_bans_file_name(feed_published) == "bans_issued_2023_10_15_040811.rss"
 
 
 def test_to_bans_issued_date():
-    file_name = "bans_issued_2023_10_15_0408.rss"
-    assert to_feed_published_date(file_name) == datetime.fromisoformat("2023-10-15 04:08:00+00:00")
+    file_name = "bans_issued_2023_10_15_040811.rss"
+    assert to_feed_published_date(file_name) == datetime.fromisoformat("2023-10-15 04:08:11+00:00")
 
 
 def test_to_failed_file_name():

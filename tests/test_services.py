@@ -6,7 +6,7 @@ import responses
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed
-from dfes.repository import InMemoryRepository, FailedFeeds
+from dfes.repository import FailedFeeds
 from dfes.services import (
     store_feed, aquire_ban_feed, check_summaries,
     most_recently_issued, store_failed
@@ -14,60 +14,54 @@ from dfes.services import (
 from dfes.urls import FIRE_BAN_URL
 
 
-def test_should_add_feed_to_empty_repository(bans_xml):
-    repo = InMemoryRepository()
-    store_feed(bans_xml, repo)
-    assert repo.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
+def test_should_add_feed_to_empty_repository(bans_xml, repository):
+    store_feed(bans_xml, repository)
+    assert repository.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
 
 
-def test_should_not_add_feed_twice(bans_xml):
-    repo = InMemoryRepository()
-    store_feed(bans_xml, repo)
-    store_feed(bans_xml, repo)
-    assert repo.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
+def test_should_not_add_feed_twice(bans_xml, repository):
+    store_feed(bans_xml, repository)
+    store_feed(bans_xml, repository)
+    assert repository.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
 
 
-def test_should_add_two_different_feeds():
+def test_should_add_two_different_feeds(repository):
     published_first = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     published_second = datetime(2023, 10, 17, 8, 10, 56, tzinfo=timezone.utc)
 
     first_feed = generate_bans_xml(feed_published=published_first)
     second_feed = generate_bans_xml(feed_published=published_second)
 
-    repo = InMemoryRepository()
-    store_feed(first_feed, repo)
-    store_feed(second_feed, repo)
+    store_feed(first_feed, repository)
+    store_feed(second_feed, repository)
 
-    assert repo.list_bans() == [published_first, published_second]
+    assert repository.list_bans() == [published_first, published_second]
 
 
-def test_should_store_feed_when_it_fails_to_parse():
-    repo = InMemoryRepository()
+def test_should_store_feed_when_it_fails_to_parse(repository):
     feed_xml = "gobbledygook"
-    timestamp = datetime(2023, 7, 4, 12, 30)
-    store_feed(feed_xml, repo, now=timestamp)
+    timestamp = datetime(2023, 7, 4, 12, 30, tzinfo=timezone.utc)
+    store_feed(feed_xml, repository, now=timestamp)
 
-    assert repo.list_bans() == []
-    assert repo.list_failed() == [timestamp]
-
-
-def test_should_store_valid_but_empty_feed_in_bans(no_bans_xml):
-    repo = InMemoryRepository()
-    store_feed(no_bans_xml, repo)
-    assert repo.list_bans() == [datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)]
+    assert repository.list_bans() == []
+    assert repository.list_failed() == [timestamp]
 
 
-def test_should_not_store_failed_feed_twice():
-    repo = InMemoryRepository()
+def test_should_store_valid_but_empty_feed_in_bans(no_bans_xml, repository):
+    store_feed(no_bans_xml, repository)
+    assert repository.list_bans() == [datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)]
+
+
+def test_should_not_store_failed_feed_twice(repository):
     feed_xml = "gobbledygook"
 
-    first_timestamp = datetime(2023, 7, 4, 1)
-    second_timestamp = datetime(2023, 7, 4, 2)
+    first_timestamp = datetime(2023, 7, 4, 1, tzinfo=timezone.utc)
+    second_timestamp = datetime(2023, 7, 4, 2, tzinfo=timezone.utc)
 
-    store_feed(feed_xml, repo, now=first_timestamp)
-    store_feed(feed_xml, repo, now=second_timestamp)
+    store_feed(feed_xml, repository, now=first_timestamp)
+    store_feed(feed_xml, repository, now=second_timestamp)
 
-    assert repo.list_failed() == [first_timestamp]
+    assert repository.list_failed() == [first_timestamp]
 
 
 @responses.activate
@@ -88,16 +82,14 @@ def test_should_be_chill_if_summary_is_fine(bans_xml):
     check_summaries(feed)
 
 
-def test_should_store_bad_summary_in_faield(bad_summary):
-    repository = InMemoryRepository()
+def test_should_store_bad_summary_in_faield(bad_summary, repository):
     now = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     store_feed(bad_summary, repository, now)
     assert not repository.list_bans()
     assert repository.list_failed() == [now]
 
 
-def test_should_store_ok_bans_normally(bans_xml):
-    repository = InMemoryRepository()
+def test_should_store_ok_bans_normally(bans_xml, repository):
     now = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     store_feed(bans_xml, repository, now)
     assert repository.list_bans() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
