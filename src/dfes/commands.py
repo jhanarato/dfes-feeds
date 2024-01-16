@@ -36,10 +36,16 @@ def list_():
 
 
 @dfes.command(name="writecsv", help="Write out data to CSV file")
-@click.argument('output', type=click.File('w'))
+@click.argument("output", type=click.File('w'))
 def write_csv(output):
     repository = FileRepository(repository_location())
     entries_as_csv(repository, output)
+
+
+@dfes.command(name="migrate", help="Migrate repository to new format")
+def migrate():
+    repository = FileRepository(repository_location())
+    migrate()
 
 
 if __name__ == '__main__':
