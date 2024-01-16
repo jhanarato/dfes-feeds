@@ -1,5 +1,5 @@
 from dfes.bans import TotalFireBans, parse_bans
-from dfes.feeds import parse_feed, Feed, Entry
+from dfes.feeds import Feed, parse_feed, Entry
 from dfes.repository import Repository, BanFeeds
 
 

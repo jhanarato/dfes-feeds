@@ -4,7 +4,7 @@ import click
 
 from dfes.bans import parse_bans, TotalFireBans
 from dfes.repository import Repository
-from dfes.services import all_valid_feeds
+from dfes.show import all_valid_feeds
 
 
 def display_bans(bans: TotalFireBans) -> str:

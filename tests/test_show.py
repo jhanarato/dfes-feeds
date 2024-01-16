@@ -1,9 +1,7 @@
 from datetime import datetime, timezone
 
 from conftest import generate_bans_xml
-from dfes.services import (
-    most_recently_issued
-)
+from dfes.show import most_recently_issued
 
 
 def test_should_get_most_recently_issued(repository):
@@ -19,5 +17,3 @@ def test_should_get_most_recently_issued(repository):
     bans = most_recently_issued(repository)
 
     assert bans.issued == datetime(2023, 10, 18, tzinfo=timezone.utc)
-
-
