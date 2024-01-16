@@ -107,7 +107,7 @@ class FileRepository:
         return sorted(timestamps)
 
 
-class Bans(Sequence):
+class BanFeeds(Sequence):
     def __init__(self, repository: Repository):
         self.repository = repository
 
@@ -119,7 +119,7 @@ class Bans(Sequence):
         return self.repository.retrieve_bans(feed_published)
 
 
-class Failed(Sequence):
+class FailedFeeds(Sequence):
     def __init__(self, repository: Repository):
         self.repository = repository
 

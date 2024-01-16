@@ -4,7 +4,7 @@ import pytest
 
 from conftest import repository
 from dfes.repository import to_bans_file_name, InMemoryRepository, to_feed_published_date, FileRepository, \
-    to_failed_file_name, to_failed_timestamp, Bans, Failed
+    to_failed_file_name, to_failed_timestamp, BanFeeds, FailedFeeds
 
 
 @pytest.fixture
@@ -118,24 +118,24 @@ def test_should_allow_use_of_existing_directory(tmp_path):
 
 
 def test_should_provide_number_of_ban_feeds(three_bans):
-    assert len(Bans(three_bans)) == 3
+    assert len(BanFeeds(three_bans)) == 3
 
 
 def test_should_provide_ban_by_index(three_bans):
-    assert Bans(three_bans)[0] == "Bans for January 3rd"
+    assert BanFeeds(three_bans)[0] == "Bans for January 3rd"
 
 
 def test_should_reverse_ban_sequence(three_bans):
-    assert list(reversed(Bans(three_bans)))[0] == "Bans for January 5th"
+    assert list(reversed(BanFeeds(three_bans)))[0] == "Bans for January 5th"
 
 
 def test_should_provide_number_of_failed_feeds(four_failed):
-    assert len(Failed(four_failed)) == 4
+    assert len(FailedFeeds(four_failed)) == 4
 
 
 def test_should_provide_failed_by_index(four_failed):
-    assert Failed(four_failed)[0] == "Bad feed one"
+    assert FailedFeeds(four_failed)[0] == "Bad feed one"
 
 
 def test_should_reverse_failed_sequence(four_failed):
-    assert list(reversed(Failed(four_failed)))[0] == "Bad feed four"
+    assert list(reversed(FailedFeeds(four_failed)))[0] == "Bad feed four"
