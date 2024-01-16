@@ -3,7 +3,11 @@ from dfes.feeds import Feed, parse_feed, Entry
 from dfes.repository import Repository, BanFeeds
 
 
-def most_recently_issued(repository: Repository) -> TotalFireBans:
+def most_recently_issued(repository: Repository) -> TotalFireBans | None:
+    feed_collection = BanFeeds(repository)
+    if len(feed_collection) == 0:
+        return None
+
     feeds = all_valid_feeds(repository)
     entries = all_entries(feeds)
     bans = [parse_bans(entry.summary) for entry in entries]

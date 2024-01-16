@@ -17,3 +17,7 @@ def test_should_get_most_recently_issued(repository):
     bans = most_recently_issued(repository)
 
     assert bans.issued == datetime(2023, 10, 18, tzinfo=timezone.utc)
+
+
+def test_should_get_none_when_repository_is_empty(repository):
+    assert most_recently_issued(repository) is None
