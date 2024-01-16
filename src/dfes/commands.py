@@ -1,9 +1,10 @@
 import click
 from click import echo
 
+from dfes.fetch import aquire_ban_feed, store_feed
 from dfes.reports import display_bans, entries_as_csv
 from dfes.repository import FileRepository, repository_location
-from dfes.services import aquire_ban_feed, store_feed, most_recently_issued
+from dfes.services import most_recently_issued
 
 
 @click.group()

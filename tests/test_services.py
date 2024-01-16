@@ -6,10 +6,10 @@ import responses
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed
+from dfes.fetch import aquire_ban_feed, store_feed, check_summaries, store_failed
 from dfes.repository import FailedFeeds
 from dfes.services import (
-    store_feed, aquire_ban_feed, check_summaries,
-    most_recently_issued, store_failed
+    most_recently_issued
 )
 from dfes.urls import FIRE_BAN_URL
 
