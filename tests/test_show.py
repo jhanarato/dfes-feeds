@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from conftest import generate_bans_xml
-from dfes.show import most_recently_issued
+from dfes.show import most_recently_issued, all_valid_feeds
 
 
 def test_should_get_most_recently_issued(repository):
@@ -19,5 +19,9 @@ def test_should_get_most_recently_issued(repository):
     assert bans.issued == datetime(2023, 10, 18, tzinfo=timezone.utc)
 
 
-def test_should_get_none_when_repository_is_empty(repository):
+def test_should_handle_empty_repository_when_getting_most_recent(repository):
     assert most_recently_issued(repository) is None
+
+
+def test_should_get_empty_valid_feed_list(repository):
+    assert all_valid_feeds(repository) == []
