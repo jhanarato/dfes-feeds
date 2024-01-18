@@ -67,3 +67,20 @@ def test_should_migrate_when_none_have_seconds(tmp_path):
     migrate_to_seconds(repository)
 
     assert repository.list_bans() == feeds_published
+
+
+def test_should_migrate_when_all_have_seconds(tmp_path):
+    repository = FileRepository(tmp_path)
+
+    feeds_published = [
+        datetime(2021, 1, 1, 12, 1, 17, tzinfo=timezone.utc),
+        datetime(2021, 1, 1, 12, 2, 18, tzinfo=timezone.utc),
+    ]
+
+    for feed_published in feeds_published:
+        write_with_seconds(feed_published, tmp_path)
+
+    migrate_to_seconds(repository)
+
+    assert repository.list_bans() == feeds_published
+    

@@ -2,6 +2,7 @@ import click
 from click import echo
 
 from dfes.fetch import aquire_ban_feed, store_feed
+from dfes.migrate import migrate_to_seconds
 from dfes.reports import display_bans, entries_as_csv
 from dfes.repository import FileRepository, repository_location
 from dfes.show import most_recently_issued
@@ -42,10 +43,10 @@ def write_csv(output):
     entries_as_csv(repository, output)
 
 
-@dfes.command(name="migrate", help="Migrate repository to new format")
+@dfes.command(name="migrate", help="Migrate repository to new schema")
 def migrate():
     repository = FileRepository(repository_location())
-    migrate()
+    migrate_to_seconds(repository)
 
 
 if __name__ == '__main__':
