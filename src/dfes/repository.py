@@ -119,6 +119,10 @@ class FileRepository:
         timestamps = [to_failed_timestamp(file_path.name) for file_path in file_paths]
         return sorted(timestamps)
 
+    @property
+    def location(self) -> Path:
+        return self._location
+
 
 class BanFeeds(Sequence):
     def __init__(self, repository: Repository):
