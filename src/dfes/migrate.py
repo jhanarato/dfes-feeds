@@ -6,7 +6,12 @@ from dfes.fetch import store_feed
 from dfes.repository import FileRepository
 
 
-def migrate_to_seconds(repository: FileRepository):
+def do_migration(repository: FileRepository) -> None:
+    migrate_to_seconds(repository)
+    delete_missing_seconds(repository.location)
+
+
+def migrate_to_seconds(repository: FileRepository) -> None:
     for missing in missing_seconds(repository.location):
         store_feed(missing.read_text(), repository)
 
@@ -24,4 +29,5 @@ def matches_missing(name: str) -> bool:
 
 
 def delete_missing_seconds(repository_directory: Path) -> None:
-    pass
+    for missing in missing_seconds(repository_directory):
+        missing.unlink()

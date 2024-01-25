@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from conftest import generate_bans_xml
-from dfes.migrate import migrate_to_seconds
+from dfes.migrate import migrate_to_seconds, delete_missing_seconds, missing_seconds
 from dfes.repository import FileRepository
 
 
@@ -71,13 +71,22 @@ def test_should_migrate_when_all_have_seconds(create_with_seconds):
     assert repository.list_bans() == create_with_seconds.feeds_published
 
 
-def test_should_delete_file_missing_seconds(tmp_path):
-    pass
+def test_should_delete_file_missing_seconds(create_without_seconds):
+    delete_missing_seconds(create_without_seconds.path)
+    missing = list(missing_seconds(create_without_seconds.path))
+    assert not missing
 
 
-def test_should_not_delete_files_with_seconds(tmp_path):
-    pass
+def test_should_not_delete_files_with_seconds(create_with_seconds):
+    repository = FileRepository(create_with_seconds.path)
+    delete_missing_seconds(create_with_seconds.path)
+    assert repository.list_bans() == create_with_seconds.feeds_published
 
 
 def test_should_not_delete_other_files(tmp_path):
-    pass
+    other = tmp_path / "turtle.txt"
+    other.write_text("Nothing to do with the dfes.")
+
+    delete_missing_seconds(tmp_path)
+
+    assert other.exists()
