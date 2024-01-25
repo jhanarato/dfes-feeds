@@ -29,7 +29,7 @@ class FilesCreated:
 
 
 @pytest.fixture
-def two_missing(tmp_path):
+def create_without_seconds(tmp_path: Path) -> FilesCreated:
     feeds_published = [
         datetime(2021, 1, 1, hour=1, minute=1, tzinfo=timezone.utc),
         datetime(2021, 1, 1, hour=1, minute=2, tzinfo=timezone.utc),
@@ -42,7 +42,7 @@ def two_missing(tmp_path):
 
 
 @pytest.fixture
-def two_containing(tmp_path):
+def create_with_seconds(tmp_path: Path):
     feeds_published = [
         datetime(2021, 1, 1, hour=1, minute=1, second=17, tzinfo=timezone.utc),
         datetime(2021, 1, 1, hour=1, minute=1, second=18, tzinfo=timezone.utc),
@@ -89,16 +89,16 @@ def test_should_migrate_empty_repository(tmp_path):
     migrate_to_seconds(repository)
 
 
-def test_should_migrate_when_none_have_seconds(two_missing):
-    repository = FileRepository(two_missing.path)
+def test_should_migrate_when_none_have_seconds(create_without_seconds):
+    repository = FileRepository(create_without_seconds.path)
     migrate_to_seconds(repository)
-    assert repository.list_bans() == two_missing.feeds_published
+    assert repository.list_bans() == create_without_seconds.feeds_published
 
 
-def test_should_migrate_when_all_have_seconds(two_containing):
-    repository = FileRepository(two_containing.path)
+def test_should_migrate_when_all_have_seconds(create_with_seconds):
+    repository = FileRepository(create_with_seconds.path)
     migrate_to_seconds(repository)
-    assert repository.list_bans() == two_containing.feeds_published
+    assert repository.list_bans() == create_with_seconds.feeds_published
 
 
 def test_should_delete_file_missing_seconds(tmp_path):
