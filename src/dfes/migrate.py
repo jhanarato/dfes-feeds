@@ -21,3 +21,7 @@ def matches_missing(name: str) -> bool:
     return re.search(
         r"bans_issued_\d{4}_\d{2}_\d{2}_\d{4}.rss", name
     ) is not None
+
+
+def delete_missing_seconds(repository_directory: Path) -> None:
+    pass

@@ -83,4 +83,15 @@ def test_should_migrate_when_all_have_seconds(tmp_path):
     migrate_to_seconds(repository)
 
     assert repository.list_bans() == feeds_published
-    
+
+
+def test_should_delete_file_missing_seconds(tmp_path):
+    pass
+
+
+def test_should_not_delete_files_with_seconds(tmp_path):
+    pass
+
+
+def test_should_not_delete_other_files(tmp_path):
+    pass
