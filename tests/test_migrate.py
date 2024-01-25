@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -20,6 +21,12 @@ def write_with_seconds(feed_published: datetime, repository_path: Path):
     file_path.write_text(feed_text)
 
 
+@dataclass
+class RepositoryData:
+    repository: FileRepository
+    feeds_published: list[datetime]
+
+
 @pytest.fixture
 def two_missing(tmp_path):
     feeds_published = [
@@ -30,7 +37,10 @@ def two_missing(tmp_path):
     for published in feeds_published:
         write_without_seconds(published, tmp_path)
 
-    return tmp_path, feeds_published
+    return RepositoryData(
+        FileRepository(tmp_path),
+        feeds_published
+    )
 
 
 @pytest.fixture
@@ -41,9 +51,12 @@ def two_containing(tmp_path):
     ]
 
     for published in feeds_published:
-        write_without_seconds(published, tmp_path)
+        write_with_seconds(published, tmp_path)
 
-    return tmp_path, feeds_published
+    return RepositoryData(
+        FileRepository(tmp_path),
+        feeds_published
+    )
 
 
 def test_migrate_to_seconds(tmp_path):
@@ -81,36 +94,14 @@ def test_should_migrate_empty_repository(tmp_path):
     migrate_to_seconds(repository)
 
 
-def test_should_migrate_when_none_have_seconds(tmp_path):
-    repository = FileRepository(tmp_path)
-
-    feeds_published = [
-        datetime(2021, 1, 1, 12, 1, tzinfo=timezone.utc),
-        datetime(2021, 1, 1, 12, 2, tzinfo=timezone.utc),
-    ]
-
-    for feed_published in feeds_published:
-        write_without_seconds(feed_published, tmp_path)
-
-    migrate_to_seconds(repository)
-
-    assert repository.list_bans() == feeds_published
+def test_should_migrate_when_none_have_seconds(two_missing):
+    migrate_to_seconds(two_missing.repository)
+    assert two_missing.repository.list_bans() == two_missing.feeds_published
 
 
-def test_should_migrate_when_all_have_seconds(tmp_path):
-    repository = FileRepository(tmp_path)
-
-    feeds_published = [
-        datetime(2021, 1, 1, 12, 1, 17, tzinfo=timezone.utc),
-        datetime(2021, 1, 1, 12, 2, 18, tzinfo=timezone.utc),
-    ]
-
-    for feed_published in feeds_published:
-        write_with_seconds(feed_published, tmp_path)
-
-    migrate_to_seconds(repository)
-
-    assert repository.list_bans() == feeds_published
+def test_should_migrate_when_all_have_seconds(two_containing):
+    migrate_to_seconds(two_containing.repository)
+    assert two_containing.repository.list_bans() == two_containing.feeds_published
 
 
 def test_should_delete_file_missing_seconds(tmp_path):
