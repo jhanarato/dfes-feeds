@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 from pathlib import Path
 
+import pytest
+
 from conftest import generate_bans_xml
 from dfes.migrate import migrate_to_seconds, missing_seconds
 from dfes.repository import FileRepository
@@ -16,6 +18,32 @@ def write_with_seconds(feed_published: datetime, repository_path: Path):
     feed_text = generate_bans_xml(feed_published=feed_published)
     file_path = repository_path / feed_published.strftime("bans_issued_%Y_%m_%d_%H%M%S.rss")
     file_path.write_text(feed_text)
+
+
+@pytest.fixture
+def two_missing(tmp_path):
+    feeds_published = [
+        datetime(2021, 1, 1, hour=1, minute=1, tzinfo=timezone.utc),
+        datetime(2021, 1, 1, hour=1, minute=2, tzinfo=timezone.utc),
+    ]
+
+    for published in feeds_published:
+        write_without_seconds(published, tmp_path)
+
+    return tmp_path, feeds_published
+
+
+@pytest.fixture
+def two_containing(tmp_path):
+    feeds_published = [
+        datetime(2021, 1, 1, hour=1, minute=1, second=17, tzinfo=timezone.utc),
+        datetime(2021, 1, 1, hour=1, minute=1, second=18, tzinfo=timezone.utc),
+    ]
+
+    for published in feeds_published:
+        write_without_seconds(published, tmp_path)
+
+    return tmp_path, feeds_published
 
 
 def test_migrate_to_seconds(tmp_path):
