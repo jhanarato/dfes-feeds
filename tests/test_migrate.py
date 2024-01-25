@@ -22,9 +22,10 @@ def write_with_seconds(feed_published: datetime, repository_path: Path):
 
 
 @dataclass
-class RepositoryData:
-    repository: FileRepository
-    feeds_published: list[datetime]
+class FilesCreated:
+    path: Path
+    feeds_published: list[datetime] | None
+    extra_files: list[Path] | None
 
 
 @pytest.fixture
@@ -37,10 +38,7 @@ def two_missing(tmp_path):
     for published in feeds_published:
         write_without_seconds(published, tmp_path)
 
-    return RepositoryData(
-        FileRepository(tmp_path),
-        feeds_published
-    )
+    return FilesCreated(tmp_path, feeds_published, None)
 
 
 @pytest.fixture
@@ -53,10 +51,7 @@ def two_containing(tmp_path):
     for published in feeds_published:
         write_with_seconds(published, tmp_path)
 
-    return RepositoryData(
-        FileRepository(tmp_path),
-        feeds_published
-    )
+    return FilesCreated(tmp_path, feeds_published, None)
 
 
 def test_migrate_to_seconds(tmp_path):
@@ -95,13 +90,15 @@ def test_should_migrate_empty_repository(tmp_path):
 
 
 def test_should_migrate_when_none_have_seconds(two_missing):
-    migrate_to_seconds(two_missing.repository)
-    assert two_missing.repository.list_bans() == two_missing.feeds_published
+    repository = FileRepository(two_missing.path)
+    migrate_to_seconds(repository)
+    assert repository.list_bans() == two_missing.feeds_published
 
 
 def test_should_migrate_when_all_have_seconds(two_containing):
-    migrate_to_seconds(two_containing.repository)
-    assert two_containing.repository.list_bans() == two_containing.feeds_published
+    repository = FileRepository(two_containing.path)
+    migrate_to_seconds(repository)
+    assert repository.list_bans() == two_containing.feeds_published
 
 
 def test_should_delete_file_missing_seconds(tmp_path):
