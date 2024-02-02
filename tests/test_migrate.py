@@ -23,7 +23,6 @@ def write_with_seconds(feed_published: datetime, repository_path: Path):
 
 @dataclass
 class FilesCreated:
-    path: Path
     feeds_published: list[datetime] | None
     extra_files: list[Path] | None
 
@@ -38,7 +37,7 @@ def create_without_seconds(tmp_path: Path) -> FilesCreated:
     for published in feeds_published:
         write_without_seconds(published, tmp_path)
 
-    return FilesCreated(tmp_path, feeds_published, None)
+    return FilesCreated(feeds_published, None)
 
 
 @pytest.fixture
@@ -51,7 +50,7 @@ def create_with_seconds(tmp_path: Path):
     for published in feeds_published:
         write_with_seconds(published, tmp_path)
 
-    return FilesCreated(tmp_path, feeds_published, None)
+    return FilesCreated(feeds_published, None)
 
 
 def test_should_migrate_empty_repository(tmp_path):
@@ -59,27 +58,27 @@ def test_should_migrate_empty_repository(tmp_path):
     migrate_to_seconds(repository)
 
 
-def test_should_migrate_when_none_have_seconds(create_without_seconds):
-    repository = FileRepository(create_without_seconds.path)
+def test_should_migrate_when_none_have_seconds(tmp_path, create_without_seconds):
+    repository = FileRepository(tmp_path)
     migrate_to_seconds(repository)
     assert repository.list_bans() == create_without_seconds.feeds_published
 
 
-def test_should_migrate_when_all_have_seconds(create_with_seconds):
-    repository = FileRepository(create_with_seconds.path)
+def test_should_migrate_when_all_have_seconds(tmp_path, create_with_seconds):
+    repository = FileRepository(tmp_path)
     migrate_to_seconds(repository)
     assert repository.list_bans() == create_with_seconds.feeds_published
 
 
-def test_should_delete_file_missing_seconds(create_without_seconds):
-    delete_missing_seconds(create_without_seconds.path)
-    missing = list(missing_seconds(create_without_seconds.path))
+def test_should_delete_file_missing_seconds(tmp_path, create_without_seconds):
+    delete_missing_seconds(tmp_path)
+    missing = list(missing_seconds(tmp_path))
     assert not missing
 
 
-def test_should_not_delete_files_with_seconds(create_with_seconds):
-    repository = FileRepository(create_with_seconds.path)
-    delete_missing_seconds(create_with_seconds.path)
+def test_should_not_delete_files_with_seconds(tmp_path, create_with_seconds):
+    repository = FileRepository(tmp_path)
+    delete_missing_seconds(tmp_path)
     assert repository.list_bans() == create_with_seconds.feeds_published
 
 
