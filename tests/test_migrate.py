@@ -82,3 +82,10 @@ def test_should_not_delete_other_files(tmp_path):
     delete_missing_seconds(tmp_path)
 
     assert other.exists()
+
+
+def test_should_migrate_when_mixed(tmp_path, create_with_seconds, create_without_seconds):
+    repository = FileRepository(tmp_path)
+    migrate_to_seconds(repository)
+    combined_bans = create_with_seconds + create_without_seconds
+    assert sorted(repository.list_bans()) == sorted(combined_bans)
