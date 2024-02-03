@@ -2,7 +2,7 @@ from datetime import datetime, date
 
 import pytest
 
-from dfes.analyze import extra_entries, with_n_extras, filter_extras, to_dataframe
+from dfes.analyze import extra_entries, with_n_extras, filter_extras, to_dataframe, locations
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -87,3 +87,8 @@ def test_with_n_extras(feeds_df):
 
 def test_filter_extras(feeds_df):
     assert filter_extras(feeds_df).equals(extra_entries(feeds_df))
+
+
+def test_locations(feeds_df):
+    location_cols = feeds_df.select(locations())
+    assert location_cols.columns == ["region", "district"]

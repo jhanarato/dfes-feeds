@@ -38,8 +38,12 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
     return pl.DataFrame(data)
 
 
+def locations() -> pl.Expr:
+    return pl.col("region", "district")
+
+
 def locations_seen(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(pl.col("region", "district")).sort("region").unique()
+    return df.select(locations()).sort("region").unique()
 
 
 def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
