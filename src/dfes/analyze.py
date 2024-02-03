@@ -60,13 +60,12 @@ def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
 
 def with_declared_for_interval(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
-        issued_declared_interval()
+        issued_declared_interval().alias("interval")
     )
 
 
 def issued_declared_interval() -> pl.Expr:
-    interval = pl.col("declared_for") - pl.col("issued").cast(pl.Date)
-    return interval.alias("interval")
+    return pl.col("declared_for") - pl.col("issued").cast(pl.Date)
 
 
 def without_locations(df: pl.DataFrame) -> pl.DataFrame:
