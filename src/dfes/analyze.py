@@ -46,10 +46,6 @@ def get_locations() -> pl.Expr:
     return pl.col("region", "district")
 
 
-def without_locations(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(~get_locations()).unique()
-
-
 def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(n_extras().alias("n_extras"))
 
