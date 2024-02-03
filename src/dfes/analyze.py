@@ -46,11 +46,7 @@ def get_locations() -> pl.Expr:
     return pl.col("region", "district")
 
 
-def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
-    return df.with_columns(n_extras().alias("n_extras"))
-
-
-def n_extras():
+def n_extras() -> pl.Expr:
     return pl.col("entry_index").n_unique().over("feed_published")
 
 

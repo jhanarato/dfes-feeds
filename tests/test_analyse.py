@@ -2,7 +2,7 @@ from datetime import datetime, date
 
 import pytest
 
-from dfes.analyze import extra_entries, with_n_extras, filter_extras, to_dataframe, get_locations
+from dfes.analyze import extra_entries, filter_extras, to_dataframe, get_locations, n_extras
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -79,10 +79,12 @@ def test_extra_entries(feeds_df):
         ]
 
 
-def test_with_n_extras(feeds_df):
-    w = with_n_extras(feeds_df)
+def test_n_extras(feeds_df):
+    extras = feeds_df.with_columns(
+        n_extras().alias("n_extras")
+    )
 
-    assert w["n_extras"].to_list() == [2, 2, 2, 1, 1, 1]
+    assert extras["n_extras"].to_list() == [2, 2, 2, 1, 1, 1]
 
 
 def test_filter_extras(feeds_df):
