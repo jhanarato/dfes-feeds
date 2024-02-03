@@ -89,9 +89,7 @@ def get_n_entries(n):
 
 
 def filter_extras(df: pl.DataFrame) -> pl.DataFrame:
-    return df.filter(
-        get_n_entries(1)
-    )
+    return df.filter(get_n_entries(1))
 
 
 def main():
