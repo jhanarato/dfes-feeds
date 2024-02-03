@@ -38,10 +38,6 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
     return pl.DataFrame(data)
 
 
-def get_locations() -> pl.Expr:
-    return pl.col("region", "district")
-
-
 def with_declared_for_interval(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
         issued_declared_interval().alias("interval")
@@ -52,12 +48,12 @@ def issued_declared_interval() -> pl.Expr:
     return pl.col("declared_for") - pl.col("issued").cast(pl.Date)
 
 
+def get_locations() -> pl.Expr:
+    return pl.col("region", "district")
+
+
 def without_locations(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(drop_locations()).unique()
-
-
-def drop_locations() -> pl.Expr:
-    return pl.exclude("region", "district")
+    return df.select(~get_locations()).unique()
 
 
 def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
