@@ -77,7 +77,7 @@ def drop_locations() -> pl.Expr:
 
 
 def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
-    return df.with_columns(pl.all(), n_extras().alias("n_extras"))
+    return df.with_columns(n_extras().alias("n_extras"))
 
 
 def n_extras():
