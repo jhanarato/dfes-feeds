@@ -42,22 +42,6 @@ def get_locations() -> pl.Expr:
     return pl.col("region", "district")
 
 
-def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
-    return df.filter(
-        pl.col("feed_published").is_in(
-            df.filter(
-                pl.col("entry_index") > 0
-            ).select("feed_published")
-        )
-    )
-
-
-def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
-    return extra_entries(df).select(
-        "feed_published", "entry_index", "entry_published", "issued"
-    ).unique().sort(pl.col("feed_published", "entry_index"))
-
-
 def with_declared_for_interval(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
         issued_declared_interval().alias("interval")
@@ -86,6 +70,22 @@ def n_extras():
 
 def filter_extras(df: pl.DataFrame) -> pl.DataFrame:
     return df.filter(n_extras() > 1)
+
+
+def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
+    return df.filter(
+        pl.col("feed_published").is_in(
+            df.filter(
+                pl.col("entry_index") > 0
+            ).select("feed_published")
+        )
+    )
+
+
+def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
+    return extra_entries(df).select(
+        "feed_published", "entry_index", "entry_published", "issued"
+    ).unique().sort(pl.col("feed_published", "entry_index"))
 
 
 def main():
