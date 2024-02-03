@@ -84,12 +84,8 @@ def n_extras():
     return pl.col("entry_index").n_unique().over("feed_published")
 
 
-def get_n_entries(n):
-    return n_extras() > n
-
-
 def filter_extras(df: pl.DataFrame) -> pl.DataFrame:
-    return df.filter(get_n_entries(1))
+    return df.filter(n_extras() > 1)
 
 
 def main():
