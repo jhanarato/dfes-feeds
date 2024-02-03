@@ -1,8 +1,9 @@
 from datetime import datetime, date
 
+import polars as pl
 import pytest
 
-from dfes.analyze import extra_entries, with_n_extras, filter_extras, to_dataframe, get_locations
+from dfes.analyze import extra_entries, with_n_extras, filter_extras, to_dataframe, get_locations, drop_locations
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -94,3 +95,13 @@ def test_get_locations(feeds_df):
     assert location_cols.columns == ["region", "district"]
 
 
+def test_without_locations(feeds_df):
+    df = pl.DataFrame(
+        data={
+            "foo": [1, 2, 3],
+            "region": ["Perth", "Sydney", "Melbourne"],
+            "district": ["City Beach", "Kings Cross", "St Kilda"]
+        }
+    )
+
+    assert df.select(drop_locations()).columns == ["foo"]

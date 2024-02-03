@@ -69,7 +69,11 @@ def issued_declared_interval() -> pl.Expr:
 
 
 def without_locations(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(pl.exclude("region", "district")).unique()
+    return df.select(drop_locations()).unique()
+
+
+def drop_locations() -> pl.Expr:
+    return pl.exclude("region", "district")
 
 
 def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
