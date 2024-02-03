@@ -42,10 +42,6 @@ def locations() -> pl.Expr:
     return pl.col("region", "district")
 
 
-def locations_seen(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(locations()).sort("region").unique()
-
-
 def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
     return df.filter(
         pl.col("feed_published").is_in(
