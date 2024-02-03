@@ -77,14 +77,15 @@ def drop_locations() -> pl.Expr:
 
 
 def with_n_extras(df: pl.DataFrame) -> pl.DataFrame:
-    return df.with_columns(
-        pl.all(),
-        pl.col("entry_index").n_unique().over("feed_published").alias("n_extras")
-    )
+    return df.with_columns(pl.all(), n_extras().alias("n_extras"))
+
+
+def n_extras():
+    return pl.col("entry_index").n_unique().over("feed_published")
 
 
 def get_n_entries(n):
-    return pl.col("entry_index").n_unique().over("feed_published") > n
+    return n_extras() > n
 
 
 def filter_extras(df: pl.DataFrame) -> pl.DataFrame:
