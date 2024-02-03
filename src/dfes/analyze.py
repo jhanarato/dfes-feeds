@@ -38,7 +38,7 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
     return pl.DataFrame(data)
 
 
-def locations() -> pl.Expr:
+def get_locations() -> pl.Expr:
     return pl.col("region", "district")
 
 
@@ -60,8 +60,13 @@ def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
 
 def with_declared_for_interval(df: pl.DataFrame) -> pl.DataFrame:
     return df.with_columns(
-        (pl.col("declared_for") - pl.col("issued").cast(pl.Date)).alias("interval")
+        issued_declared_interval()
     )
+
+
+def issued_declared_interval() -> pl.Expr:
+    interval = pl.col("declared_for") - pl.col("issued").cast(pl.Date)
+    return interval.alias("interval")
 
 
 def without_locations(df: pl.DataFrame) -> pl.DataFrame:
