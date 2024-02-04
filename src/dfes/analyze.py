@@ -47,7 +47,7 @@ def get_locations() -> pl.Expr:
 
 
 def n_extras() -> pl.Expr:
-    return pl.col("entry_index").n_unique().over("feed_published")
+    return pl.col("entry_index").n_unique().over("feed_published").alias("n_extras")
 
 
 def multiple_entries() -> pl.Expr:

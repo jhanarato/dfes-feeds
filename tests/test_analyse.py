@@ -69,7 +69,7 @@ def feeds_df():
 
 def test_n_extras(feeds_df):
     extras = feeds_df.with_columns(
-        n_extras().alias("n_extras")
+        n_extras()
     )
 
     assert extras["n_extras"].to_list() == [2, 2, 2, 1, 1, 1]
