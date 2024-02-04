@@ -44,17 +44,17 @@ def issued_to_declared() -> pl.Expr:
     ).alias("issued_to_declared")
 
 
-def n_extras() -> pl.Expr:
-    return pl.col("entry_index").n_unique().over("feed_published").alias("n_extras")
+def n_entries() -> pl.Expr:
+    return pl.col("entry_index").n_unique().over("feed_published").alias("n_entries")
 
 
 def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
     return df.select(
         pl.exclude("region", "district")
     ).unique().with_columns(
-        n_extras()
+        n_entries()
     ).filter(
-        pl.col("n_extras") > 1
+        pl.col("n_entries") > 1
     ).unique().sort(
         pl.col("feed_published", "entry_index")
     )

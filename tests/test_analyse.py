@@ -3,7 +3,7 @@ from datetime import datetime, date, timedelta
 import polars as pl
 import pytest
 
-from dfes.analyze import to_dataframe, n_extras, issued_to_declared
+from dfes.analyze import to_dataframe, n_entries, issued_to_declared
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -97,7 +97,7 @@ def entry_indexes():
     )
 
 
-def test_n_extras(entry_indexes):
+def test_n_entries(entry_indexes):
     assert entry_indexes.with_columns(
-        n_extras()
-    ).get_column("n_extras").to_list() == [1, 2, 2]
+        n_entries()
+    ).get_column("n_entries").to_list() == [1, 2, 2]
