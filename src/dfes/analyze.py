@@ -44,7 +44,7 @@ def issued_to_declared() -> pl.Expr:
     ).alias("issued_to_declared")
 
 
-def get_locations() -> pl.Expr:
+def locations() -> pl.Expr:
     return pl.col("region", "district")
 
 
