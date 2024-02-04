@@ -98,9 +98,20 @@ def test_locations():
 
 
 def test_n_extras(feeds_df):
-    assert feeds_df.with_columns(
+    df = pl.DataFrame(
+        data={
+            "feed_published": [
+                datetime(2000, 1, 1),
+                datetime(2001, 1, 2),
+                datetime(2001, 1, 2),
+            ],
+            "entry_index": [0, 0, 1],
+        }
+    )
+
+    assert df.with_columns(
         n_extras()
-    ).get_column("n_extras").to_list() == [2, 2, 2, 1, 1, 1]
+    ).get_column("n_extras").to_list() == [1, 2, 2]
 
 
 def test_extra_entries(feeds_df):
