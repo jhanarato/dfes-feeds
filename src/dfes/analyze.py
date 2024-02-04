@@ -38,8 +38,8 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
     return pl.DataFrame(data)
 
 
-def issued_declared_interval() -> pl.Expr:
-    return pl.col("declared_for") - pl.col("issued").cast(pl.Date)
+def issued_to_declared() -> pl.Expr:
+    return (pl.col("declared_for") - pl.col("issued").cast(pl.Date)).alias("issued_to_declared")
 
 
 def get_locations() -> pl.Expr:
