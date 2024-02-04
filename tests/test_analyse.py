@@ -1,8 +1,9 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
+import polars as pl
 import pytest
 
-from dfes.analyze import extra_entries, to_dataframe, get_locations, n_extras
+from dfes.analyze import extra_entries, to_dataframe, get_locations, n_extras, issued_to_declared
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -65,6 +66,21 @@ def feeds_df():
             )
         ]
     )
+
+
+def test_issued_to_declared():
+    df = pl.DataFrame(
+        data={
+            "issued": [date(2000, 1, 1), date(2000, 1, 1), date(2000, 1, 1)],
+            "declared_for": [date(2000, 1, 2), date(2000, 1, 3), date(2000, 1, 4)],
+        }
+    )
+
+    assert df.with_columns(
+        issued_to_declared()
+    ).get_column("issued_to_declared").to_list() == [
+        timedelta(1), timedelta(2), timedelta(3)
+    ]
 
 
 def test_n_extras(feeds_df):
