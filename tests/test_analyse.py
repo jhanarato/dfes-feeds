@@ -3,7 +3,7 @@ from datetime import datetime, date, timedelta
 import polars as pl
 import pytest
 
-from dfes.analyze import extra_entries, to_dataframe, locations, n_extras, issued_to_declared
+from dfes.analyze import to_dataframe, n_extras, issued_to_declared
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -83,20 +83,6 @@ def test_issued_to_declared():
     ]
 
 
-def test_locations():
-    df = pl.DataFrame(
-        data={
-            "feed_published": [datetime(2000, 1, 1)],
-            "region": ["Perth"],
-            "district": ["Armadale"],
-        }
-    )
-
-    assert df.select(
-        locations()
-    ).columns == ["region", "district"]
-
-
 @pytest.fixture
 def entry_indexes():
     return pl.DataFrame(
@@ -115,15 +101,3 @@ def test_n_extras(entry_indexes):
     assert entry_indexes.with_columns(
         n_extras()
     ).get_column("n_extras").to_list() == [1, 2, 2]
-
-
-def test_extra_entries(feeds_df):
-    has_extra = extra_entries(feeds_df)
-
-    published = has_extra["feed_published"].to_list()
-
-    assert published == [
-            datetime(2000, 1, 1, 0),
-            datetime(2000, 1, 1, 0),
-            datetime(2000, 1, 1, 0),
-        ]

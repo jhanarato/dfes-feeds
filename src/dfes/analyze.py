@@ -44,30 +44,20 @@ def issued_to_declared() -> pl.Expr:
     ).alias("issued_to_declared")
 
 
-def locations() -> pl.Expr:
-    return pl.col("region", "district")
-
-
 def n_extras() -> pl.Expr:
     return pl.col("entry_index").n_unique().over("feed_published").alias("n_extras")
 
 
-def multiple_entries() -> pl.Expr:
-    return pl.col("entry_index") > 0
-
-
-def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
-    return df.with_columns(
+def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
+    return df.select(
+        pl.exclude("region", "district")
+    ).unique().with_columns(
         n_extras()
     ).filter(
         pl.col("n_extras") > 1
+    ).unique().sort(
+        pl.col("feed_published", "entry_index")
     )
-
-
-def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
-    return extra_entries(df).select(
-        "feed_published", "entry_index", "entry_published", "issued"
-    ).unique().sort(pl.col("feed_published", "entry_index"))
 
 
 def main():
