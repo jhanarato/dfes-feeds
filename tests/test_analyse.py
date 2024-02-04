@@ -97,8 +97,9 @@ def test_locations():
     ).columns == ["region", "district"]
 
 
-def test_n_extras(feeds_df):
-    df = pl.DataFrame(
+@pytest.fixture
+def entry_indexes():
+    return pl.DataFrame(
         data={
             "feed_published": [
                 datetime(2000, 1, 1),
@@ -109,7 +110,9 @@ def test_n_extras(feeds_df):
         }
     )
 
-    assert df.with_columns(
+
+def test_n_extras(entry_indexes):
+    assert entry_indexes.with_columns(
         n_extras()
     ).get_column("n_extras").to_list() == [1, 2, 2]
 
