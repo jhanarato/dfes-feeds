@@ -83,8 +83,16 @@ def test_issued_to_declared():
     ]
 
 
-def test_locations(feeds_df):
-    assert feeds_df.select(
+def test_locations():
+    df = pl.DataFrame(
+        data={
+            "feed_published": [datetime(2000, 1, 1)],
+            "region": ["Perth"],
+            "district": ["Armadale"],
+        }
+    )
+
+    assert df.select(
         locations()
     ).columns == ["region", "district"]
 
