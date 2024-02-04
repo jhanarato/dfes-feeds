@@ -50,11 +50,15 @@ def n_extras() -> pl.Expr:
     return pl.col("entry_index").n_unique().over("feed_published")
 
 
+def multiple_entries() -> pl.Expr:
+    return pl.col("entry_index") > 0
+
+
 def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
     return df.filter(
         pl.col("feed_published").is_in(
             df.filter(
-                pl.col("entry_index") > 0
+                multiple_entries()
             ).select("feed_published")
         )
     )
