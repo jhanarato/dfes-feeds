@@ -67,6 +67,20 @@ def feeds_df():
     )
 
 
+def test_n_extras(feeds_df):
+    extras = feeds_df.with_columns(
+        n_extras().alias("n_extras")
+    )
+
+    assert extras["n_extras"].to_list() == [2, 2, 2, 1, 1, 1]
+
+
+def test_get_locations(feeds_df):
+    assert feeds_df.select(
+        get_locations()
+    ).columns == ["region", "district"]
+
+
 def test_extra_entries(feeds_df):
     has_extra = extra_entries(feeds_df)
 
@@ -77,16 +91,3 @@ def test_extra_entries(feeds_df):
             datetime(2000, 1, 1, 0),
             datetime(2000, 1, 1, 0),
         ]
-
-
-def test_n_extras(feeds_df):
-    extras = feeds_df.with_columns(
-        n_extras().alias("n_extras")
-    )
-
-    assert extras["n_extras"].to_list() == [2, 2, 2, 1, 1, 1]
-
-
-def test_get_locations(feeds_df):
-    location_cols = feeds_df.select(get_locations())
-    assert location_cols.columns == ["region", "district"]
