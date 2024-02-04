@@ -39,7 +39,9 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
 
 
 def issued_to_declared() -> pl.Expr:
-    return (pl.col("declared_for") - pl.col("issued").cast(pl.Date)).alias("issued_to_declared")
+    return (
+        pl.col("declared_for") - pl.col("issued").cast(pl.Date)
+    ).alias("issued_to_declared")
 
 
 def get_locations() -> pl.Expr:
