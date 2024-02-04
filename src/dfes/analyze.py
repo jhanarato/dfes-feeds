@@ -57,12 +57,10 @@ def multiple_entries() -> pl.Expr:
 
 
 def extra_entries(df: pl.DataFrame) -> pl.DataFrame:
-    return df.filter(
-        pl.col("feed_published").is_in(
-            df.filter(
-                multiple_entries()
-            ).select("feed_published")
-        )
+    return df.with_columns(
+        n_extras()
+    ).filter(
+        pl.col("n_extras") > 1
     )
 
 
