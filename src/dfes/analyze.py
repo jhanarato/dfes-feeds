@@ -69,7 +69,7 @@ def display(df: pl.DataFrame) -> pl.DataFrame:
         pl.col("n_entries") > 1
     ).unique().sort(
         pl.col("feed_published", "entry_index")
-    )
+    ).select(format_datetime())
 
 
 def main():
