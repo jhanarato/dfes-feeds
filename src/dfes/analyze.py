@@ -1,6 +1,7 @@
 from collections.abc import Iterable
 
 import polars as pl
+import polars.selectors as cs
 
 from dfes.feeds import Feed, parse_feed
 from dfes.repository import FileRepository, BanFeeds
@@ -53,6 +54,10 @@ def issued_to_declared() -> pl.Expr:
 
 def n_entries() -> pl.Expr:
     return pl.col("entry_index").n_unique().over("feed_published").alias("n_entries")
+
+
+def format_datetime() -> pl.Expr:
+    return cs.datetime().dt.strftime("%Y-%m-%d %H:%M:%S")
 
 
 def display(df: pl.DataFrame) -> pl.DataFrame:

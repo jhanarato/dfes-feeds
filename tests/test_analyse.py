@@ -4,7 +4,7 @@ import polars as pl
 import polars.selectors as cs
 import pytest
 
-from dfes.analyze import to_dataframe, n_entries, issued_to_declared
+from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -110,3 +110,15 @@ def test_select_date_and_datetime(feeds_df):
     ).columns == [
         "feed_published", "entry_published", "dfes_published", "issued", "declared_for"
     ]
+
+
+def test_format_datetime():
+    datetime_df = pl.DataFrame(
+        data={"dt": [datetime(2021, 1, 2, hour=3, minute=4, second=5)]}
+    )
+
+    formatted_df = pl.DataFrame(
+        data={"dt": ["2021-01-02 03:04:05"]}
+    )
+
+    assert datetime_df.select(format_datetime()).equals(formatted_df)
