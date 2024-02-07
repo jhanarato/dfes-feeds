@@ -1,17 +1,6 @@
-from dfes.bans import TotalFireBans, parse_bans
+from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, parse_feed, Entry
 from dfes.repository import Repository, BanFeeds
-
-
-def most_recently_issued(repository: Repository) -> TotalFireBans | None:
-    feed_collection = BanFeeds(repository)
-    if len(feed_collection) == 0:
-        return None
-
-    feeds = all_valid_feeds(repository)
-    entries = all_entries(feeds)
-    bans = [parse_bans(entry.summary) for entry in entries]
-    return max(bans, key=lambda b: b.issued)
 
 
 def all_valid_feeds(repository: Repository) -> list[Feed]:
@@ -25,7 +14,7 @@ def all_entries(feeds: list[Feed]) -> list[Entry]:
     return entries
 
 
-def walk_backwards_to_most_recently_issued(repository: Repository) -> TotalFireBans | None:
+def most_recently_issued(repository: Repository) -> TotalFireBans | None:
     feeds = BanFeeds(repository)
     for feed in reversed(feeds):
         parsed = parse_feed(feed)
