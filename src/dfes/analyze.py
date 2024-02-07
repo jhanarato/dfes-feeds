@@ -48,7 +48,7 @@ def n_entries() -> pl.Expr:
     return pl.col("entry_index").n_unique().over("feed_published").alias("n_entries")
 
 
-def arranged_extras(df: pl.DataFrame) -> pl.DataFrame:
+def display(df: pl.DataFrame) -> pl.DataFrame:
     return df.select(
         pl.exclude("region", "district")
     ).unique().with_columns(
@@ -64,7 +64,7 @@ def main():
     repo = FileRepository()
     feeds = [parse_feed(feed_text) for feed_text in BanFeeds(repo)]
     df = to_dataframe(feeds)
-    print(arranged_extras(df))
+    print(display(df))
 
 
 if __name__ == "__main__":
