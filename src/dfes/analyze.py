@@ -38,6 +38,13 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
     return pl.DataFrame(data)
 
 
+def import_file_repository() -> pl.DataFrame:
+    repo = FileRepository()
+    feeds = [parse_feed(feed_text) for feed_text in BanFeeds(repo)]
+    df = to_dataframe(feeds)
+    return df
+
+
 def issued_to_declared() -> pl.Expr:
     return (
         pl.col("declared_for") - pl.col("issued").cast(pl.Date)
@@ -61,9 +68,7 @@ def display(df: pl.DataFrame) -> pl.DataFrame:
 
 
 def main():
-    repo = FileRepository()
-    feeds = [parse_feed(feed_text) for feed_text in BanFeeds(repo)]
-    df = to_dataframe(feeds)
+    df = import_file_repository()
     print(display(df))
 
 
