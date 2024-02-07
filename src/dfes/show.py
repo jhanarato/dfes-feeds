@@ -23,3 +23,13 @@ def all_entries(feeds: list[Feed]) -> list[Entry]:
     for feed in feeds:
         entries.extend(feed.entries)
     return entries
+
+
+def walk_backwards_to_most_recently_issued(repository: Repository) -> TotalFireBans | None:
+    feeds = BanFeeds(repository)
+    for feed in reversed(feeds):
+        parsed = parse_feed(feed)
+        if not parsed.entries:
+            return None
+        parsed.entries[0].parse_summary()
+        return parsed.entries[0].bans
