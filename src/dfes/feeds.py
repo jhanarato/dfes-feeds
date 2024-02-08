@@ -25,6 +25,10 @@ class Feed:
     published: datetime
     entries: list[Entry]
 
+    def parse_summaries(self) -> None:
+        for entry in self.entries:
+            entry.parse_summary()
+
 
 def parse_feed(feed_xml: str) -> Feed:
     parsed = feedparser.parse(feed_xml)
