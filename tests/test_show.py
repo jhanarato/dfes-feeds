@@ -6,7 +6,7 @@ from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 from dfes.fetch import store_feed
-from dfes.show import most_recently_issued, most_recent_entry
+from dfes.show import most_recently_issued, last_issued
 
 
 def test_should_be_none_when_repository_empty(repository):
@@ -83,7 +83,7 @@ def two_entries():
 
 
 def test_most_recent_entry(two_entries):
-    assert most_recent_entry(two_entries).bans.issued == datetime(2000, 1, 2, 3)
+    assert last_issued(two_entries).bans.issued == datetime(2000, 1, 2, 3)
 
 
 @pytest.fixture
@@ -97,5 +97,5 @@ def swapped_entries(two_entries):
 
 
 def test_most_recent_entry_out_of_order(swapped_entries):
-    recent = most_recent_entry(swapped_entries)
+    recent = last_issued(swapped_entries)
     assert recent.bans.issued == datetime(2000, 1, 2, 3)
