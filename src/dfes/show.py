@@ -6,13 +6,13 @@ from dfes.repository import Repository, BanFeeds
 def most_recently_issued(repository: Repository) -> TotalFireBans | None:
     feeds = BanFeeds(repository)
 
-    for feed in reversed(feeds):
-        parsed = parse_feed(feed)
+    for feed_text in reversed(feeds):
+        feed = parse_feed(feed_text)
 
-        if parsed.entries:
-            for entry in parsed.entries:
+        if feed.entries:
+            for entry in feed.entries:
                 entry.parse_summary()
-            return last_issued(parsed).bans
+            return last_issued(feed).bans
 
     return None
 
