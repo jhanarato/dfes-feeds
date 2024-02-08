@@ -3,7 +3,7 @@ from click import echo
 
 from dfes.fetch import aquire_ban_feed, store_feed
 from dfes.migrate import do_migration
-from dfes.reports import display_bans, entries_as_csv
+from dfes.reports import display_bans
 from dfes.repository import FileRepository, repository_location
 from dfes.show import most_recently_issued
 
@@ -35,13 +35,6 @@ def list_():
     issued = repository.list_bans()
     for issued_date in issued:
         echo(issued_date.strftime("%c"))
-
-
-@dfes.command(name="writecsv", help="Write out data to CSV file")
-@click.argument("output", type=click.File('w'))
-def write_csv(output):
-    repository = FileRepository(repository_location())
-    entries_as_csv(repository, output)
 
 
 @dfes.command(name="migrate", help="Migrate repository to new schema")
