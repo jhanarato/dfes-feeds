@@ -10,15 +10,19 @@ def most_recently_issued(repository: Repository) -> TotalFireBans | None:
         feed = parse_feed(feed_text)
         feed.parse_summaries()
         if feed.entries:
-            return last_issued(feed).bans
+            declared = declared_entries(feed)
+            return last_issued(declared).bans
 
     return None
 
 
-def last_issued(feed: Feed) -> Entry:
-    entries = declared_entries(feed)
+def last_issued(entries: list[Entry]) -> Entry:
     return max(entries, key=lambda entry: entry.bans.issued)
 
 
-def declared_entries(feed):
+def declared_entries(feed: Feed):
     return [entry for entry in feed.entries if not entry.bans.revoked]
+
+
+def revoked_entries(feed: Feed):
+    return [entry for entry in feed.entries if entry.bans.revoked]
