@@ -79,12 +79,7 @@ def test_most_recent_entry(two_declared):
     assert last_issued(two_declared).bans.issued == datetime(2000, 1, 2, 3)
 
 
-@pytest.fixture
-def swapped_entries(two_declared):
+def test_last_issued_independent_of_order(two_declared):
     swapped = [two_declared[1], two_declared[0]]
-    return swapped
-
-
-def test_most_recent_entry_out_of_order(swapped_entries):
-    recent = last_issued(swapped_entries)
+    recent = last_issued(swapped)
     assert recent.bans.issued == datetime(2000, 1, 2, 3)
