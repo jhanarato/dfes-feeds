@@ -67,13 +67,6 @@ def jinja_env():
 
 @pytest.fixture
 def no_bans_xml():
-    env = Environment(
-        loader=FileSystemLoader("templates/"),
-        autoescape=select_autoescape(),
-        trim_blocks=True,
-        lstrip_blocks=True,
-    )
-
     return generate_with_no_entries(
         feed_published=datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
     )
