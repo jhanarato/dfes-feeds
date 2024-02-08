@@ -13,7 +13,8 @@ def test_should_get_most_recently_issued(repository):
     ]
 
     for issued_date in issued_dates:
-        repository.add_bans(issued_date, generate_bans_xml(issued=issued_date))
+        feed = generate_bans_xml(issued=issued_date)
+        store_feed(feed, repository)
 
     bans = most_recently_issued(repository)
 
