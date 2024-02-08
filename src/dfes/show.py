@@ -8,6 +8,7 @@ def most_recently_issued(repository: Repository) -> TotalFireBans | None:
     for feed in reversed(feeds):
         parsed = parse_feed(feed)
         if not parsed.entries:
-            return None
+            continue
         parsed.entries[0].parse_summary()
         return parsed.entries[0].bans
+    return None
