@@ -4,9 +4,9 @@ import pytest
 
 from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
-from dfes.feeds import Feed, Entry
+from dfes.feeds import Entry
 from dfes.fetch import store_feed
-from dfes.show import most_recently_issued, last_issued, declared_entries
+from dfes.show import most_recently_issued, last_issued
 
 
 def test_should_be_none_when_repository_empty(repository):
@@ -48,53 +48,43 @@ def test_should_ignore_feeds_with_no_entries(repository):
 
 
 @pytest.fixture
-def two_entries():
-    return Feed(
-                title="Total Fire Ban (All Regions)",
-                published=datetime(2000, 1, 1),
-                entries=[
-                    Entry(
-                        published=datetime(2000, 1, 1, 1),
-                        dfes_published=datetime(2000, 1, 1, 2),
-                        summary="",
-                        bans=TotalFireBans(
-                            revoked=False,
-                            issued=datetime(2000, 1, 1, 3),
-                            declared_for=date(2000, 1, 2),
-                            locations=[("Armadale", "Perth Metropolitan")]
-                        )
-                    ),
-                    Entry(
-                        published=datetime(2000, 1, 2, 1),
-                        dfes_published=datetime(2000, 1, 2, 2),
-                        summary="",
-                        bans=TotalFireBans(
-                            revoked=False,
-                            issued=datetime(2000, 1, 2, 3),
-                            declared_for=date(2000, 1, 3),
-                            locations=[("Armadale", "Perth Metropolitan")]
-                        )
-                    ),
-                ]
+def two_declared() -> list[Entry]:
+    return [
+        Entry(
+            published=datetime(2000, 1, 1, 1),
+            dfes_published=datetime(2000, 1, 1, 2),
+            summary="",
+            bans=TotalFireBans(
+                revoked=False,
+                issued=datetime(2000, 1, 1, 3),
+                declared_for=date(2000, 1, 2),
+                locations=[("Armadale", "Perth Metropolitan")]
             )
+        ),
+        Entry(
+            published=datetime(2000, 1, 2, 1),
+            dfes_published=datetime(2000, 1, 2, 2),
+            summary="",
+            bans=TotalFireBans(
+                revoked=False,
+                issued=datetime(2000, 1, 2, 3),
+                declared_for=date(2000, 1, 3),
+                locations=[("Armadale", "Perth Metropolitan")]
+            )
+        ),
+    ]
 
 
-def test_most_recent_entry(two_entries):
-    declared = declared_entries(two_entries)
-    assert last_issued(declared).bans.issued == datetime(2000, 1, 2, 3)
+def test_most_recent_entry(two_declared):
+    assert last_issued(two_declared).bans.issued == datetime(2000, 1, 2, 3)
 
 
 @pytest.fixture
-def swapped_entries(two_entries):
-    earlier = two_entries.entries[0]
-    later = two_entries.entries[1]
-
-    two_entries.entries[0] = later
-    two_entries.entries[1] = earlier
-    return two_entries
+def swapped_entries(two_declared):
+    swapped = [two_declared[1], two_declared[0]]
+    return swapped
 
 
 def test_most_recent_entry_out_of_order(swapped_entries):
-    declared = declared_entries(swapped_entries)
-    recent = last_issued(declared)
+    recent = last_issued(swapped_entries)
     assert recent.bans.issued == datetime(2000, 1, 2, 3)
