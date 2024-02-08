@@ -72,10 +72,7 @@ def two_entries():
                             revoked=False,
                             issued=datetime(2000, 1, 2, 3),
                             declared_for=date(2000, 1, 3),
-                            locations=[
-                                ("Goldfields Midlands", "Toodyay"),
-                                ("South West", "Murray"),
-                            ]
+                            locations=[("Armadale", "Perth Metropolitan")]
                         )
                     ),
                 ]
@@ -99,3 +96,10 @@ def swapped_entries(two_entries):
 def test_most_recent_entry_out_of_order(swapped_entries):
     recent = last_issued(swapped_entries)
     assert recent.bans.issued == datetime(2000, 1, 2, 3)
+
+
+def test_last_issued_ignores_revoked(two_entries):
+    two_entries.entries[1].bans.revoked = True
+    declaration_issued = two_entries.entries[0].bans.issued
+    assert last_issued(two_entries).bans.issued == declaration_issued
+
