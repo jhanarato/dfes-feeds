@@ -1,17 +1,6 @@
 from dfes.bans import TotalFireBans
-from dfes.feeds import Feed, parse_feed, Entry
+from dfes.feeds import parse_feed
 from dfes.repository import Repository, BanFeeds
-
-
-def all_valid_feeds(repository: Repository) -> list[Feed]:
-    return [parse_feed(feed_text) for feed_text in (BanFeeds(repository))]
-
-
-def all_entries(feeds: list[Feed]) -> list[Entry]:
-    entries = []
-    for feed in feeds:
-        entries.extend(feed.entries)
-    return entries
 
 
 def most_recently_issued(repository: Repository) -> TotalFireBans | None:
