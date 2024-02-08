@@ -16,5 +16,9 @@ def most_recently_issued(repository: Repository) -> TotalFireBans | None:
 
 
 def last_issued(feed: Feed) -> Entry:
-    entries = [entry for entry in feed.entries if not entry.bans.revoked]
+    entries = declared_entries(feed)
     return max(entries, key=lambda entry: entry.bans.issued)
+
+
+def declared_entries(feed):
+    return [entry for entry in feed.entries if not entry.bans.revoked]
