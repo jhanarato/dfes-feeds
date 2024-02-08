@@ -48,7 +48,7 @@ def test_should_ignore_feeds_with_no_entries(repository):
 
 
 @pytest.fixture
-def feed_with_two_entries():
+def two_entries():
     return Feed(
                 title="Total Fire Ban (All Regions)",
                 published=datetime(2000, 1, 1),
@@ -82,18 +82,18 @@ def feed_with_two_entries():
             )
 
 
-def test_most_recent_entry(feed_with_two_entries):
-    assert most_recent_entry(feed_with_two_entries).bans.issued == datetime(2000, 1, 2, 3)
+def test_most_recent_entry(two_entries):
+    assert most_recent_entry(two_entries).bans.issued == datetime(2000, 1, 2, 3)
 
 
 @pytest.fixture
-def swapped_entries(feed_with_two_entries):
-    earlier = feed_with_two_entries.entries[0]
-    later = feed_with_two_entries.entries[1]
+def swapped_entries(two_entries):
+    earlier = two_entries.entries[0]
+    later = two_entries.entries[1]
 
-    feed_with_two_entries.entries[0] = later
-    feed_with_two_entries.entries[1] = earlier
-    return feed_with_two_entries
+    two_entries.entries[0] = later
+    two_entries.entries[1] = earlier
+    return two_entries
 
 
 def test_most_recent_entry_out_of_order(swapped_entries):
