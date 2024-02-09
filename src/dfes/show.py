@@ -1,3 +1,5 @@
+from collections.abc import Iterable
+
 from dfes.bans import TotalFireBans
 from dfes.feeds import parse_feed, Feed, Entry
 from dfes.repository import Repository, BanFeeds
@@ -26,3 +28,9 @@ def declared_entries(feed: Feed):
 
 def revoked_entries(feed: Feed):
     return [entry for entry in feed.entries if entry.bans.revoked]
+
+
+def latest_in_feed(feed: Feed) -> Iterable[Entry]:
+    if False:
+        yield
+    return

@@ -4,9 +4,9 @@ import pytest
 
 from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
-from dfes.feeds import Entry
+from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
-from dfes.show import most_recently_issued, last_issued
+from dfes.show import most_recently_issued, last_issued, latest_in_feed
 
 
 def test_should_be_none_when_repository_empty(repository):
@@ -83,3 +83,13 @@ def test_last_issued_independent_of_order(two_declared):
     swapped = [two_declared[1], two_declared[0]]
     recent = last_issued(swapped)
     assert recent.bans.issued == datetime(2000, 1, 2, 3)
+
+
+def test_no_entries_generates_no_latest():
+    feed = Feed(
+        title="Total Fire Ban (All Regions)",
+        published=datetime(2000, 1, 2, 3),
+        entries=[]
+    )
+
+    assert list(latest_in_feed(feed)) == []
