@@ -112,21 +112,37 @@ def declared_entry():
     )
 
 
-def test_declared_entry_is_latest(empty_feed, declared_entry):
+def test_declared_entry_in_latest_in_feed(empty_feed, declared_entry):
     declared_feed = empty_feed
     declared_feed.entries.append(declared_entry)
-
     assert list(latest_in_feed(declared_feed)) == [declared_entry]
 
 
 @pytest.fixture
-def revoked_entry(declared_entry):
-    declared_entry.bans.revoked = True
-    return declared_entry
+def revoked_entry():
+    return Entry(
+        published=datetime(2000, 1, 1, 1),
+        dfes_published=datetime(2000, 1, 1, 2),
+        summary="",
+        bans=TotalFireBans(
+            revoked=True,
+            issued=datetime(2000, 1, 1, 3),
+            declared_for=date(2000, 1, 2),
+            locations=[("Armadale", "Perth Metropolitan")]
+        )
+    )
 
 
-def test_revoked_entry_is_latest(empty_feed, revoked_entry):
+def test_revoked_entry_in_latest_in_feed(empty_feed, revoked_entry):
     revoked_feed = empty_feed
     revoked_feed.entries.append(revoked_entry)
-
     assert list(latest_in_feed(revoked_feed)) == [revoked_entry]
+
+
+def test_both_entries_in_latest_in_feed(empty_feed, declared_entry, revoked_entry):
+    feed_with_both = empty_feed
+    feed_with_both.entries.append(declared_entry)
+    feed_with_both.entries.append(revoked_entry)
+
+    result = list(latest_in_feed(feed_with_both))
+    assert result == [declared_entry, revoked_entry]
