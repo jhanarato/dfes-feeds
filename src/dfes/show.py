@@ -31,6 +31,8 @@ def revoked_entries(feed: Feed):
 
 
 def latest_in_feed(feed: Feed) -> Iterable[Entry]:
-    if False:
-        yield
-    return
+    if not feed.entries:
+        return
+
+    declared = declared_entries(feed)
+    yield last_issued(declared)

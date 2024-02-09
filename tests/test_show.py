@@ -84,12 +84,36 @@ def test_last_issued_independent_of_order(two_declared):
     recent = last_issued(swapped)
     assert recent.bans.issued == datetime(2000, 1, 2, 3)
 
-
-def test_no_entries_generates_no_latest():
-    feed = Feed(
+@pytest.fixture
+def empty_feed():
+    return Feed(
         title="Total Fire Ban (All Regions)",
         published=datetime(2000, 1, 2, 3),
         entries=[]
     )
 
-    assert list(latest_in_feed(feed)) == []
+
+def test_empty_feed_generates_nothing(empty_feed):
+    assert list(latest_in_feed(empty_feed)) == []
+
+
+@pytest.fixture
+def declared_entry():
+    return Entry(
+        published=datetime(2000, 1, 1, 1),
+        dfes_published=datetime(2000, 1, 1, 2),
+        summary="",
+        bans=TotalFireBans(
+            revoked=False,
+            issued=datetime(2000, 1, 1, 3),
+            declared_for=date(2000, 1, 2),
+            locations=[("Armadale", "Perth Metropolitan")]
+        )
+    )
+
+
+def test_declared_entry_returned(empty_feed, declared_entry):
+    declared_feed = empty_feed
+    declared_feed.entries.append(declared_entry)
+
+    assert list(latest_in_feed(declared_feed)) == [declared_entry]
