@@ -120,7 +120,7 @@ def declared_feed(empty_feed, declared_entry):
 
 
 def test_declared_entry_in_latest_in_feed(declared_feed):
-    assert latest_in_feed(declared_feed) == [declared_feed.entries[0]]
+    assert latest_in_feed(declared_feed) == declared_feed.entries
 
 
 @pytest.fixture
@@ -145,7 +145,7 @@ def revoked_feed(empty_feed, revoked_entry):
 
 
 def test_revoked_entry_in_latest_in_feed(empty_feed, revoked_feed):
-    assert latest_in_feed(revoked_feed) == [revoked_feed.entries[0]]
+    assert latest_in_feed(revoked_feed) == revoked_feed.entries
 
 
 @pytest.fixture
