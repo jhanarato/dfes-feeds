@@ -61,6 +61,18 @@ class LatestInFeed:
             return last_issued(entries)
         return None
 
+    def neither(self) -> bool:
+        return not self.declared() and not self.revoked()
+
+    def both(self) -> bool:
+        return self.declared() is not None and self.revoked() is not None
+
+    def only_declared(self) -> bool:
+        return self.declared() and not self.revoked()
+
+    def only_revoked(self) -> bool:
+        return self.revoked() and not self.declared()
+
 
 def declared_entries(feed: Feed):
     return [entry for entry in feed.entries if not entry.bans.revoked]

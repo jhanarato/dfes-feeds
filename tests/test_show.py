@@ -134,6 +134,22 @@ class TestLatestInFeed:
         assert latest.revoked() == revoked_feed.entries[0]
         assert latest.declared() is None
 
+    def test_neither(self, empty_feed):
+        latest = LatestInFeed(empty_feed)
+        assert latest.neither()
+
+    def test_both(self, feed_with_both):
+        latest = LatestInFeed(feed_with_both)
+        assert latest.both()
+
+    def test_only_declared(self, declared_feed):
+        latest = LatestInFeed(declared_feed)
+        assert latest.only_declared()
+
+    def test_only_revoked(self, revoked_feed):
+        latest = LatestInFeed(revoked_feed)
+        assert latest.only_revoked()
+
 
 def test_parse_feeds():
     feed_published = datetime(2000, 1, 1, 0, 0, tzinfo=timezone.utc)
