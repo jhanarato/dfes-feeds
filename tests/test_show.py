@@ -48,44 +48,6 @@ def test_should_ignore_feeds_with_no_entries(repository):
 
 
 @pytest.fixture
-def two_declared() -> list[Entry]:
-    return [
-        Entry(
-            published=datetime(2000, 1, 1, 1),
-            dfes_published=datetime(2000, 1, 1, 2),
-            summary="",
-            bans=TotalFireBans(
-                revoked=False,
-                issued=datetime(2000, 1, 1, 3),
-                declared_for=date(2000, 1, 2),
-                locations=[("Armadale", "Perth Metropolitan")]
-            )
-        ),
-        Entry(
-            published=datetime(2000, 1, 2, 1),
-            dfes_published=datetime(2000, 1, 2, 2),
-            summary="",
-            bans=TotalFireBans(
-                revoked=False,
-                issued=datetime(2000, 1, 2, 3),
-                declared_for=date(2000, 1, 3),
-                locations=[("Armadale", "Perth Metropolitan")]
-            )
-        ),
-    ]
-
-
-def test_most_recent_entry(two_declared):
-    assert last_issued(two_declared).bans.issued == datetime(2000, 1, 2, 3)
-
-
-def test_last_issued_independent_of_order(two_declared):
-    swapped = [two_declared[1], two_declared[0]]
-    recent = last_issued(swapped)
-    assert recent.bans.issued == datetime(2000, 1, 2, 3)
-
-
-@pytest.fixture
 def empty_feed():
     return Feed(
         title="Total Fire Ban (All Regions)",
@@ -143,18 +105,6 @@ def feed_with_both(empty_feed, declared_entry, revoked_entry):
     return empty_feed
 
 
-def test_parse_feeds():
-    feed_published = datetime(2000, 1, 1, 0, 0, tzinfo=timezone.utc)
-
-    feeds_text = [
-        generate_bans_xml(feed_published=feed_published),
-        generate_bans_xml(feed_published=feed_published),
-    ]
-
-    for feed in parse_feeds(feeds_text):
-        assert feed.published == feed_published
-
-
 def test_no_bans_to_show(empty_feed):
     assert list(bans_to_show([empty_feed])) == []
 
@@ -183,3 +133,53 @@ class TestLatestInFeed:
         latest = LatestInFeed(revoked_feed)
         assert latest.revoked() == revoked_feed.entries[0]
         assert latest.declared() is None
+
+
+def test_parse_feeds():
+    feed_published = datetime(2000, 1, 1, 0, 0, tzinfo=timezone.utc)
+
+    feeds_text = [
+        generate_bans_xml(feed_published=feed_published),
+        generate_bans_xml(feed_published=feed_published),
+    ]
+
+    for feed in parse_feeds(feeds_text):
+        assert feed.published == feed_published
+
+
+@pytest.fixture
+def two_declared() -> list[Entry]:
+    return [
+        Entry(
+            published=datetime(2000, 1, 1, 1),
+            dfes_published=datetime(2000, 1, 1, 2),
+            summary="",
+            bans=TotalFireBans(
+                revoked=False,
+                issued=datetime(2000, 1, 1, 3),
+                declared_for=date(2000, 1, 2),
+                locations=[("Armadale", "Perth Metropolitan")]
+            )
+        ),
+        Entry(
+            published=datetime(2000, 1, 2, 1),
+            dfes_published=datetime(2000, 1, 2, 2),
+            summary="",
+            bans=TotalFireBans(
+                revoked=False,
+                issued=datetime(2000, 1, 2, 3),
+                declared_for=date(2000, 1, 3),
+                locations=[("Armadale", "Perth Metropolitan")]
+            )
+        ),
+    ]
+
+
+def test_most_recent_entry(two_declared):
+    assert last_issued(two_declared).bans.issued == datetime(2000, 1, 2, 3)
+
+
+def test_last_issued_independent_of_order(two_declared):
+    swapped = [two_declared[1], two_declared[0]]
+    recent = last_issued(swapped)
+    assert recent.bans.issued == datetime(2000, 1, 2, 3)
