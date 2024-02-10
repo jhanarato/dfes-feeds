@@ -30,7 +30,6 @@ def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
 
 def bans_to_show(feeds: Iterable[Feed]) -> Iterable[TotalFireBans]:
     for feed in feeds:
-        latest = latest_in_feed(feed)
         latest_class = LatestInFeed(feed)
 
         if not latest_class.declared() and not latest_class.revoked():
@@ -40,9 +39,9 @@ def bans_to_show(feeds: Iterable[Feed]) -> Iterable[TotalFireBans]:
             return
         if not latest_class.declared() and latest_class.revoked():
             raise RuntimeError(f"Feed published {feed.published} has revoked bans without declared")
-        if len(latest) == 2:
-            for entry in latest:
-                yield entry.bans
+        if latest_class.declared() and latest_class.revoked():
+            yield latest_class.declared().bans
+            yield latest_class.revoked().bans
             return
 
 
