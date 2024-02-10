@@ -6,7 +6,7 @@ from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
 from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
-from dfes.show import most_recently_issued, last_issued, latest_in_feed, parse_feeds, bans_to_show
+from dfes.show import most_recently_issued, last_issued, latest_in_feed, parse_feeds, bans_to_show, LatestInFeed
 
 
 def test_should_be_none_when_repository_empty(repository):
@@ -188,3 +188,9 @@ def test_raise_exception_if_only_revoked(revoked_feed):
 def test_both_declared_and_revoked_to_show(feed_with_both):
     result = list(bans_to_show([feed_with_both]))
     assert result == [entry.bans for entry in feed_with_both.entries]
+
+
+class TestLatestInFeed:
+    def test_declared(self, declared_feed):
+        latest = LatestInFeed(declared_feed)
+        assert latest.declared() == declared_feed.entries[0]
