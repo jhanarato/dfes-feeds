@@ -6,7 +6,7 @@ from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
 from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
-from dfes.show import most_recently_issued, last_issued, latest_in_feed, parse_feeds, bans_to_show, LatestInFeed
+from dfes.show import most_recently_issued, last_issued, parse_feeds, bans_to_show, LatestInFeed
 
 
 def test_should_be_none_when_repository_empty(repository):
@@ -94,10 +94,6 @@ def empty_feed():
     )
 
 
-def test_empty_feed_generates_nothing(empty_feed):
-    assert latest_in_feed(empty_feed) == []
-
-
 @pytest.fixture
 def declared_entry():
     return Entry(
@@ -117,10 +113,6 @@ def declared_entry():
 def declared_feed(empty_feed, declared_entry):
     empty_feed.entries.append(declared_entry)
     return empty_feed
-
-
-def test_declared_entry_in_latest_in_feed(declared_feed):
-    assert latest_in_feed(declared_feed) == declared_feed.entries
 
 
 @pytest.fixture
@@ -144,20 +136,11 @@ def revoked_feed(empty_feed, revoked_entry):
     return empty_feed
 
 
-def test_revoked_entry_in_latest_in_feed(empty_feed, revoked_feed):
-    assert latest_in_feed(revoked_feed) == revoked_feed.entries
-
-
 @pytest.fixture
 def feed_with_both(empty_feed, declared_entry, revoked_entry):
     empty_feed.entries.append(declared_entry)
     empty_feed.entries.append(revoked_entry)
     return empty_feed
-
-
-def test_both_entries_in_latest_in_feed(feed_with_both):
-    result = list(latest_in_feed(feed_with_both))
-    assert result == feed_with_both.entries
 
 
 def test_parse_feeds():

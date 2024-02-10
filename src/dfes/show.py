@@ -62,25 +62,6 @@ class LatestInFeed:
         return None
 
 
-def latest_in_feed(feed: Feed) -> list[Entry]:
-    if not feed.entries:
-        return []
-
-    entries = []
-
-    declared = declared_entries(feed)
-
-    if declared:
-        entries.append(last_issued(declared))
-
-    revoked = revoked_entries(feed)
-
-    if revoked:
-        entries.append(last_issued(revoked))
-
-    return entries
-
-
 def declared_entries(feed: Feed):
     return [entry for entry in feed.entries if not entry.bans.revoked]
 
