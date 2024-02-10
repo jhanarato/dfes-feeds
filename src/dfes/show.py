@@ -7,8 +7,8 @@ from dfes.repository import Repository, FeedByPublishedDate
 
 def most_recently_issued(repository: Repository) -> TotalFireBans | None:
     for feed_text in order_feeds(repository):
-        feed = parse_feed(feed_text)
-        feed.parse_summaries()
+        feed = fully_parse(feed_text)
+
         if feed.entries:
             declared = declared_entries(feed)
             return last_issued(declared).bans
