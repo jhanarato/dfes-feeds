@@ -6,9 +6,7 @@ from dfes.repository import Repository, FeedByPublishedDate
 
 
 def most_recently_issued(repository: Repository) -> TotalFireBans | None:
-    feeds = FeedByPublishedDate(repository)
-
-    for feed_text in reversed(feeds):
+    for feed_text in order_feeds(repository):
         feed = parse_feed(feed_text)
         feed.parse_summaries()
         if feed.entries:
@@ -16,6 +14,10 @@ def most_recently_issued(repository: Repository) -> TotalFireBans | None:
             return last_issued(declared).bans
 
     return None
+
+
+def order_feeds(repository: Repository) -> Iterable[str]:
+    yield from reversed(FeedByPublishedDate(repository))
 
 
 def latest_in_feed(feed: Feed) -> Iterable[Entry]:
