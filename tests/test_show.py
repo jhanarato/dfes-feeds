@@ -194,3 +194,9 @@ class TestLatestInFeed:
     def test_declared(self, declared_feed):
         latest = LatestInFeed(declared_feed)
         assert latest.declared() == declared_feed.entries[0]
+        assert latest.revoked() is None
+
+    def test_revoked(self, revoked_feed):
+        latest = LatestInFeed(revoked_feed)
+        assert latest.revoked() == revoked_feed.entries[0]
+        assert latest.declared() is None
