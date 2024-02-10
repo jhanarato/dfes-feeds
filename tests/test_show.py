@@ -176,22 +176,15 @@ def test_no_bans_to_show(empty_feed):
     assert list(bans_to_show([empty_feed])) == []
 
 
-def test_only_declared_to_show(empty_feed, declared_entry):
-    declared_feed = empty_feed
-    declared_feed.entries.append(declared_entry)
-    assert list(bans_to_show([declared_feed])) == [declared_entry.bans]
+def test_only_declared_to_show(declared_feed):
+    assert list(bans_to_show([declared_feed])) == [declared_feed.entries[0].bans]
 
 
-def test_raise_exception_if_only_revoked(empty_feed, revoked_entry):
-    revoked_feed = empty_feed
-    revoked_feed.entries.append(revoked_entry)
+def test_raise_exception_if_only_revoked(revoked_feed):
     with pytest.raises(RuntimeError):
         list(bans_to_show([revoked_feed]))
 
 
-def test_both_declared_and_revoked_to_show(empty_feed, declared_entry, revoked_entry):
-    feed_with_both = empty_feed
-    feed_with_both.entries.append(declared_entry)
-    feed_with_both.entries.append(revoked_entry)
+def test_both_declared_and_revoked_to_show(feed_with_both):
     result = list(bans_to_show([feed_with_both]))
-    assert result == [declared_entry.bans, revoked_entry.bans]
+    assert result == [entry.bans for entry in feed_with_both.entries]
