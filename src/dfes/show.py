@@ -44,6 +44,23 @@ def bans_to_show(feeds: Iterable[Feed]) -> Iterable[TotalFireBans]:
             return
 
 
+class LatestInFeed:
+    def __init__(self, feed: Feed):
+        self._feed = feed
+
+    def declared(self) -> Entry | None:
+        entries = declared_entries(self._feed)
+        if entries:
+            return last_issued(entries)
+        return None
+
+    def revoked(self) -> Entry | None:
+        entries = revoked_entries(self._feed)
+        if entries:
+            return last_issued(entries)
+        return None
+
+
 def latest_in_feed(feed: Feed) -> list[Entry]:
     if not feed.entries:
         return []
