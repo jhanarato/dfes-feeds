@@ -17,10 +17,6 @@ def most_recently_issued(repository: Repository) -> TotalFireBans | None:
     return None
 
 
-def find_latest_bans(feeds: Iterable[str]) -> list[TotalFireBans]:
-    return []
-
-
 def order_feeds(repository: Repository) -> Iterable[str]:
     yield from reversed(FeedByPublishedDate(repository))
 
@@ -30,6 +26,11 @@ def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
         feed = parse_feed(feed_text)
         feed.parse_summaries()
         yield feed
+
+
+def bans_to_show(feeds: Iterable[Feed]) -> Iterable[TotalFireBans]:
+    if False:
+        yield
 
 
 def latest_in_feed(feed: Feed) -> list[Entry]:
