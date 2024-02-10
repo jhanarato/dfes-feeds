@@ -163,3 +163,16 @@ def test_parse_feeds():
 
 def test_no_bans_to_show(empty_feed):
     assert list(bans_to_show([empty_feed])) == []
+
+
+def test_only_declared_to_show(empty_feed, declared_entry):
+    declared_feed = empty_feed
+    declared_feed.entries.append(declared_entry)
+    assert list(bans_to_show([declared_feed])) == [declared_entry.bans]
+
+
+def test_raise_exception_if_only_revoked(empty_feed, revoked_entry):
+    revoked_feed = empty_feed
+    revoked_feed.entries.append(revoked_entry)
+    with pytest.raises(RuntimeError):
+        list(bans_to_show([revoked_feed]))
