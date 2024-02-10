@@ -84,6 +84,7 @@ def test_last_issued_independent_of_order(two_declared):
     recent = last_issued(swapped)
     assert recent.bans.issued == datetime(2000, 1, 2, 3)
 
+
 @pytest.fixture
 def empty_feed():
     return Feed(
