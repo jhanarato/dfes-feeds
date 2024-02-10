@@ -148,13 +148,16 @@ def test_revoked_entry_in_latest_in_feed(empty_feed, revoked_feed):
     assert latest_in_feed(revoked_feed) == [revoked_feed.entries[0]]
 
 
-def test_both_entries_in_latest_in_feed(empty_feed, declared_entry, revoked_entry):
-    feed_with_both = empty_feed
-    feed_with_both.entries.append(declared_entry)
-    feed_with_both.entries.append(revoked_entry)
+@pytest.fixture
+def feed_with_both(empty_feed, declared_entry, revoked_entry):
+    empty_feed.entries.append(declared_entry)
+    empty_feed.entries.append(revoked_entry)
+    return empty_feed
 
+
+def test_both_entries_in_latest_in_feed(feed_with_both):
     result = list(latest_in_feed(feed_with_both))
-    assert result == [declared_entry, revoked_entry]
+    assert result == feed_with_both.entries
 
 
 def test_parse_feeds():
