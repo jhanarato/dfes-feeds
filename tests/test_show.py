@@ -6,7 +6,7 @@ from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
 from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
-from dfes.show import most_recently_issued, last_issued, latest_in_feed
+from dfes.show import most_recently_issued, last_issued, latest_in_feed, fully_parse
 
 
 def test_should_be_none_when_repository_empty(repository):
@@ -147,3 +147,9 @@ def test_both_entries_in_latest_in_feed(empty_feed, declared_entry, revoked_entr
 
     result = list(latest_in_feed(feed_with_both))
     assert result == [declared_entry, revoked_entry]
+
+
+def test_fully_parse(bans_xml):
+    parsed = fully_parse(bans_xml)
+    for entry in parsed.entries:
+        assert entry.bans

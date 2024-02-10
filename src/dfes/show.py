@@ -20,6 +20,12 @@ def order_feeds(repository: Repository) -> Iterable[str]:
     yield from reversed(FeedByPublishedDate(repository))
 
 
+def fully_parse(feed_text: str) -> Feed:
+    feed = parse_feed(feed_text)
+    feed.parse_summaries()
+    return feed
+
+
 def latest_in_feed(feed: Feed) -> Iterable[Entry]:
     if not feed.entries:
         return
