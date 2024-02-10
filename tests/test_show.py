@@ -113,10 +113,14 @@ def declared_entry():
     )
 
 
-def test_declared_entry_in_latest_in_feed(empty_feed, declared_entry):
-    declared_feed = empty_feed
-    declared_feed.entries.append(declared_entry)
-    assert latest_in_feed(declared_feed) == [declared_entry]
+@pytest.fixture
+def declared_feed(empty_feed, declared_entry):
+    empty_feed.entries.append(declared_entry)
+    return empty_feed
+
+
+def test_declared_entry_in_latest_in_feed(declared_feed):
+    assert latest_in_feed(declared_feed) == [declared_feed.entries[0]]
 
 
 @pytest.fixture
