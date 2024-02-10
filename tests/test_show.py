@@ -176,3 +176,11 @@ def test_raise_exception_if_only_revoked(empty_feed, revoked_entry):
     revoked_feed.entries.append(revoked_entry)
     with pytest.raises(RuntimeError):
         list(bans_to_show([revoked_feed]))
+
+
+def test_both_declared_and_revoked_to_show(empty_feed, declared_entry, revoked_entry):
+    feed_with_both = empty_feed
+    feed_with_both.entries.append(declared_entry)
+    feed_with_both.entries.append(revoked_entry)
+    result = list(bans_to_show([feed_with_both]))
+    assert result == [declared_entry.bans, revoked_entry.bans]

@@ -38,6 +38,10 @@ def bans_to_show(feeds: Iterable[Feed]) -> Iterable[TotalFireBans]:
             return
         if len(latest) == 1 and latest[0].bans.revoked:
             raise RuntimeError(f"Feed published {feed.published} has revoked bans without declared")
+        if len(latest) == 2:
+            for entry in latest:
+                yield entry.bans
+            return
 
 
 def latest_in_feed(feed: Feed) -> list[Entry]:
