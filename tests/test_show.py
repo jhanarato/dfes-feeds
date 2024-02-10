@@ -95,7 +95,7 @@ def empty_feed():
 
 
 def test_empty_feed_generates_nothing(empty_feed):
-    assert list(latest_in_feed(empty_feed)) == []
+    assert latest_in_feed(empty_feed) == []
 
 
 @pytest.fixture
@@ -116,7 +116,7 @@ def declared_entry():
 def test_declared_entry_in_latest_in_feed(empty_feed, declared_entry):
     declared_feed = empty_feed
     declared_feed.entries.append(declared_entry)
-    assert list(latest_in_feed(declared_feed)) == [declared_entry]
+    assert latest_in_feed(declared_feed) == [declared_entry]
 
 
 @pytest.fixture
@@ -137,7 +137,7 @@ def revoked_entry():
 def test_revoked_entry_in_latest_in_feed(empty_feed, revoked_entry):
     revoked_feed = empty_feed
     revoked_feed.entries.append(revoked_entry)
-    assert list(latest_in_feed(revoked_feed)) == [revoked_entry]
+    assert latest_in_feed(revoked_feed) == [revoked_entry]
 
 
 def test_both_entries_in_latest_in_feed(empty_feed, declared_entry, revoked_entry):
