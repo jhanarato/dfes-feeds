@@ -26,19 +26,23 @@ def fully_parse(feed_text: str) -> Feed:
     return feed
 
 
-def latest_in_feed(feed: Feed) -> Iterable[Entry]:
+def latest_in_feed(feed: Feed) -> list[Entry]:
     if not feed.entries:
-        return
+        return []
+
+    entries = []
 
     declared = declared_entries(feed)
 
     if declared:
-        yield last_issued(declared)
+        entries.append(last_issued(declared))
 
     revoked = revoked_entries(feed)
 
     if revoked:
-        yield last_issued(revoked)
+        entries.append(last_issued(revoked))
+
+    return entries
 
 
 def declared_entries(feed: Feed):
