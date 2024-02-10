@@ -2,11 +2,11 @@ from collections.abc import Iterable
 
 from dfes.bans import TotalFireBans
 from dfes.feeds import parse_feed, Feed, Entry
-from dfes.repository import Repository, BanFeeds
+from dfes.repository import Repository, FeedByPublishedDate
 
 
 def most_recently_issued(repository: Repository) -> TotalFireBans | None:
-    feeds = BanFeeds(repository)
+    feeds = FeedByPublishedDate(repository)
 
     for feed_text in reversed(feeds):
         feed = parse_feed(feed_text)

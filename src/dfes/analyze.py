@@ -4,7 +4,7 @@ import polars as pl
 import polars.selectors as cs
 
 from dfes.feeds import Feed, parse_feed
-from dfes.repository import FileRepository, BanFeeds
+from dfes.repository import FileRepository, FeedByPublishedDate
 
 
 def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
@@ -41,7 +41,7 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
 
 def import_file_repository() -> pl.DataFrame:
     repo = FileRepository()
-    feeds = [parse_feed(feed_text) for feed_text in BanFeeds(repo)]
+    feeds = [parse_feed(feed_text) for feed_text in FeedByPublishedDate(repo)]
     df = to_dataframe(feeds)
     return df
 

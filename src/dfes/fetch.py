@@ -4,7 +4,7 @@ import requests
 
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed, Feed
-from dfes.repository import Repository, FailedFeeds
+from dfes.repository import Repository, FailedByFetchedDate
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -28,5 +28,5 @@ def check_summaries(feed: Feed):
 
 
 def store_failed(repository: Repository, feed_xml: str) -> bool:
-    failed = FailedFeeds(repository)
+    failed = FailedByFetchedDate(repository)
     return len(failed) == 0 or failed[-1] != feed_xml
