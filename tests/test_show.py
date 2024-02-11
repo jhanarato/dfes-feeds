@@ -188,11 +188,11 @@ def two_declared() -> list[Entry]:
     ]
 
 
-def test_most_recent_entry(two_declared):
-    assert last_issued(two_declared).bans.issued == datetime(2000, 1, 2, 3)
+class TestLastIssued:
+    def test_in_order(self, two_declared):
+        assert last_issued(two_declared).bans.issued == datetime(2000, 1, 2, 3)
 
-
-def test_last_issued_independent_of_order(two_declared):
-    swapped = [two_declared[1], two_declared[0]]
-    recent = last_issued(swapped)
-    assert recent.bans.issued == datetime(2000, 1, 2, 3)
+    def test_out_of_order(self, two_declared):
+        swapped = [two_declared[1], two_declared[0]]
+        recent = last_issued(swapped)
+        assert recent.bans.issued == datetime(2000, 1, 2, 3)
