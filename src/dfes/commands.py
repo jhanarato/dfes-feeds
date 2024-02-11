@@ -23,10 +23,12 @@ def fetch():
 @dfes.command(help="Show most recently issued bans")
 def show():
     repository = FileRepository(repository_location())
-    if bans := to_show(repository):
-        display_bans(bans)
-    else:
+    bans = to_show(repository)
+
+    if not bans:
         echo("Feed repository is empty. Run \"dfes fetch\"")
+
+    display_bans(bans)
 
 
 @dfes.command(name="list", help="List the stored feeds for issued bans.")
