@@ -6,14 +6,14 @@ from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
 from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
-from dfes.show import most_recently_issued, last_issued, parse_feeds, latest_bans, LatestEntries
+from dfes.show import to_show, last_issued, parse_feeds, latest_bans, LatestEntries
 
 
-class TestMostRecentlyIssued:
-    def test_should_be_none_when_repository_empty(self, repository):
-        assert most_recently_issued(repository) == tuple()
+class TestToShow:
+    def test_repository_empty(self, repository):
+        assert to_show(repository) == tuple()
 
-    def test_should_get_most_recently_issued(self, repository):
+    def test_latest_entry_is_declared(self, repository):
         earlier_feed = generate_bans_xml(
             feed_published=datetime(2023, 10, 12),
             issued=datetime(2023, 10, 12),
@@ -27,10 +27,10 @@ class TestMostRecentlyIssued:
         store_feed(earlier_feed, repository)
         store_feed(later_feed, repository)
 
-        bans = most_recently_issued(repository)[0]
+        bans = to_show(repository)[0]
         assert bans.issued == datetime(2023, 10, 13, tzinfo=timezone.utc)
 
-    def test_should_ignore_feeds_with_no_entries(self, repository):
+    def test_skip_feed_with_no_entries(self, repository):
         earlier_feed = generate_bans_xml(
             feed_published=datetime(2023, 10, 12),
             declared_for=date(2023, 10, 13)
@@ -43,7 +43,7 @@ class TestMostRecentlyIssued:
         store_feed(earlier_feed, repository)
         store_feed(later_feed, repository)
 
-        assert most_recently_issued(repository)[0].declared_for == date(2023, 10, 13)
+        assert to_show(repository)[0].declared_for == date(2023, 10, 13)
 
 
 @pytest.fixture

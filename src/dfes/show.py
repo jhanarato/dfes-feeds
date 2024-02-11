@@ -5,7 +5,7 @@ from dfes.feeds import parse_feed, Feed, Entry
 from dfes.repository import Repository, FeedByPublishedDate
 
 
-def most_recently_issued(repository: Repository) -> tuple[TotalFireBans, ...]:
+def to_show(repository: Repository) -> tuple[TotalFireBans, ...]:
     return latest_bans(
         parse_feeds(
             order_feeds(repository)

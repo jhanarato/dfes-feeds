@@ -5,7 +5,7 @@ from dfes.fetch import aquire_ban_feed, store_feed
 from dfes.migrate import do_migration
 from dfes.reports import display_bans
 from dfes.repository import FileRepository, repository_location
-from dfes.show import most_recently_issued
+from dfes.show import to_show
 
 
 @click.group()
@@ -23,7 +23,7 @@ def fetch():
 @dfes.command(help="Show most recently issued bans")
 def show():
     repository = FileRepository(repository_location())
-    if bans := most_recently_issued(repository):
+    if bans := to_show(repository):
         display_bans(bans)
     else:
         echo("Feed repository is empty. Run \"dfes fetch\"")
