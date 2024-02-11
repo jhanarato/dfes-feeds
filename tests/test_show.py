@@ -6,7 +6,7 @@ from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
 from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
-from dfes.show import most_recently_issued, last_issued, parse_feeds, bans_to_show, LatestInFeed
+from dfes.show import most_recently_issued, last_issued, parse_feeds, latest_bans, LatestInFeed
 
 
 class TestMostRecentlyIssued:
@@ -104,22 +104,20 @@ def feed_with_both(empty_feed, declared_entry, revoked_entry):
     return empty_feed
 
 
-def test_no_bans_to_show(empty_feed):
-    assert list(bans_to_show([empty_feed])) == []
+class TestLatestBans:
+    def test_no_bans_to_show(self, empty_feed):
+        assert list(latest_bans([empty_feed])) == []
 
+    def test_only_declared_to_show(self, declared_feed):
+        assert list(latest_bans([declared_feed])) == [declared_feed.entries[0].bans]
 
-def test_only_declared_to_show(declared_feed):
-    assert list(bans_to_show([declared_feed])) == [declared_feed.entries[0].bans]
+    def test_raise_exception_if_only_revoked(self, revoked_feed):
+        with pytest.raises(RuntimeError):
+            list(latest_bans([revoked_feed]))
 
-
-def test_raise_exception_if_only_revoked(revoked_feed):
-    with pytest.raises(RuntimeError):
-        list(bans_to_show([revoked_feed]))
-
-
-def test_both_declared_and_revoked_to_show(feed_with_both):
-    result = list(bans_to_show([feed_with_both]))
-    assert result == [entry.bans for entry in feed_with_both.entries]
+    def test_both_declared_and_revoked_to_show(self, feed_with_both):
+        result = list(latest_bans([feed_with_both]))
+        assert result == [entry.bans for entry in feed_with_both.entries]
 
 
 class TestLatestInFeed:

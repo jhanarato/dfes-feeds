@@ -28,7 +28,7 @@ def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
         yield feed
 
 
-def bans_to_show(feeds: Iterable[Feed]) -> Iterable[TotalFireBans]:
+def latest_bans(feeds: Iterable[Feed]) -> Iterable[TotalFireBans]:
     for feed in feeds:
         latest = LatestInFeed(feed)
 
