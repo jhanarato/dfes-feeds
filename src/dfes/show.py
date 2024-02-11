@@ -28,21 +28,21 @@ def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
         yield feed
 
 
-def latest_bans(feeds: Iterable[Feed]) -> Iterable[TotalFireBans]:
+def latest_bans(feeds: Iterable[Feed]) -> tuple[TotalFireBans, ...]:
     for feed in feeds:
         latest = LatestEntries(feed)
+
+        if latest.neither():
+            return tuple()
 
         if latest.only_revoked():
             raise RuntimeError(f"Feed published {feed.published} has revoked bans without declared")
 
         if latest.only_declared():
-            yield latest.declared().bans
-            return
+            return (latest.declared().bans, )
 
         if latest.both():
-            yield latest.declared().bans
-            yield latest.revoked().bans
-            return
+            return latest.declared().bans, latest.revoked().bans
 
 
 class LatestEntries:

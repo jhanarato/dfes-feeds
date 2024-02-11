@@ -106,7 +106,7 @@ def feed_with_both(empty_feed, declared_entry, revoked_entry):
 
 class TestLatestBans:
     def test_no_bans_to_show(self, empty_feed):
-        assert list(latest_bans([empty_feed])) == []
+        assert latest_bans([empty_feed]) == tuple()
 
     def test_only_declared_to_show(self, declared_feed):
         assert list(latest_bans([declared_feed])) == [declared_feed.entries[0].bans]
