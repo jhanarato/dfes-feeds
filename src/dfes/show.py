@@ -31,9 +31,6 @@ def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
 def bans_to_show(feeds: Iterable[Feed]) -> Iterable[TotalFireBans]:
     for feed in feeds:
         latest = LatestInFeed(feed)
-
-        if latest.neither():
-            continue
         if latest.only_declared():
             yield latest.declared().bans
             return
