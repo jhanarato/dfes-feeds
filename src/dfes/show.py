@@ -6,15 +6,11 @@ from dfes.repository import Repository, FeedByPublishedDate
 
 
 def most_recently_issued(repository: Repository) -> tuple[TotalFireBans, ...]:
-    for feed_text in order_feeds(repository):
-        feed = parse_feed(feed_text)
-        feed.parse_summaries()
-
-        if feed.entries:
-            declared = declared_entries(feed)
-            return (last_issued(declared).bans, )
-
-    return tuple()
+    return latest_bans(
+        parse_feeds(
+            order_feeds(repository)
+        )
+    )
 
 
 def order_feeds(repository: Repository) -> Iterable[str]:
@@ -33,7 +29,7 @@ def latest_bans(feeds: Iterable[Feed]) -> tuple[TotalFireBans, ...]:
         latest = LatestEntries(feed)
 
         if latest.neither():
-            return tuple()
+            continue
 
         if latest.only_revoked():
             raise RuntimeError(f"Feed published {feed.published} has revoked bans without declared")
@@ -43,6 +39,8 @@ def latest_bans(feeds: Iterable[Feed]) -> tuple[TotalFireBans, ...]:
 
         if latest.both():
             return latest.declared().bans, latest.revoked().bans
+
+    return tuple()
 
 
 class LatestEntries:
