@@ -6,7 +6,7 @@ from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
 from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
-from dfes.show import most_recently_issued, last_issued, parse_feeds, latest_bans, LatestInFeed
+from dfes.show import most_recently_issued, last_issued, parse_feeds, latest_bans, LatestEntries
 
 
 class TestMostRecentlyIssued:
@@ -120,31 +120,31 @@ class TestLatestBans:
         assert result == [entry.bans for entry in feed_with_both.entries]
 
 
-class TestLatestInFeed:
+class TestLatestEntries:
     def test_declared(self, declared_feed):
-        latest = LatestInFeed(declared_feed)
+        latest = LatestEntries(declared_feed)
         assert latest.declared() == declared_feed.entries[0]
         assert latest.revoked() is None
 
     def test_revoked(self, revoked_feed):
-        latest = LatestInFeed(revoked_feed)
+        latest = LatestEntries(revoked_feed)
         assert latest.revoked() == revoked_feed.entries[0]
         assert latest.declared() is None
 
     def test_neither(self, empty_feed):
-        latest = LatestInFeed(empty_feed)
+        latest = LatestEntries(empty_feed)
         assert latest.neither()
 
     def test_both(self, feed_with_both):
-        latest = LatestInFeed(feed_with_both)
+        latest = LatestEntries(feed_with_both)
         assert latest.both()
 
     def test_only_declared(self, declared_feed):
-        latest = LatestInFeed(declared_feed)
+        latest = LatestEntries(declared_feed)
         assert latest.only_declared()
 
     def test_only_revoked(self, revoked_feed):
-        latest = LatestInFeed(revoked_feed)
+        latest = LatestEntries(revoked_feed)
         assert latest.only_revoked()
 
 
