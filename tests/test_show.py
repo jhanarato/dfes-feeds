@@ -11,7 +11,7 @@ from dfes.show import most_recently_issued, last_issued, parse_feeds, latest_ban
 
 class TestMostRecentlyIssued:
     def test_should_be_none_when_repository_empty(self, repository):
-        assert most_recently_issued(repository) is None
+        assert most_recently_issued(repository) == tuple()
 
     def test_should_get_most_recently_issued(self, repository):
         earlier_feed = generate_bans_xml(
@@ -27,7 +27,7 @@ class TestMostRecentlyIssued:
         store_feed(earlier_feed, repository)
         store_feed(later_feed, repository)
 
-        bans = most_recently_issued(repository)
+        bans = most_recently_issued(repository)[0]
         assert bans.issued == datetime(2023, 10, 13, tzinfo=timezone.utc)
 
     def test_should_ignore_feeds_with_no_entries(self, repository):
@@ -43,7 +43,7 @@ class TestMostRecentlyIssued:
         store_feed(earlier_feed, repository)
         store_feed(later_feed, repository)
 
-        assert most_recently_issued(repository).declared_for == date(2023, 10, 13)
+        assert most_recently_issued(repository)[0].declared_for == date(2023, 10, 13)
 
 
 @pytest.fixture
