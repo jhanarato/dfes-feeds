@@ -50,6 +50,16 @@ def ctx_no_locations(df: pl.DataFrame) -> pl.DataFrame:
     return df.select(pl.exclude("region", "district")).unique()
 
 
+def ctx_intervals(df: pl.DataFrame) -> pl.DataFrame:
+    return df.select(
+        df.select(
+            col_interval("dfes_published", "entry_published"),
+            col_interval("dfes_published", "issued"),
+            issued_to_declared(),
+        )
+    )
+
+
 def col_interval(first: str, second: str) -> pl.Expr:
     return (pl.col(second) - pl.col(first)).alias(f"{first}_{second}")
 
@@ -96,8 +106,7 @@ def main():
     df = import_file_repository()
     print("Publish delay")
     print(publish_delay(df))
-    print("Entry delays")
-    print(max_delay(df))
+    print(ctx_intervals(df))
 
 
 if __name__ == "__main__":
