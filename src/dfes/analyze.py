@@ -46,6 +46,10 @@ def import_file_repository() -> pl.DataFrame:
     return df
 
 
+def ctx_no_locations(df: pl.DataFrame) -> pl.DataFrame:
+    return df.select(pl.exclude("region", "district")).unique()
+
+
 def issued_to_declared() -> pl.Expr:
     return (
         pl.col("declared_for") - pl.col("issued").cast(pl.Date)
@@ -61,9 +65,7 @@ def format_datetime() -> pl.Expr:
 
 
 def display(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(
-        pl.exclude("region", "district")
-    ).unique().with_columns(
+    return ctx_no_locations(df).with_columns(
         n_entries()
     ).filter(
         pl.col("n_entries") > 1
@@ -72,9 +74,26 @@ def display(df: pl.DataFrame) -> pl.DataFrame:
     ).select(format_datetime(), ~cs.datetime())
 
 
+def max_delay(df: pl.DataFrame) -> pl.DataFrame:
+    return df.select(cs.datetime(), cs.date()).unique().select(
+        (pl.col("entry_published") - pl.col("dfes_published")).alias("entry_dfes"),
+        (pl.col("issued") - pl.col("dfes_published")).alias("dfes_issued"),
+        (pl.col("declared_for") - pl.col("issued").cast(pl.Date).alias("dfes_declared_for"))
+    ).max()
+
+
+def publish_delay(df: pl.DataFrame) -> pl.DataFrame:
+    return df.select(cs.datetime(), cs.date()).unique().select(
+        (pl.col("feed_published") - pl.col("entry_published")).alias("entry_pub_to_feed_pub"),
+    ).max()
+
+
 def main():
     df = import_file_repository()
-    print(display(df))
+    print("Publish delay")
+    print(publish_delay(df))
+    print("Entry delays")
+    print(max_delay(df))
 
 
 if __name__ == "__main__":
