@@ -50,6 +50,10 @@ def ctx_no_locations(df: pl.DataFrame) -> pl.DataFrame:
     return df.select(pl.exclude("region", "district")).unique()
 
 
+def col_interval(first: str, second: str) -> pl.Expr:
+    return (pl.col(second) - pl.col(first)).alias(f"{first}_{second}")
+
+
 def issued_to_declared() -> pl.Expr:
     return (
         pl.col("declared_for") - pl.col("issued").cast(pl.Date)
