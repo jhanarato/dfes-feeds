@@ -53,15 +53,15 @@ def ctx_no_locations(df: pl.DataFrame) -> pl.DataFrame:
 def ctx_intervals(df: pl.DataFrame) -> pl.DataFrame:
     return df.select(
         df.select(
-            col_interval("dfes_published", "entry_published"),
-            col_interval("dfes_published", "issued"),
+            col_interval_minutes("dfes_published", "entry_published"),
+            col_interval_minutes("dfes_published", "issued"),
             issued_to_declared(),
         )
     )
 
 
-def col_interval(first: str, second: str) -> pl.Expr:
-    return (pl.col(second) - pl.col(first)).alias(f"{first}_{second}")
+def col_interval_minutes(first: str, second: str) -> pl.Expr:
+    return (pl.col(second) - pl.col(first)).alias(f"{first}_{second}").dt.total_minutes()
 
 
 def issued_to_declared() -> pl.Expr:

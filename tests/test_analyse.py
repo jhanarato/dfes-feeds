@@ -4,7 +4,7 @@ import polars as pl
 import polars.selectors as cs
 import pytest
 
-from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime, col_interval
+from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime, col_interval_minutes
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -124,21 +124,21 @@ def test_format_datetime():
     assert datetime_df.select(format_datetime()).equals(formatted_df)
 
 
-def test_col_interval():
+def test_col_interval_minutes():
     df_in = pl.DataFrame(
         data={
             "first": [datetime(2021, 1, 2, hour=3)],
-            "second": [datetime(2021, 1, 2, hour=4)],
+            "second": [datetime(2021, 1, 2, hour=4, minute=30)],
         }
     )
 
     df_out = df_in.select(
-        col_interval("first", "second")
+        col_interval_minutes("first", "second")
     )
 
     df_expected = pl.DataFrame(
         data={
-            "first_second": [timedelta(hours=1)]
+            "first_second": [90]
         }
     )
 
