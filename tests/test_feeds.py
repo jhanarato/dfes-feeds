@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -33,7 +34,7 @@ def test_dfes_published_malformed(mangled_dfes_publication):
 
 
 def test_parse_entry_summary():
-    issued = datetime(2000, 1, 2, 3, 4, tzinfo=timezone.utc)
+    issued = datetime(2000, 1, 2, 3, 4, tzinfo=ZoneInfo(key='Australia/Perth'))
     feed_xml = generate_bans_xml(issued=issued)
 
     summary = feeds.parse_feed(feed_xml).entries[0].summary

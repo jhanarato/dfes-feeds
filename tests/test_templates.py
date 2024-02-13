@@ -1,4 +1,5 @@
 from datetime import datetime, timezone, date
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -18,7 +19,7 @@ def test_generate_bans_xml(revoked):
 
     feed_published = datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
     dfes_published = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
-    issued = datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
+    issued = datetime(2023, 10, 15, 17, 6, tzinfo=ZoneInfo(key='Australia/Perth'))
     declared_for = date(2023, 10, 16)
 
     xml = generate_bans_xml(regions=regions, dfes_published=dfes_published, feed_published=feed_published,

@@ -1,4 +1,5 @@
 from datetime import datetime, timezone, date
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -28,7 +29,7 @@ class TestToShow:
         store_feed(later_feed, repository)
 
         bans = to_show(repository)[0]
-        assert bans.issued == datetime(2023, 10, 13, tzinfo=timezone.utc)
+        assert bans.issued == datetime(2023, 10, 13, tzinfo=ZoneInfo(key='Australia/Perth'))
 
     def test_skip_feed_with_no_entries(self, repository):
         earlier_feed = generate_bans_xml(

@@ -1,7 +1,8 @@
 import re
 from collections.abc import Iterator
 from dataclasses import dataclass
-from datetime import date, time, datetime, timezone
+from datetime import date, time, datetime
+from zoneinfo import ZoneInfo
 
 from bs4 import BeautifulSoup, Tag
 
@@ -23,7 +24,7 @@ def parse_bans(summary_html: str) -> TotalFireBans:
     issued = datetime.combine(
         date_of_issue(soup),
         time_of_issue(soup),
-        timezone.utc
+        ZoneInfo(key='Australia/Perth')
     )
 
     if revoked := bans_are_revoked(soup):

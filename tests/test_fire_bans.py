@@ -1,4 +1,5 @@
-from datetime import date, time, datetime, timezone
+from datetime import date, time, datetime
+from zoneinfo import ZoneInfo
 
 import pytest
 from bs4 import BeautifulSoup
@@ -152,7 +153,7 @@ def test_extract_region():
 
 def test_combined_data(entry):
     combined = bans.parse_bans(entry.summary)
-    assert combined.issued == datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc)
+    assert combined.issued == datetime(2023, 10, 15, 17, 6, tzinfo=ZoneInfo(key='Australia/Perth'))
     assert combined.declared_for == date(2023, 10, 16)
     assert combined.locations == [
         ('Midwest Gascoyne', 'Carnamah'),
