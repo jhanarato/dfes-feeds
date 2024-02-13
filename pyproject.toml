@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dfes-feeds"
-version = "0.3.1"
+version = "0.3.2"
 description = "CLI for WA Department of Emergency Services"
 authors = ["Ajahn Jhanarato <jhanarato@gmail.com>"]
 license = "MIT"
