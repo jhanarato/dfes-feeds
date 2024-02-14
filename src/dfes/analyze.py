@@ -68,6 +68,10 @@ def format_datetime() -> pl.Expr:
     return cs.datetime().dt.strftime("%Y-%m-%d %H:%M:%S")
 
 
+def perth_tz(dt_col: str) -> pl.Expr:
+    return pl.col(dt_col).dt.convert_time_zone("Australia/Perth")
+
+
 class Contexts:
     def __init__(self):
         self._df = import_file_repository()

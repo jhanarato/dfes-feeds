@@ -1,11 +1,12 @@
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 import polars as pl
 import polars.selectors as cs
 import pytest
 
 from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime, col_interval_minutes, \
-    datetime_to_hour
+    datetime_to_hour, perth_tz
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -162,3 +163,13 @@ def test_datetime_to_hour():
             }
         )
     )
+
+
+def test_perth_tz():
+    in_time = datetime(2021, 1, 2, hour=3, tzinfo=timezone.utc)
+    out_time = datetime(2021, 1, 2, hour=11, tzinfo=ZoneInfo("Australia/Perth"))
+    df = pl.DataFrame(data={"dt": [in_time]}).select(
+        perth_tz("dt")
+    )
+
+    assert df["dt"].to_list()[0] == out_time
