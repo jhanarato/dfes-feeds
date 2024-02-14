@@ -78,16 +78,14 @@ class Contexts:
             issued_to_declared(),
         )
 
-
-def display() -> pl.DataFrame:
-    df = Contexts().no_locations()
-    return df.with_columns(
-        n_entries()
-    ).filter(
-        pl.col("n_entries") > 1
-    ).unique().sort(
-        pl.col("feed_published", "entry_index")
-    ).select(format_datetime(), ~cs.datetime())
+    def display(self) -> pl.DataFrame:
+        return self.no_locations().with_columns(
+            n_entries()
+        ).filter(
+            pl.col("n_entries") > 1
+        ).unique().sort(
+            pl.col("feed_published", "entry_index")
+        ).select(format_datetime(), ~cs.datetime())
 
 
 def max_delay(df: pl.DataFrame) -> pl.DataFrame:
@@ -105,7 +103,8 @@ def publish_delay(df: pl.DataFrame) -> pl.DataFrame:
 
 
 def main():
-    print(Contexts().intervals())
+    ctx = Contexts()
+    print(ctx.display())
 
 
 if __name__ == "__main__":
