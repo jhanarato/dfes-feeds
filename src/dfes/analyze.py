@@ -50,6 +50,10 @@ def col_interval_minutes(first: str, second: str) -> pl.Expr:
     return (pl.col(second) - pl.col(first)).alias(f"{first}_{second}").dt.total_minutes()
 
 
+def datetime_to_hour(dt_col: str) -> pl.Expr:
+    return pl.col(dt_col).dt.hour().alias(f"{dt_col}_hour")
+
+
 def issued_to_declared() -> pl.Expr:
     return (
         pl.col("declared_for") - pl.col("issued").cast(pl.Date)
@@ -101,10 +105,17 @@ class Contexts:
             (pl.col("feed_published") - pl.col("entry_published")).alias("entry_pub_to_feed_pub"),
         ).max()
 
+    def entry_delayed(self) -> pl.DataFrame:
+        return self.no_locations().with_columns(
+            col_interval_minutes("dfes_published", "entry_published").alias("delay"),
+        ).with_columns(
+            (pl.col("delay") > 0).alias("is_delayed"),
+        )
+
 
 def main():
     ctx = Contexts()
-    print(ctx.publish_delay())
+    print(ctx.entry_delayed())
 
 
 if __name__ == "__main__":

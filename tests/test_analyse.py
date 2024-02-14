@@ -4,7 +4,8 @@ import polars as pl
 import polars.selectors as cs
 import pytest
 
-from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime, col_interval_minutes
+from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime, col_interval_minutes, \
+    datetime_to_hour
 from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
@@ -143,3 +144,21 @@ def test_col_interval_minutes():
     )
 
     assert df_out.equals(df_expected)
+
+
+def test_datetime_to_hour():
+    df = pl.DataFrame(
+        data={
+            "dt": [datetime(2021, 1, 2, hour=3)],
+        }
+    )
+
+    assert df.select(
+        datetime_to_hour("dt")
+    ).equals(
+        pl.DataFrame(
+            data={
+                "dt_hour": [3],
+            }
+        )
+    )
