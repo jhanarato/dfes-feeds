@@ -46,6 +46,14 @@ def import_file_repository() -> pl.DataFrame:
     return df
 
 
+class Contexts:
+    def __init__(self):
+        self._df = import_file_repository()
+
+    def no_locations(self) -> pl.DataFrame:
+        return self._df.select(pl.exclude("region", "district")).unique()
+
+
 def ctx_no_locations(df: pl.DataFrame) -> pl.DataFrame:
     return df.select(pl.exclude("region", "district")).unique()
 
@@ -78,8 +86,9 @@ def format_datetime() -> pl.Expr:
     return cs.datetime().dt.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def display(df: pl.DataFrame) -> pl.DataFrame:
-    return ctx_no_locations(df).with_columns(
+def display() -> pl.DataFrame:
+    df = Contexts().no_locations()
+    return df.with_columns(
         n_entries()
     ).filter(
         pl.col("n_entries") > 1
@@ -103,10 +112,7 @@ def publish_delay(df: pl.DataFrame) -> pl.DataFrame:
 
 
 def main():
-    df = import_file_repository()
-    print("Publish delay")
-    print(publish_delay(df))
-    print(ctx_intervals(df))
+    print(display())
 
 
 if __name__ == "__main__":
