@@ -1,3 +1,4 @@
+import datetime
 from collections.abc import Iterable
 
 import polars as pl
@@ -31,7 +32,7 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
                 data["entry_published"].append(entry.published)
                 data["dfes_published"].append(entry.dfes_published)
                 data["revoked"].append(entry.bans.revoked)
-                data["issued"].append(entry.bans.issued)
+                data["issued"].append(entry.bans.issued.astimezone(datetime.timezone.utc))
                 data["declared_for"].append(entry.bans.declared_for)
                 data["region"].append(location[0])
                 data["district"].append(location[1])
