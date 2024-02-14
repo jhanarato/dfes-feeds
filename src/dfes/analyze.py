@@ -56,6 +56,14 @@ def issued_to_declared() -> pl.Expr:
     ).alias("issued_to_declared")
 
 
+def n_entries() -> pl.Expr:
+    return pl.col("entry_index").n_unique().over("feed_published").alias("n_entries")
+
+
+def format_datetime() -> pl.Expr:
+    return cs.datetime().dt.strftime("%Y-%m-%d %H:%M:%S")
+
+
 class Contexts:
     def __init__(self):
         self._df = import_file_repository()
@@ -69,14 +77,6 @@ class Contexts:
             col_interval_minutes("dfes_published", "issued"),
             issued_to_declared(),
         )
-
-
-def n_entries() -> pl.Expr:
-    return pl.col("entry_index").n_unique().over("feed_published").alias("n_entries")
-
-
-def format_datetime() -> pl.Expr:
-    return cs.datetime().dt.strftime("%Y-%m-%d %H:%M:%S")
 
 
 def display() -> pl.DataFrame:
