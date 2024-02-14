@@ -46,28 +46,6 @@ def import_file_repository() -> pl.DataFrame:
     return df
 
 
-class Contexts:
-    def __init__(self):
-        self._df = import_file_repository()
-
-    def no_locations(self) -> pl.DataFrame:
-        return self._df.select(pl.exclude("region", "district")).unique()
-
-
-def ctx_no_locations(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(pl.exclude("region", "district")).unique()
-
-
-def ctx_intervals(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(
-        df.select(
-            col_interval_minutes("dfes_published", "entry_published"),
-            col_interval_minutes("dfes_published", "issued"),
-            issued_to_declared(),
-        )
-    )
-
-
 def col_interval_minutes(first: str, second: str) -> pl.Expr:
     return (pl.col(second) - pl.col(first)).alias(f"{first}_{second}").dt.total_minutes()
 
@@ -76,6 +54,21 @@ def issued_to_declared() -> pl.Expr:
     return (
         pl.col("declared_for") - pl.col("issued").cast(pl.Date)
     ).alias("issued_to_declared")
+
+
+class Contexts:
+    def __init__(self):
+        self._df = import_file_repository()
+
+    def no_locations(self) -> pl.DataFrame:
+        return self._df.select(pl.exclude("region", "district")).unique()
+
+    def intervals(self) -> pl.DataFrame:
+        return self._df.select(
+            col_interval_minutes("dfes_published", "entry_published"),
+            col_interval_minutes("dfes_published", "issued"),
+            issued_to_declared(),
+        )
 
 
 def n_entries() -> pl.Expr:
@@ -112,7 +105,7 @@ def publish_delay(df: pl.DataFrame) -> pl.DataFrame:
 
 
 def main():
-    print(display())
+    print(Contexts().intervals())
 
 
 if __name__ == "__main__":
