@@ -96,16 +96,15 @@ class Contexts:
             (pl.col("declared_for") - pl.col("issued").cast(pl.Date).alias("dfes_declared_for"))
         ).max()
 
-
-def publish_delay(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(cs.datetime(), cs.date()).unique().select(
-        (pl.col("feed_published") - pl.col("entry_published")).alias("entry_pub_to_feed_pub"),
-    ).max()
+    def publish_delay(self) -> pl.DataFrame:
+        return self._df.select(cs.datetime(), cs.date()).unique().select(
+            (pl.col("feed_published") - pl.col("entry_published")).alias("entry_pub_to_feed_pub"),
+        ).max()
 
 
 def main():
     ctx = Contexts()
-    print(ctx.max_delay())
+    print(ctx.publish_delay())
 
 
 if __name__ == "__main__":
