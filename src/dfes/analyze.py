@@ -89,6 +89,9 @@ class Contexts:
     def __init__(self):
         self._df = import_file_repository()
 
+    def base(self) -> pl.DataFrame:
+        return self._df
+
     def no_locations(self) -> pl.DataFrame:
         return self._df.select(pl.exclude("region", "district")).unique()
 
