@@ -87,13 +87,14 @@ class Contexts:
             pl.col("feed_published", "entry_index")
         ).select(format_datetime(), ~cs.datetime())
 
-
-def max_delay(df: pl.DataFrame) -> pl.DataFrame:
-    return df.select(cs.datetime(), cs.date()).unique().select(
-        (pl.col("entry_published") - pl.col("dfes_published")).alias("entry_dfes"),
-        (pl.col("issued") - pl.col("dfes_published")).alias("dfes_issued"),
-        (pl.col("declared_for") - pl.col("issued").cast(pl.Date).alias("dfes_declared_for"))
-    ).max()
+    def max_delay(self) -> pl.DataFrame:
+        return self._df.select(
+            cs.datetime(), cs.date()
+        ).unique().select(
+            (pl.col("entry_published") - pl.col("dfes_published")).alias("entry_dfes"),
+            (pl.col("issued") - pl.col("dfes_published")).alias("dfes_issued"),
+            (pl.col("declared_for") - pl.col("issued").cast(pl.Date).alias("dfes_declared_for"))
+        ).max()
 
 
 def publish_delay(df: pl.DataFrame) -> pl.DataFrame:
@@ -104,7 +105,7 @@ def publish_delay(df: pl.DataFrame) -> pl.DataFrame:
 
 def main():
     ctx = Contexts()
-    print(ctx.display())
+    print(ctx.max_delay())
 
 
 if __name__ == "__main__":
