@@ -37,7 +37,19 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
                 data["region"].append(location[0])
                 data["district"].append(location[1])
 
-    return pl.DataFrame(data)
+    df = pl.DataFrame(data)
+
+    return df.select(
+        perth_tz("feed_published"),
+        pl.col("entry_index"),
+        perth_tz("entry_published"),
+        perth_tz("dfes_published"),
+        pl.col("revoked"),
+        perth_tz("issued"),
+        pl.col("declared_for"),
+        pl.col("region"),
+        pl.col("district")
+    )
 
 
 def import_file_repository() -> pl.DataFrame:
