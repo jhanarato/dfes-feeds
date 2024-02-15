@@ -143,11 +143,15 @@ class Contexts:
             cs.datetime().dt.time(),
         )
 
+    def feeds_and_entries(self) -> pl.DataFrame:
+        return self._df.select(
+            "feed_published", "entry_published", "entry_index", n_entries()
+        )
+
 
 def main():
     ctx = Contexts()
-    print(ctx.dates())
-    print(ctx.times())
+    print(ctx.feeds_and_entries())
 
 
 if __name__ == "__main__":
