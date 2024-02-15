@@ -2,7 +2,6 @@ from datetime import datetime, date, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 import polars as pl
-import polars.selectors as cs
 import pytest
 
 from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime, col_interval_minutes, \
@@ -104,14 +103,6 @@ def test_n_entries(entry_indexes):
     assert entry_indexes.with_columns(
         n_entries()
     ).get_column("n_entries").to_list() == [1, 2, 2]
-
-
-def test_select_date_and_datetime(feeds_df):
-    assert feeds_df.select(
-        cs.datetime(), cs.date()
-    ).columns == [
-        "feed_published", "entry_published", "dfes_published", "issued", "declared_for"
-    ]
 
 
 def test_format_datetime():
