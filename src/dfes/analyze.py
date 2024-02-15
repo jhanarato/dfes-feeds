@@ -135,6 +135,7 @@ class Contexts:
     def dates(self) -> pl.DataFrame:
         return self._df.select(
             cs.datetime().dt.date(),
+            pl.col("declared_for")
         )
 
     def times(self) -> pl.DataFrame:
