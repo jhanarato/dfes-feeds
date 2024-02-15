@@ -132,10 +132,21 @@ class Contexts:
             (pl.col("delay") > 0).alias("is_delayed"),
         )
 
+    def dates(self) -> pl.DataFrame:
+        return self._df.select(
+            cs.datetime().dt.date(),
+        )
+
+    def times(self) -> pl.DataFrame:
+        return self._df.select(
+            cs.datetime().dt.time(),
+        )
+
 
 def main():
     ctx = Contexts()
-    print(ctx.entry_delayed())
+    print(ctx.dates())
+    print(ctx.times())
 
 
 if __name__ == "__main__":
