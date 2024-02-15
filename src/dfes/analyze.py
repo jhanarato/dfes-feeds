@@ -146,7 +146,7 @@ class Contexts:
     def feeds_and_entries(self) -> pl.DataFrame:
         return self._df.select(
             "feed_published", "entry_published", "entry_index", n_entries()
-        )
+        ).unique()
 
 
 def main():
