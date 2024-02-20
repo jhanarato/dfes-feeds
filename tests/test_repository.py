@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 import pytest
 
@@ -138,6 +138,19 @@ class TestFeedByPublished:
 
     def test_should_reverse_ban_sequence(self, three_bans):
         assert list(reversed(FeedByPublished(three_bans)))[0] == "Bans for January 5th"
+
+    def test_should_filter_by_start(self, three_bans):
+        feeds = three_bans.list_bans()
+        start_datetime = feeds[0] + timedelta(seconds=1)
+        sequence = list(FeedByPublished(three_bans, start=start_datetime))
+
+        assert sequence == [
+            "Bans for January 4th",
+            "Bans for January 5th",
+        ]
+
+    def test_should_include_boundaries(self, three_bans):
+        pass
 
 
 class TestFailedByFetched:

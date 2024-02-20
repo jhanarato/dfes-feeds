@@ -125,14 +125,27 @@ class FileRepository:
 
 
 class FeedByPublished(Sequence):
-    def __init__(self, repository: Repository):
+    def __init__(self, repository: Repository,
+                 start: datetime = None):
         self.repository = repository
+        self._start = start
 
     def __len__(self) -> int:
-        return len(self.repository.list_bans())
+        return len(self.published())
+
+    def published(self) -> list[datetime]:
+        published_at = self.repository.list_bans()
+
+        if not published_at:
+            return []
+
+        if not self._start:
+            self._start = published_at[0]
+
+        return [at for at in published_at if at >= self._start]
 
     def __getitem__(self, index: int) -> str:
-        feed_published = self.repository.list_bans()[index]
+        feed_published = self.published()[index]
         return self.repository.retrieve_bans(feed_published)
 
 
