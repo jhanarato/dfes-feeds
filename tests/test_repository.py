@@ -129,32 +129,29 @@ def test_should_allow_use_of_existing_directory(tmp_path):
     assert existing_repo.list_bans() == [dt]
 
 
-def test_should_provide_number_of_ban_feeds(three_bans):
-    assert len(FeedByPublishedDate(three_bans)) == 3
+class TestFeedPublishedByDate:
+    def test_should_provide_number_of_ban_feeds(self, three_bans):
+        assert len(FeedByPublishedDate(three_bans)) == 3
+
+    def test_should_provide_ban_by_index(self, three_bans):
+        assert FeedByPublishedDate(three_bans)[0] == "Bans for January 3rd"
+
+    def test_should_reverse_ban_sequence(self, three_bans):
+        assert list(reversed(FeedByPublishedDate(three_bans)))[0] == "Bans for January 5th"
 
 
-def test_should_provide_ban_by_index(three_bans):
-    assert FeedByPublishedDate(three_bans)[0] == "Bans for January 3rd"
+class TestFailedByFetchedDate:
+    def test_should_provide_number_of_failed_feeds(self, four_failed):
+        assert len(FailedByFetchedDate(four_failed)) == 4
 
+    def test_should_provide_failed_by_index(self, four_failed):
+        assert FailedByFetchedDate(four_failed)[0] == "Bad feed one"
 
-def test_should_reverse_ban_sequence(three_bans):
-    assert list(reversed(FeedByPublishedDate(three_bans)))[0] == "Bans for January 5th"
+    def test_should_reverse_failed_sequence(self, four_failed):
+        assert list(reversed(FailedByFetchedDate(four_failed)))[0] == "Bad feed four"
 
-
-def test_should_provide_number_of_failed_feeds(four_failed):
-    assert len(FailedByFetchedDate(four_failed)) == 4
-
-
-def test_should_provide_failed_by_index(four_failed):
-    assert FailedByFetchedDate(four_failed)[0] == "Bad feed one"
-
-
-def test_should_reverse_failed_sequence(four_failed):
-    assert list(reversed(FailedByFetchedDate(four_failed)))[0] == "Bad feed four"
-
-
-def test_should_list_only_files_with_seconds(tmp_path):
-    repo = FileRepository(tmp_path)
-    without_seconds = tmp_path / "bans_issued_2024_01_07_1127.rss"
-    without_seconds.write_text("Bans for 8th January")
-    assert repo.list_bans() == []
+    def test_should_list_only_files_with_seconds(self, tmp_path):
+        repo = FileRepository(tmp_path)
+        without_seconds = tmp_path / "bans_issued_2024_01_07_1127.rss"
+        without_seconds.write_text("Bans for 8th January")
+        assert repo.list_bans() == []
