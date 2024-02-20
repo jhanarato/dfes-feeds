@@ -140,19 +140,26 @@ class TestFeedByPublished:
         assert list(reversed(FeedByPublished(three_bans)))[0] == "Bans for January 5th"
 
     def test_should_filter_by_start(self, three_bans):
-        start_datetime = three_bans.published()[0] + timedelta(seconds=1)
-        assert list(FeedByPublished(three_bans, start=start_datetime)) == [
+        start = three_bans.published()[0] + timedelta(seconds=1)
+
+        assert list(
+            FeedByPublished(three_bans, start=start)
+        ) == [
             "Bans for January 4th", "Bans for January 5th",
         ]
 
     def test_should_filter_by_end(self, three_bans):
         end = three_bans.published()[-1] - timedelta(seconds=1)
-        assert list(FeedByPublished(three_bans, end=end)) == [
+
+        assert list(
+            FeedByPublished(three_bans, end=end)
+        ) == [
             "Bans for January 3rd", "Bans for January 4th",
         ]
 
     def test_should_include_boundaries(self, three_bans):
         published_at = three_bans.published()
+
         assert list(
             FeedByPublished(
                 three_bans, start=published_at[0], end=published_at[-1]
