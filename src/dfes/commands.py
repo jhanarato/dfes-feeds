@@ -1,5 +1,4 @@
 import click
-from click import echo
 
 from dfes.fetch import aquire_ban_feed, store_feed
 from dfes.migrate import do_migration
@@ -26,7 +25,7 @@ def show():
     bans = to_show(repository)
 
     if not bans:
-        echo("Feed repository is empty. Run \"dfes fetch\"")
+        click.echo("Feed repository is empty. Run \"dfes fetch\"")
 
     display_bans(bans)
 
@@ -35,20 +34,27 @@ def show():
 def list_():
     repository = FileRepository(repository_location())
     for pub_date in repository.published():
-        echo(pub_date.strftime("%c"))
+        click.echo(pub_date.strftime("%c"))
 
 
 @dfes.command(name="count", help="Count the number of feeds stored")
 def count():
     repository = FileRepository(repository_location())
     n = len(repository.published())
-    echo(f"Repository contains {n} feeds.")
+    click.echo(f"Repository contains {n} feeds.")
 
 
 @dfes.command(name="migrate", help="Migrate repository to new schema")
 def migrate():
     repository = FileRepository(repository_location())
     do_migration(repository)
+
+
+@dfes.command(name="display", help="Display feeds in repository")
+@click.option("--from", "from_", type=click.DateTime())
+@click.option("--to", type=click.DateTime())
+def display(from_, to):
+    click.echo(f"{from_} -> {to}")
 
 
 if __name__ == '__main__':
