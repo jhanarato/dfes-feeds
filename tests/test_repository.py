@@ -152,7 +152,16 @@ class TestFeedByPublished:
         ]
 
     def test_should_include_boundaries(self, three_bans):
-        pass
+        published_at = three_bans.list_bans()
+        assert list(
+            FeedByPublished(
+                three_bans, start=published_at[0], end=published_at[-1]
+            )
+        ) == [
+            "Bans for January 3rd",
+            "Bans for January 4th",
+            "Bans for January 5th",
+        ]
 
 
 class TestFailedByFetched:
