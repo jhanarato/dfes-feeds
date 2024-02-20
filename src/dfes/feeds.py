@@ -26,10 +26,6 @@ class Feed:
     published: datetime
     entries: list[Entry]
 
-    def parse_summaries(self) -> None:
-        for entry in self.entries:
-            entry.parse_summary()
-
 
 def parse_feed(feed_xml: str) -> Feed:
     parsed = feedparser.parse(feed_xml)
@@ -105,5 +101,6 @@ def struct_time_to_datetime(st: time.struct_time) -> datetime:
 def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
     for feed_text in feeds_text:
         feed = parse_feed(feed_text)
-        feed.parse_summaries()
+        for entry in feed.entries:
+            entry.parse_summary()
         yield feed
