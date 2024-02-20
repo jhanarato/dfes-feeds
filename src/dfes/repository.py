@@ -126,9 +126,11 @@ class FileRepository:
 
 class FeedByPublished(Sequence):
     def __init__(self, repository: Repository,
-                 start: datetime = None):
+                 start: datetime = None,
+                 end: datetime = None):
         self.repository = repository
         self._start = start
+        self._end = end
 
     def __len__(self) -> int:
         return len(self.published())
@@ -142,7 +144,11 @@ class FeedByPublished(Sequence):
         if not self._start:
             self._start = published_at[0]
 
-        return [at for at in published_at if at >= self._start]
+        if not self._end:
+            self._end = published_at[-1]
+
+        return [at for at in published_at
+                if self._start <= at <= self._end]
 
     def __getitem__(self, index: int) -> str:
         feed_published = self.published()[index]
