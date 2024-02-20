@@ -1,4 +1,4 @@
-from datetime import datetime, timezone, date
+from datetime import datetime, date
 from zoneinfo import ZoneInfo
 
 import pytest
@@ -7,7 +7,7 @@ from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
 from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
-from dfes.show import to_show, last_issued, parse_feeds, latest_bans, LatestEntries
+from dfes.show import to_show, last_issued, latest_bans, LatestEntries
 
 
 class TestToShow:
@@ -147,18 +147,6 @@ class TestLatestEntries:
     def test_only_revoked(self, revoked_feed):
         latest = LatestEntries(revoked_feed)
         assert latest.only_revoked()
-
-
-def test_parse_feeds():
-    feed_published = datetime(2000, 1, 1, 0, 0, tzinfo=timezone.utc)
-
-    feeds_text = [
-        generate_bans_xml(feed_published=feed_published),
-        generate_bans_xml(feed_published=feed_published),
-    ]
-
-    for feed in parse_feeds(feeds_text):
-        assert feed.published == feed_published
 
 
 @pytest.fixture

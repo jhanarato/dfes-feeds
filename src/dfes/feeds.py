@@ -1,6 +1,7 @@
 import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from typing import Iterable
 
 import feedparser
 
@@ -99,3 +100,10 @@ def struct_time_to_datetime(st: time.struct_time) -> datetime:
     timestamp = time.mktime(st)
     dt = datetime.fromtimestamp(timestamp)
     return dt.replace(tzinfo=timezone.utc)
+
+
+def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
+    for feed_text in feeds_text:
+        feed = parse_feed(feed_text)
+        feed.parse_summaries()
+        yield feed
