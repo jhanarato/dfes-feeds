@@ -163,6 +163,17 @@ class TestFeedByPublished:
             "Bans for January 5th",
         ]
 
+    def test_should_allow_outside_range(self, three_bans):
+        start = three_bans.published()[0] - timedelta(seconds=1)
+        end = three_bans.published()[-1] + timedelta(seconds=1)
+        assert list(
+            FeedByPublished(three_bans, start=start, end=end)
+        ) == [
+                   "Bans for January 3rd",
+                   "Bans for January 4th",
+                   "Bans for January 5th",
+        ]
+
 
 class TestFailedByFetched:
     def test_should_provide_number_of_failed_feeds(self, four_failed):
