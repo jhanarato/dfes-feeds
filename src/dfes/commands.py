@@ -38,6 +38,13 @@ def list_():
         echo(pub_date.strftime("%c"))
 
 
+@dfes.command(name="count", help="Count the number of feeds stored")
+def count():
+    repository = FileRepository(repository_location())
+    n = len(repository.published())
+    echo(f"Repository contains {n} feeds.")
+
+
 @dfes.command(name="migrate", help="Migrate repository to new schema")
 def migrate():
     repository = FileRepository(repository_location())
