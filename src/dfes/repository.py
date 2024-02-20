@@ -10,7 +10,7 @@ class Repository(Protocol):
 
     def retrieve_bans(self, feed_published: datetime) -> str | None: ...
 
-    def list_bans(self) -> list[datetime]: ...
+    def published(self) -> list[datetime]: ...
 
     def add_failed(self, feed_text: str, now: datetime) -> None: ...
 
@@ -30,7 +30,7 @@ class InMemoryRepository:
     def retrieve_bans(self, feed_published: datetime) -> str | None:
         return self._ban_feeds.get(feed_published)
 
-    def list_bans(self) -> list[datetime]:
+    def published(self) -> list[datetime]:
         return list(self._ban_feeds)
 
     def add_failed(self, feed_text: str, now: datetime) -> None:
@@ -93,7 +93,7 @@ class FileRepository:
         else:
             return None
 
-    def list_bans(self) -> list[datetime]:
+    def published(self) -> list[datetime]:
         file_paths = []
 
         for child in self._location.iterdir():
@@ -136,7 +136,7 @@ class FeedByPublished(Sequence):
         return len(self.published())
 
     def published(self) -> list[datetime]:
-        published_at = self.repository.list_bans()
+        published_at = self.repository.published()
 
         if not published_at:
             return []

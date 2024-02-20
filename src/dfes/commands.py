@@ -34,7 +34,7 @@ def show():
 @dfes.command(name="list", help="List the stored feeds for issued bans.")
 def list_():
     repository = FileRepository(repository_location())
-    issued = repository.list_bans()
+    issued = repository.published()
     for issued_date in issued:
         echo(issued_date.strftime("%c"))
 

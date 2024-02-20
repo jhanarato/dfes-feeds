@@ -54,13 +54,13 @@ def test_should_migrate_empty_repository(tmp_path):
 def test_should_migrate_when_none_have_seconds(tmp_path, create_without_seconds):
     repository = FileRepository(tmp_path)
     migrate_to_seconds(repository)
-    assert repository.list_bans() == create_without_seconds
+    assert repository.published() == create_without_seconds
 
 
 def test_should_migrate_when_all_have_seconds(tmp_path, create_with_seconds):
     repository = FileRepository(tmp_path)
     migrate_to_seconds(repository)
-    assert repository.list_bans() == create_with_seconds
+    assert repository.published() == create_with_seconds
 
 
 def test_should_delete_file_missing_seconds(tmp_path, create_without_seconds):
@@ -72,7 +72,7 @@ def test_should_delete_file_missing_seconds(tmp_path, create_without_seconds):
 def test_should_not_delete_files_with_seconds(tmp_path, create_with_seconds):
     repository = FileRepository(tmp_path)
     delete_missing_seconds(tmp_path)
-    assert repository.list_bans() == create_with_seconds
+    assert repository.published() == create_with_seconds
 
 
 def test_should_not_delete_other_files(tmp_path):
@@ -88,4 +88,4 @@ def test_should_migrate_when_mixed(tmp_path, create_with_seconds, create_without
     repository = FileRepository(tmp_path)
     migrate_to_seconds(repository)
     combined_bans = create_with_seconds + create_without_seconds
-    assert sorted(repository.list_bans()) == sorted(combined_bans)
+    assert sorted(repository.published()) == sorted(combined_bans)

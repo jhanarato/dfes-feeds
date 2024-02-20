@@ -25,7 +25,7 @@ def four_failed(repository):
 
 
 def test_repo_lists_bans(three_bans):
-    assert three_bans.list_bans() == [
+    assert three_bans.published() == [
         datetime(2023, 1, 2, 5, 5, tzinfo=timezone.utc),
         datetime(2023, 1, 3, 5, 5, tzinfo=timezone.utc),
         datetime(2023, 1, 4, 5, 5, tzinfo=timezone.utc),
@@ -34,7 +34,7 @@ def test_repo_lists_bans(three_bans):
 
 def test_repo_bans_stored(repository):
     repository.add_bans(datetime(2023, 1, 2, 5, 5), "Bans for January 3rd")
-    issued_date = repository.list_bans()[0]
+    issued_date = repository.published()[0]
     assert repository.retrieve_bans(issued_date) == "Bans for January 3rd"
 
 
@@ -52,21 +52,21 @@ def test_should_get_none_if_missing(repository):
 def test_should_not_persist_when_in_memory():
     feed_published = datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)
     repository = InMemoryRepository()
-    assert not repository.list_bans()
+    assert not repository.published()
     repository.add_bans(feed_published, "Bans for January 2nd")
-    assert repository.list_bans() == [feed_published]
+    assert repository.published() == [feed_published]
     repository = InMemoryRepository()
-    assert not repository.list_bans()
+    assert not repository.published()
 
 
 def test_should_persist_when_on_file_system(tmp_path):
     feed_published = datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)
     repository = FileRepository(tmp_path)
-    assert not repository.list_bans()
+    assert not repository.published()
     repository.add_bans(feed_published, "Bans for January 2nd")
-    assert repository.list_bans() == [datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)]
+    assert repository.published() == [datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)]
     repository = FileRepository(tmp_path)
-    assert repository.list_bans() == [datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)]
+    assert repository.published() == [datetime(2001, 1, 1, 0, 0, tzinfo=timezone.utc)]
 
 
 def test_to_bans_file_name():
@@ -105,7 +105,7 @@ def test_should_store_and_retrieve_ok_and_failed_together(repository):
     dt = datetime.fromisoformat("2023-10-15 04:08:00+00:00")
     repository.add_bans(dt, "Bans for January 3rd")
     repository.add_failed("unparseable", now=dt)
-    assert repository.list_bans() == [dt]
+    assert repository.published() == [dt]
     assert repository.list_failed() == [dt]
 
 
@@ -126,7 +126,7 @@ def test_should_allow_use_of_existing_directory(tmp_path):
     assert path.exists()
 
     existing_repo = FileRepository(path)
-    assert existing_repo.list_bans() == [dt]
+    assert existing_repo.published() == [dt]
 
 
 class TestFeedByPublished:
@@ -140,19 +140,19 @@ class TestFeedByPublished:
         assert list(reversed(FeedByPublished(three_bans)))[0] == "Bans for January 5th"
 
     def test_should_filter_by_start(self, three_bans):
-        start_datetime = three_bans.list_bans()[0] + timedelta(seconds=1)
+        start_datetime = three_bans.published()[0] + timedelta(seconds=1)
         assert list(FeedByPublished(three_bans, start=start_datetime)) == [
             "Bans for January 4th", "Bans for January 5th",
         ]
 
     def test_should_filter_by_end(self, three_bans):
-        end = three_bans.list_bans()[-1] - timedelta(seconds=1)
+        end = three_bans.published()[-1] - timedelta(seconds=1)
         assert list(FeedByPublished(three_bans, end=end)) == [
             "Bans for January 3rd", "Bans for January 4th",
         ]
 
     def test_should_include_boundaries(self, three_bans):
-        published_at = three_bans.list_bans()
+        published_at = three_bans.published()
         assert list(
             FeedByPublished(
                 three_bans, start=published_at[0], end=published_at[-1]
@@ -178,4 +178,4 @@ class TestFailedByFetched:
         repo = FileRepository(tmp_path)
         without_seconds = tmp_path / "bans_issued_2024_01_07_1127.rss"
         without_seconds.write_text("Bans for 8th January")
-        assert repo.list_bans() == []
+        assert repo.published() == []
