@@ -31,12 +31,11 @@ def show():
     display_bans(bans)
 
 
-@dfes.command(name="list", help="List the stored feeds for issued bans.")
+@dfes.command(name="list", help="List the published date of stored feeds.")
 def list_():
     repository = FileRepository(repository_location())
-    issued = repository.published()
-    for issued_date in issued:
-        echo(issued_date.strftime("%c"))
+    for pub_date in repository.published():
+        echo(pub_date.strftime("%c"))
 
 
 @dfes.command(name="migrate", help="Migrate repository to new schema")
