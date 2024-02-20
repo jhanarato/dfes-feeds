@@ -4,7 +4,7 @@ import pytest
 
 from conftest import repository
 from dfes.repository import to_bans_file_name, InMemoryRepository, to_feed_published_date, FileRepository, \
-    to_failed_file_name, to_failed_timestamp, FeedByPublishedDate, FailedByFetchedDate, is_bans_file
+    to_failed_file_name, to_failed_timestamp, FeedByPublished, FailedByFetched, is_bans_file
 
 
 @pytest.fixture
@@ -129,26 +129,26 @@ def test_should_allow_use_of_existing_directory(tmp_path):
     assert existing_repo.list_bans() == [dt]
 
 
-class TestFeedPublishedByDate:
+class TestFeedByPublished:
     def test_should_provide_number_of_ban_feeds(self, three_bans):
-        assert len(FeedByPublishedDate(three_bans)) == 3
+        assert len(FeedByPublished(three_bans)) == 3
 
     def test_should_provide_ban_by_index(self, three_bans):
-        assert FeedByPublishedDate(three_bans)[0] == "Bans for January 3rd"
+        assert FeedByPublished(three_bans)[0] == "Bans for January 3rd"
 
     def test_should_reverse_ban_sequence(self, three_bans):
-        assert list(reversed(FeedByPublishedDate(three_bans)))[0] == "Bans for January 5th"
+        assert list(reversed(FeedByPublished(three_bans)))[0] == "Bans for January 5th"
 
 
-class TestFailedByFetchedDate:
+class TestFailedByFetched:
     def test_should_provide_number_of_failed_feeds(self, four_failed):
-        assert len(FailedByFetchedDate(four_failed)) == 4
+        assert len(FailedByFetched(four_failed)) == 4
 
     def test_should_provide_failed_by_index(self, four_failed):
-        assert FailedByFetchedDate(four_failed)[0] == "Bad feed one"
+        assert FailedByFetched(four_failed)[0] == "Bad feed one"
 
     def test_should_reverse_failed_sequence(self, four_failed):
-        assert list(reversed(FailedByFetchedDate(four_failed)))[0] == "Bad feed four"
+        assert list(reversed(FailedByFetched(four_failed)))[0] == "Bad feed four"
 
     def test_should_list_only_files_with_seconds(self, tmp_path):
         repo = FileRepository(tmp_path)

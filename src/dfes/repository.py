@@ -124,7 +124,7 @@ class FileRepository:
         return self._location
 
 
-class FeedByPublishedDate(Sequence):
+class FeedByPublished(Sequence):
     def __init__(self, repository: Repository):
         self.repository = repository
 
@@ -136,7 +136,7 @@ class FeedByPublishedDate(Sequence):
         return self.repository.retrieve_bans(feed_published)
 
 
-class FailedByFetchedDate(Sequence):
+class FailedByFetched(Sequence):
     def __init__(self, repository: Repository):
         self.repository = repository
 

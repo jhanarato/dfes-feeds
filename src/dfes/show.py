@@ -2,7 +2,7 @@ from collections.abc import Iterable
 
 from dfes.bans import TotalFireBans
 from dfes.feeds import parse_feed, Feed, Entry
-from dfes.repository import Repository, FeedByPublishedDate
+from dfes.repository import Repository, FeedByPublished
 
 
 def to_show(repository: Repository) -> tuple[TotalFireBans, ...]:
@@ -14,7 +14,7 @@ def to_show(repository: Repository) -> tuple[TotalFireBans, ...]:
 
 
 def order_feeds(repository: Repository) -> Iterable[str]:
-    yield from reversed(FeedByPublishedDate(repository))
+    yield from reversed(FeedByPublished(repository))
 
 
 def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:

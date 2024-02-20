@@ -7,7 +7,7 @@ from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed
 from dfes.fetch import store_feed, aquire_ban_feed, check_summaries, store_failed
-from dfes.repository import FailedByFetchedDate
+from dfes.repository import FailedByFetched
 from dfes.urls import FIRE_BAN_URL
 
 
@@ -93,20 +93,20 @@ def test_should_store_ok_bans_normally(bans_xml, repository):
 
 
 def test_should_always_store_failed_when_repository_empty(repository):
-    failed = FailedByFetchedDate(repository)
+    failed = FailedByFetched(repository)
     assert len(failed) == 0
     assert store_failed(repository, "Add me")
 
 
 def test_should_not_store_failed_when_last_feed_the_same(repository):
-    failed = FailedByFetchedDate(repository)
+    failed = FailedByFetched(repository)
     repository.add_failed("Don't add twice", now=datetime(2001, 1, 1))
     assert len(failed) == 1
     assert not store_failed(repository, "Don't add twice")
 
 
 def test_should_store_when_different_to_last_feed(repository):
-    failed = FailedByFetchedDate(repository)
+    failed = FailedByFetched(repository)
     assert len(failed) == 0
     repository.add_failed("Add me", now=datetime(2001, 1, 1))
     assert len(failed) == 1
