@@ -2,7 +2,7 @@ import click
 
 from dfes.fetch import aquire_ban_feed, store_feed
 from dfes.migrate import do_migration
-from dfes.reports import display_bans
+from dfes.reports import display_bans, display_feeds
 from dfes.repository import FileRepository, repository_location
 from dfes.show import to_show
 
@@ -51,10 +51,10 @@ def migrate():
 
 
 @dfes.command(name="display", help="Display feeds in repository")
-@click.option("--from", "from_", type=click.DateTime())
-@click.option("--to", type=click.DateTime())
-def display(from_, to):
-    click.echo(f"{from_} -> {to}")
+@click.option("--start", "-s", type=click.DateTime())
+@click.option("--end", "-e", type=click.DateTime())
+def display(start, end):
+    display_feeds(start, end)
 
 
 if __name__ == '__main__':
