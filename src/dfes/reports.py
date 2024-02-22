@@ -1,4 +1,5 @@
 from datetime import datetime
+from textwrap import wrap
 
 from rich import print
 
@@ -33,11 +34,27 @@ def display_feeds(start: datetime, end: datetime):
     to_show = FeedByPublished(repository, start=start, end=end)
     feeds = list(parse_feeds(to_show))
     for feed in feeds:
-        print(f"Feed pubDate {feed.published}")
+        print(f"Feed Published: {feed.published}")
 
         if not feed.entries:
             print("Feed has no entries")
 
         for index, entry in enumerate(feed.entries):
-            print(f"Item #{index} pubDate {entry.published}, dfes published {entry.dfes_published}")
-            print_ban(entry.bans)
+            print(
+                f"Entry #{index} {declared_text(entry.bans)}\n"
+                f"Entry Published: {entry.published}\n"
+                f"DFES Published:  {entry.dfes_published}"
+            )
+            bans = entry.bans
+            declared_text(bans)
+            print(f"DFES Issued at   {bans.issued}.")
+            districts = " ".join([location[1] for location in bans.locations])
+            for line in wrap(districts):
+                print(f"[green]{line}[/green]")
+
+
+def declared_text(bans):
+    if bans.revoked:
+        return "[bold red]Revoked[/bold red]"
+    else:
+        return "[bold blue]Declared[/bold blue]"
