@@ -28,11 +28,16 @@ def print_ban(bans: TotalFireBans):
 def display_feeds(start: datetime, end: datetime):
     start = to_perth_time(start)
     end = to_perth_time(end)
-    print(f"{start} -> {end}")
 
     repository = FileRepository(repository_location())
     to_show = FeedByPublished(repository, start=start, end=end)
     feeds = list(parse_feeds(to_show))
-    print(f"# Feeds = {len(feeds)}")
     for feed in feeds:
-        print(f"{feed.published}")
+        print(f"Feed pubDate {feed.published}")
+
+        if not feed.entries:
+            print("Feed has no entries")
+
+        for index, entry in enumerate(feed.entries):
+            print(f"Item #{index} pubDate {entry.published}, dfes published {entry.dfes_published}")
+            print_ban(entry.bans)
