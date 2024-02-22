@@ -1,5 +1,6 @@
 import re
 from datetime import date, time, datetime
+from zoneinfo import ZoneInfo
 
 from dfes.exceptions import ParsingFailed
 
@@ -40,3 +41,7 @@ def time_text(text: str) -> str:
     if m := re.search(r"\d{2}:\d{2} (?:AM|PM)", text):
         return m.group(0)
     raise ParsingFailed(f"Failed to find time text in {text}")
+
+
+def to_perth_time(dt: datetime) -> datetime:
+    return dt.astimezone(ZoneInfo("Australia/Perth"))

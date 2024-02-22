@@ -1,8 +1,10 @@
-from datetime import date, time
+from datetime import date, time, datetime
+from zoneinfo import ZoneInfo
 
 import pytest
 
 from dfes import date_time, exceptions
+from dfes.date_time import to_perth_time
 
 
 @pytest.mark.parametrize(
@@ -122,3 +124,9 @@ def test_text_to_time_fails(text):
     with pytest.raises(exceptions.ParsingFailed,
                        match=f"Failed to parse time: {text}"):
         _ = date_time.text_to_time(text)
+
+
+def test_naive_to_perth_time():
+    naive = datetime(2021, 2, 3, 10, 30)
+    perth = datetime(2021, 2, 3, 10, 30, tzinfo=ZoneInfo("Australia/Perth"))
+    assert to_perth_time(naive) == perth
