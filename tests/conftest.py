@@ -27,18 +27,14 @@ def generate_bans_xml(regions: dict[str, list[str]] | None = None,
         lstrip_blocks=True,
     )
 
-    if revoked:
-        feed_template = "revoked.xml"
-    else:
-        feed_template = "bans.xml"
-
-    return env.get_template(feed_template).render(
+    return env.get_template("bans.xml").render(
         regions=regions,
         dfes_published=dfes_published.strftime("%d/%m/%y %I:%M %p"),
         feed_published=feed_published.strftime("%a, %d %b %Y %H:%M:%S GMT"),
         time_of_issue=issued.strftime("%I:%M %p"),
         date_of_issue=issued.strftime("%d %B %Y"),
         declared_for=declared_for.strftime("%d %B %Y"),
+        revoked=revoked,
     )
 
 
