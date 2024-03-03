@@ -5,9 +5,9 @@
 <pubDate>{{feed_published}}</pubDate>
 <item>
     {% if revoked %}
-    <title>Total Fire Ban advice has changed for 10 December 2023 </title>
+    <title>Total Fire Ban advice has changed for {{declared_for}} </title>
     {% else %}
-    <title>Total Fire Ban advice for 16 October 2023 </title>
+    <title>Total Fire Ban advice for {{declared_for}} </title>
     {% endif %}
     <description><![CDATA[<div>
     <p>
