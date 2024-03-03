@@ -1,44 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss
-        xmlns:dfes="http://emergency.wa.gov.au/xmlns/dfes"
-        xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" version="2.0">
-    <channel>
+<rss xmlns:dfes="http://emergency.wa.gov.au/xmlns/dfes" version="2.0">
+<channel>
 <title>Total Fire Ban (All Regions)</title>
-<link>http://emergency.wa.gov</link>
-<description />
-<language>en-us</language>
 <pubDate>{{feed_published}}</pubDate>
-<lastBuildDate>Mon, 16 Oct 2023 08:10:56 GMT</lastBuildDate>
-<docs>http://blogs.law.harvard.edu/tech/rss</docs>
-<generator>Whispir RSS Engine</generator>
-<managingEditor>no-reply@whispir.com</managingEditor>
-<webMaster>no-reply@whispir.com</webMaster>
-<ttl>1</ttl>
 <item>
-<title>Total Fire Ban advice for 16 October 2023 </title>
-<link>https://www.emergency.wa.gov.au/#totalfirebans</link>
-<description><![CDATA[<div>
-<p>
-    <br/><span style="color: #777777;">Time of issue: {{time_of_issue}} </span>
-    <br/><span style="color: #777777;">Date of issue: {{date_of_issue}} </span>
-</p>
+    <title>Total Fire Ban advice for 16 October 2023 </title>
+    <description><![CDATA[<div>
+    <p>
+        <br/><span style="color: #777777;">Time of issue: {{time_of_issue}} </span>
+        <br/><span style="color: #777777;">Date of issue: {{date_of_issue}} </span>
+    </p>
 
-<p>A Total Fire Ban has been declared for {{declared_for}} for the local government districts listed below:</p>
+    <p>A Total Fire Ban has been declared for {{declared_for}} for the local government districts listed below:</p>
 
-{% for region in regions %}
-<p><strong>{{region}} Region:</strong></p>
-<ul>
-    {% for district in regions[region] %}
-    <li>{{district}} - All Day</li>
+    {% for region in regions %}
+    <p><strong>{{region}} Region:</strong></p>
+    <ul>
+        {% for district in regions[region] %}
+        <li>{{district}} - All Day</li>
+        {% endfor %}
+    </ul>
     {% endfor %}
-</ul>
-{% endfor %}
-</div>]]></description>
-<dfes:publicationTime>{{dfes_published}}</dfes:publicationTime>
-<pubDate>{{feed_published}}</pubDate>
-<guid>878860094</guid>
-<geo:long />
-<geo:lat />
+    </div>]]></description>
+    <dfes:publicationTime>{{dfes_published}}</dfes:publicationTime>
+    <pubDate>{{feed_published}}</pubDate>
 </item>
 </channel>
 </rss>
