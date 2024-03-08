@@ -12,7 +12,7 @@ def generate_bans_xml(regions: dict[str, list[str]] | None = None,
                       feed_published: datetime = datetime(2001, 1, 1),
                       issued: datetime = datetime(2001, 1, 1),
                       declared_for: date = date(2001, 1, 1),
-                      revoked=False):
+                      revoked=False) -> str:
 
     if not regions:
         regions = {
