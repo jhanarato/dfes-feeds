@@ -10,7 +10,7 @@ def dfes_published(value: datetime) -> str:
 
 
 def declared_for(value: date) -> str:
-    return value.strftime("%d %B %Y")
+    return value.strftime("%d %B %Y").lstrip("0")
 
 
 def time_of_issue(value: datetime) -> str:

@@ -45,7 +45,7 @@ class TestFilters:
         assert dfes_published(self._datetime) == "01/01/00 01:01 AM"
 
     def test_declared_for(self):
-        assert declared_for(self._date) == "03 February 2001"
+        assert declared_for(self._date) == "3 February 2001"
 
     def test_time_of_issue(self):
         assert time_of_issue(self._datetime) == "01:01 AM"
