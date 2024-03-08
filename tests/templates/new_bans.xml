@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss xmlns:dfes="http://emergency.wa.gov.au/xmlns/dfes" version="2.0">
 <channel>
-<title>{{feed.title}}</title>
-<pubDate>{{feed.published}}</pubDate>
+    <title>{{feed.title}}</title>
+    <pubDate>{{feed.published}}</pubDate>
+    {% for entry in feed.entries %}
+    <item>
+        <pubDate>{{entry.published}}</pubDate>
+        <description>{{entry.summary}}</description>
+        <dfes:publicationTime>{{entry.dfes_published.strftime("%d/%m/%y %H:%M %p")}}</dfes:publicationTime>
+    </item>
+    {% endfor %}
 </channel>
 </rss>
