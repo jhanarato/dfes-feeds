@@ -30,6 +30,9 @@ def jinja_env() -> jinja2.Environment:
     )
 
     env.filters["dfes_published"] = dfes_published
+    env.filters["declared_for"] = declared_for
+    env.filters["time_of_issue"] = time_of_issue
+    env.filters["date_of_issue"] = date_of_issue
 
     return env
 
