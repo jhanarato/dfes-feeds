@@ -7,7 +7,7 @@
     <item>
         <pubDate>{{entry.published}}</pubDate>
         <description>{{entry.summary}}</description>
-        <dfes:publicationTime>{{entry.dfes_published.strftime("%d/%m/%y %H:%M %p")}}</dfes:publicationTime>
+        <dfes:publicationTime>{{entry.dfes_published|dfes_published}}</dfes:publicationTime>
     </item>
     {% endfor %}
 </channel>

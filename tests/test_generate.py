@@ -1,7 +1,7 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 from dfes.feeds import Feed, parse_feed, Entry
-from generate import generate_feed, dfes_published
+from generate import generate_feed, dfes_published, declared_for, time_of_issue, date_of_issue
 
 
 class TestGenerateFeed:
@@ -38,5 +38,17 @@ class TestGenerateFeed:
 
 
 class TestFilters:
-    def test_dfes_published_filter(self):
-        assert dfes_published(datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc)) == "01/01/00 01:01 AM"
+    _datetime = datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc)
+    _date = date(2001, 2, 3)
+
+    def test_dfes_published(self):
+        assert dfes_published(self._datetime) == "01/01/00 01:01 AM"
+
+    def test_declared_for(self):
+        assert declared_for(self._date) == "03 February 2001"
+
+    def test_time_of_issue(self):
+        assert time_of_issue(self._datetime) == "01:01 AM"
+
+    def test_date_of_issue(self):
+        assert date_of_issue(self._datetime) == "01 January 2000"
