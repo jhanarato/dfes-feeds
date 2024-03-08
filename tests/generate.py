@@ -1,6 +1,12 @@
+from datetime import datetime
+
 import jinja2
 
 from dfes.feeds import Feed
+
+
+def dfes_published(value: datetime):
+    return value.strftime("%d/%m/%y %H:%M %p")
 
 
 def generate_feed(feed: Feed) -> str:
