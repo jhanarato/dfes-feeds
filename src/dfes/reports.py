@@ -3,9 +3,9 @@ from textwrap import wrap
 
 from rich import print
 
-from dfes.bans import TotalFireBans
 from dfes.date_time import to_perth_time
 from dfes.feeds import parse_feeds
+from dfes.model import TotalFireBans
 from dfes.repository import FileRepository, repository_location, FeedByPublished
 
 

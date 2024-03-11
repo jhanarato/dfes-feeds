@@ -5,8 +5,8 @@ import pytest
 from bs4 import BeautifulSoup
 
 from dfes import bans
-from dfes.bans import AffectedAreas
 from dfes.exceptions import ParsingFailed
+from dfes.model import AffectedAreas
 
 
 def test_get_region_tags():

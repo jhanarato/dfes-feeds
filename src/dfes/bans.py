@@ -1,7 +1,5 @@
 import re
-from collections import defaultdict
 from collections.abc import Iterator
-from dataclasses import dataclass
 from datetime import date, time, datetime
 from zoneinfo import ZoneInfo
 
@@ -9,26 +7,7 @@ from bs4 import BeautifulSoup, Tag
 
 from dfes.date_time import extract_date, extract_time
 from dfes.exceptions import ParsingFailed
-
-
-@dataclass
-class AffectedAreas:
-    pairs: list[tuple[str, str]]
-
-    def to_dict(self) -> dict:
-        result = defaultdict(list)
-        for pair in self.pairs:
-            result[pair[0]].append(pair[1])
-
-        return result
-
-
-@dataclass
-class TotalFireBans:
-    revoked: bool
-    issued: datetime
-    declared_for: date
-    locations: AffectedAreas
+from dfes.model import AffectedAreas, TotalFireBans
 
 
 def parse_bans(summary_html: str) -> TotalFireBans:
