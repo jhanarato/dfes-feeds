@@ -1,7 +1,9 @@
 from datetime import datetime, timezone, date
+from zoneinfo import ZoneInfo
 
+from dfes.bans import TotalFireBans, AffectedAreas, parse_bans
 from dfes.feeds import Feed, parse_feed, Entry
-from generate import generate_feed, dfes_published, declared_for, time_of_issue, date_of_issue
+from generate import generate_feed, dfes_published, declared_for, time_of_issue, date_of_issue, generate_description
 
 
 class TestGenerateFeed:
@@ -52,3 +54,25 @@ class TestFilters:
 
     def test_date_of_issue(self):
         assert date_of_issue(self._datetime) == "01 January 2000"
+
+
+class TestDescription:
+    def test_generate_description(self):
+        areas = AffectedAreas([
+                ('Midwest Gascoyne', 'Carnamah'),
+                ('Midwest Gascoyne', 'Chapman Valley'),
+                ('Midwest Gascoyne', 'Coorow'),
+                ('Perth Metropolitan', 'Armadale')
+            ])
+
+        bans_in = TotalFireBans(
+            revoked=False,
+            issued=datetime(2000, 1, 1, 4, 30, tzinfo=ZoneInfo(key='Australia/Perth')),
+            declared_for=date(2000, 1, 2),
+            locations=areas,
+        )
+
+        description = generate_description(bans_in)
+        bans_out = parse_bans(description)
+
+        assert bans_in == bans_out

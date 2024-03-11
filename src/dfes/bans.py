@@ -11,16 +11,13 @@ from dfes.date_time import extract_date, extract_time
 from dfes.exceptions import ParsingFailed
 
 
+@dataclass
 class AffectedAreas:
-    def __init__(self, pairs: list[tuple[str, str]]):
-        self._areas = pairs
-
-    def pairs(self) -> list[tuple[str, str]]:
-        return self._areas
+    pairs: list[tuple[str, str]]
 
     def to_dict(self) -> dict:
         result = defaultdict(list)
-        for pair in self.pairs():
+        for pair in self.pairs:
             result[pair[0]].append(pair[1])
 
         return result

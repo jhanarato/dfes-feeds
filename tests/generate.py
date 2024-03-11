@@ -2,6 +2,7 @@ from datetime import datetime, date, timezone
 
 import jinja2
 
+from dfes.bans import TotalFireBans
 from dfes.feeds import Feed, Entry
 
 
@@ -39,6 +40,10 @@ def jinja_env() -> jinja2.Environment:
 
 def generate_feed(feed: Feed) -> str:
     return jinja_env().get_template("new_bans.xml").render(feed=feed)
+
+
+def generate_description(bans: TotalFireBans) -> str:
+    return jinja_env().get_template("description.html").render(bans=bans)
 
 
 def main():

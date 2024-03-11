@@ -1,15 +1,16 @@
 <div>
     <p>
-        <br/><span style="color: #777777;">Time of issue: {{time_of_issue}} </span>
-        <br/><span style="color: #777777;">Date of issue: {{date_of_issue}} </span>
+        <br/><span style="color: #777777;">Time of issue: {{bans.issued|time_of_issue}} </span>
+        <br/><span style="color: #777777;">Date of issue: {{bans.issued|date_of_issue}} </span>
     </p>
 
-    {% if revoked %}
-    <p>The Total Fire Ban declared for {{declared_for}} has been revoked for the local government districts listed below:</p>
+    {% if bans.revoked %}
+    <p>The Total Fire Ban declared for {{bans.declared_for|declared_for}} has been revoked for the local government districts listed below:</p>
     {% else %}
-    <p>A Total Fire Ban has been declared for {{declared_for}} for the local government districts listed below:</p>
+    <p>A Total Fire Ban has been declared for {{bans.declared_for|declared_for}} for the local government districts listed below:</p>
     {% endif %}
 
+    {% set regions = bans.locations.to_dict() %}
     {% for region in regions %}
     <p><strong>{{region}} Region:</strong></p>
     <ul>
@@ -18,4 +19,4 @@
         {% endfor %}
     </ul>
     {% endfor %}
-    </div>
+</div>

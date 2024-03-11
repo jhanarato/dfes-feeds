@@ -156,7 +156,7 @@ def test_combined_data(entry):
     combined = bans.parse_bans(entry.summary)
     assert combined.issued == datetime(2023, 10, 15, 17, 6, tzinfo=ZoneInfo(key='Australia/Perth'))
     assert combined.declared_for == date(2023, 10, 16)
-    assert combined.locations.pairs() == [
+    assert combined.locations.pairs == [
         ('Midwest Gascoyne', 'Carnamah'),
         ('Midwest Gascoyne', 'Chapman Valley'),
         ('Midwest Gascoyne', 'Coorow'),

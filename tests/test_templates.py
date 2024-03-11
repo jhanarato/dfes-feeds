@@ -37,7 +37,7 @@ def test_generate_bans_xml(revoked):
 
     tfb = parse_bans(entry.summary)
 
-    assert len(tfb.locations.pairs()) == 4
+    assert len(tfb.locations.pairs) == 4
     assert tfb.issued == issued
     assert tfb.declared_for == declared_for
     assert tfb.revoked == revoked
