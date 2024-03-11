@@ -11,13 +11,10 @@ from dfes.exceptions import ParsingFailed
 
 
 class AffectedAreas:
-    def __init__(self):
-        self._areas = []
+    def __init__(self, pairs: list[tuple[str, str]]):
+        self._areas = pairs
 
-    def add(self, region: str, district: str):
-        self._areas.append((region, district))
-
-    def to_pairs(self) -> list[tuple[str, str]]:
+    def pairs(self) -> list[tuple[str, str]]:
         return self._areas
 
 

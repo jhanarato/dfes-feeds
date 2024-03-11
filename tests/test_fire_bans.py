@@ -166,10 +166,9 @@ def test_combined_data(entry):
 
 class TestAffectedAreas:
     def test_no_affected_areas(self):
-        areas = AffectedAreas()
-        assert areas.to_pairs() == []
+        areas = AffectedAreas([])
+        assert areas.pairs() == []
 
     def test_one_pair(self):
-        areas = AffectedAreas()
-        areas.add(region="Midwest Gascoyne", district="Carnamah")
-        assert areas.to_pairs() == [('Midwest Gascoyne', 'Carnamah')]
+        areas = AffectedAreas([('Midwest Gascoyne', 'Carnamah')])
+        assert areas.pairs() == [('Midwest Gascoyne', 'Carnamah')]
