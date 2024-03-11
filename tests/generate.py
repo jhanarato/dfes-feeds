@@ -1,8 +1,9 @@
 from datetime import datetime, date, timezone
+from zoneinfo import ZoneInfo
 
 import jinja2
 
-from dfes.bans import TotalFireBans
+from dfes.bans import TotalFireBans, AffectedAreas
 from dfes.feeds import Feed, Entry
 
 
@@ -38,6 +39,33 @@ def jinja_env() -> jinja2.Environment:
     return env
 
 
+def default_feed() -> Feed:
+    bans = TotalFireBans(
+        revoked=False,
+        issued=datetime(2000, 1, 1, 4, 30, tzinfo=ZoneInfo(key='Australia/Perth')),
+        declared_for=date(2000, 1, 2),
+        locations=AffectedAreas([
+            ('Midwest Gascoyne', 'Carnamah'),
+            ('Midwest Gascoyne', 'Chapman Valley'),
+            ('Midwest Gascoyne', 'Coorow'),
+            ('Perth Metropolitan', 'Armadale')
+        ])
+    )
+
+    return Feed(
+        title="Total Fire Ban (All Regions)",
+        published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
+        entries=[
+            Entry(
+                published=datetime(2000, 1, 2, 1, 30, 30, tzinfo=timezone.utc),
+                dfes_published=datetime(2000, 1, 2, 1, 30, tzinfo=timezone.utc),
+                summary=generate_description(bans),
+                bans=bans
+            )
+        ],
+    )
+
+
 def generate_feed(feed: Feed) -> str:
     return jinja_env().get_template("new_bans.xml").render(feed=feed)
 
@@ -47,22 +75,7 @@ def generate_description(bans: TotalFireBans) -> str:
 
 
 def main():
-    feed = Feed(
-            title="Total Fire Ban (All Regions)",
-            published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
-            entries=[
-                Entry(
-                    published=datetime(2000, 1, 1, 2, tzinfo=timezone.utc),
-                    dfes_published=datetime(2000, 1, 1, 2, tzinfo=timezone.utc),
-                    summary="A summary",
-                    bans=None,
-                ),
-            ],
-        )
-
-    print(
-        generate_feed(feed)
-    )
+    print(generate_feed(default_feed()))
 
 
 if __name__ == "__main__":

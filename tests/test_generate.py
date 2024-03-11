@@ -2,8 +2,9 @@ from datetime import datetime, timezone, date
 from zoneinfo import ZoneInfo
 
 from dfes.bans import TotalFireBans, AffectedAreas, parse_bans
-from dfes.feeds import Feed, parse_feed, Entry
-from generate import generate_feed, dfes_published, declared_for, time_of_issue, date_of_issue, generate_description
+from dfes.feeds import Feed, parse_feed
+from generate import generate_feed, dfes_published, declared_for, time_of_issue, date_of_issue, generate_description, \
+    default_feed
 
 
 class TestGenerateFeed:
@@ -20,21 +21,12 @@ class TestGenerateFeed:
         assert feed_out == feed_in
 
     def test_feed_with_entry(self):
-        feed_in = Feed(
-            title="Total Fire Ban (All Regions)",
-            published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
-            entries=[
-                Entry(
-                    published=datetime(2000, 1, 1, 2, tzinfo=timezone.utc),
-                    dfes_published=datetime(2000, 1, 1, 2, tzinfo=timezone.utc),
-                    summary="A summary",
-                    bans=None,
-                ),
-            ],
-        )
-
+        feed_in = default_feed()
         feed_text = generate_feed(feed_in)
         feed_out = parse_feed(feed_text)
+
+        for entry in feed_out.entries:
+            entry.parse_summary()
 
         assert feed_out == feed_in
 

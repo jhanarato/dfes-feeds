@@ -6,7 +6,9 @@
     {% for entry in feed.entries %}
     <item>
         <pubDate>{{entry.published}}</pubDate>
-        <description><![CDATA[A summary]]></description>
+        {% with bans = entry.bans %}
+        <description><![CDATA[{% include "description.html" %}]]></description>
+        {% endwith %}
         <dfes:publicationTime>{{entry.dfes_published|dfes_published}}</dfes:publicationTime>
     </item>
     {% endfor %}
