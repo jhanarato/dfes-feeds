@@ -1,8 +1,8 @@
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 
 import jinja2
 
-from dfes.feeds import Feed
+from dfes.feeds import Feed, Entry
 
 
 def dfes_published(value: datetime) -> str:
@@ -39,3 +39,26 @@ def jinja_env() -> jinja2.Environment:
 
 def generate_feed(feed: Feed) -> str:
     return jinja_env().get_template("new_bans.xml").render(feed=feed)
+
+
+def main():
+    feed = Feed(
+            title="Total Fire Ban (All Regions)",
+            published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
+            entries=[
+                Entry(
+                    published=datetime(2000, 1, 1, 2, tzinfo=timezone.utc),
+                    dfes_published=datetime(2000, 1, 1, 2, tzinfo=timezone.utc),
+                    summary="A summary",
+                    bans=None,
+                ),
+            ],
+        )
+
+    print(
+        generate_feed(feed)
+    )
+
+
+if __name__ == "__main__":
+    main()
