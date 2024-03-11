@@ -40,10 +40,21 @@ def jinja_env() -> jinja2.Environment:
 
 
 def default_feed() -> Feed:
-    bans = TotalFireBans(
+    bans_1 = TotalFireBans(
         revoked=False,
-        issued=datetime(2000, 1, 1, 4, 30, tzinfo=ZoneInfo(key='Australia/Perth')),
-        declared_for=date(2000, 1, 2),
+        issued=datetime(2000, 1, 1, 1, 1, tzinfo=ZoneInfo(key='Australia/Perth')),
+        declared_for=date(2000, 1, 1),
+        locations=AffectedAreas([
+            ('Midwest Gascoyne', 'Carnamah'),
+            ('Midwest Gascoyne', 'Chapman Valley'),
+            ('Midwest Gascoyne', 'Coorow'),
+        ])
+    )
+
+    bans_2 = TotalFireBans(
+        revoked=False,
+        issued=datetime(2000, 1, 1, 1, 1, tzinfo=ZoneInfo(key='Australia/Perth')),
+        declared_for=date(2000, 1, 1),
         locations=AffectedAreas([
             ('Midwest Gascoyne', 'Carnamah'),
             ('Midwest Gascoyne', 'Chapman Valley'),
@@ -57,11 +68,17 @@ def default_feed() -> Feed:
         published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
         entries=[
             Entry(
-                published=datetime(2000, 1, 2, 1, 30, 30, tzinfo=timezone.utc),
-                dfes_published=datetime(2000, 1, 2, 1, 30, tzinfo=timezone.utc),
-                summary=generate_description(bans),
-                bans=bans
-            )
+                published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
+                dfes_published=datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc),
+                summary=generate_description(bans_1),
+                bans=bans_1
+            ),
+            Entry(
+                published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
+                dfes_published=datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc),
+                summary=generate_description(bans_2),
+                bans=bans_2
+            ),
         ],
     )
 

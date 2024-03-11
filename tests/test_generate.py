@@ -20,7 +20,7 @@ class TestGenerateFeed:
 
         assert feed_out == feed_in
 
-    def test_feed_with_entry(self):
+    def test_feed_with_entries(self):
         feed_in = default_feed()
         feed_text = generate_feed(feed_in)
         feed_out = parse_feed(feed_text)
