@@ -7,8 +7,7 @@ import dfes.exceptions
 from conftest import generate_bans_xml
 from dfes import feeds
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import parse_feeds
-from dfes.model import Entry
+from dfes.feeds import parse_feeds, Entry
 
 
 def test_bozo_feed_raises_exception():

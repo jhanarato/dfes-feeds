@@ -6,7 +6,8 @@ import pytest
 
 from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime, col_interval_minutes, \
     datetime_to_hour, perth_tz
-from dfes.model import Entry, Feed, TotalFireBans
+from dfes.feeds import Entry, Feed
+from dfes.model import TotalFireBans
 
 
 @pytest.fixture
