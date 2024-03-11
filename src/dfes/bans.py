@@ -10,6 +10,17 @@ from dfes.date_time import extract_date, extract_time
 from dfes.exceptions import ParsingFailed
 
 
+class AffectedAreas:
+    def __init__(self):
+        self._areas = []
+
+    def add(self, region: str, district: str):
+        self._areas.append((region, district))
+
+    def to_pairs(self) -> list[tuple[str, str]]:
+        return self._areas
+
+
 @dataclass
 class TotalFireBans:
     revoked: bool

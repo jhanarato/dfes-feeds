@@ -5,6 +5,7 @@ import pytest
 from bs4 import BeautifulSoup
 
 from dfes import bans
+from dfes.bans import AffectedAreas
 from dfes.exceptions import ParsingFailed
 
 
@@ -161,3 +162,14 @@ def test_combined_data(entry):
         ('Midwest Gascoyne', 'Coorow'),
         ('Perth Metropolitan', 'Armadale')
     ]
+
+
+class TestAffectedAreas:
+    def test_no_affected_areas(self):
+        areas = AffectedAreas()
+        assert areas.to_pairs() == []
+
+    def test_one_pair(self):
+        areas = AffectedAreas()
+        areas.add(region="Midwest Gascoyne", district="Carnamah")
+        assert areas.to_pairs() == [('Midwest Gascoyne', 'Carnamah')]
