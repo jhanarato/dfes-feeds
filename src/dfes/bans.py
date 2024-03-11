@@ -1,4 +1,5 @@
 import re
+from collections import defaultdict
 from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import date, time, datetime
@@ -17,13 +18,20 @@ class AffectedAreas:
     def pairs(self) -> list[tuple[str, str]]:
         return self._areas
 
+    def to_dict(self) -> dict:
+        result = defaultdict(list)
+        for pair in self.pairs():
+            result[pair[0]].append(pair[1])
+
+        return result
+
 
 @dataclass
 class TotalFireBans:
     revoked: bool
     issued: datetime
     declared_for: date
-    locations: list[tuple[str, str]]
+    locations: AffectedAreas
 
 
 def parse_bans(summary_html: str) -> TotalFireBans:
@@ -40,11 +48,13 @@ def parse_bans(summary_html: str) -> TotalFireBans:
     else:
         declared = date_declared_for(soup)
 
+    areas = AffectedAreas(list(locations(soup)))
+
     return TotalFireBans(
         revoked=revoked,
         issued=issued,
         declared_for=declared,
-        locations=list(locations(soup)),
+        locations=areas,
     )
 
 

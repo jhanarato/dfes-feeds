@@ -156,7 +156,7 @@ def test_combined_data(entry):
     combined = bans.parse_bans(entry.summary)
     assert combined.issued == datetime(2023, 10, 15, 17, 6, tzinfo=ZoneInfo(key='Australia/Perth'))
     assert combined.declared_for == date(2023, 10, 16)
-    assert combined.locations == [
+    assert combined.locations.pairs() == [
         ('Midwest Gascoyne', 'Carnamah'),
         ('Midwest Gascoyne', 'Chapman Valley'),
         ('Midwest Gascoyne', 'Coorow'),
@@ -165,10 +165,21 @@ def test_combined_data(entry):
 
 
 class TestAffectedAreas:
-    def test_no_affected_areas(self):
-        areas = AffectedAreas([])
-        assert areas.pairs() == []
+    def test_to_dict(self):
+        areas = AffectedAreas(
+            [
+                ('Midwest Gascoyne', 'Carnamah'),
+                ('Midwest Gascoyne', 'Chapman Valley'),
+                ('Midwest Gascoyne', 'Coorow'),
+                ('Perth Metropolitan', 'Armadale')
+            ]
+        )
 
-    def test_one_pair(self):
-        areas = AffectedAreas([('Midwest Gascoyne', 'Carnamah')])
-        assert areas.pairs() == [('Midwest Gascoyne', 'Carnamah')]
+        assert areas.to_dict() == {
+            "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
+            "Perth Metropolitan": ["Armadale"]
+        }
+
+    def test_empty(self):
+        areas = AffectedAreas([])
+        assert areas.to_dict() == {}

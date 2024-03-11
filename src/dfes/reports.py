@@ -21,7 +21,7 @@ def print_ban(bans: TotalFireBans):
         print(f"Revoked for: {bans.declared_for}")
     else:
         print(f"Declared for: {bans.declared_for}")
-    for location in bans.locations:
+    for location in bans.locations.pairs():
         print(f"{location[0]} / {location[1]}")
     print("")
 
@@ -48,7 +48,7 @@ def display_feeds(start: datetime, end: datetime):
             bans = entry.bans
             declared_text(bans)
             print(f"DFES Issued at   {bans.issued}.")
-            districts = " ".join([location[1] for location in bans.locations])
+            districts = " ".join([location[1] for location in bans.locations.pairs()])
             for line in wrap(districts):
                 print(f"[green]{line}[/green]")
 

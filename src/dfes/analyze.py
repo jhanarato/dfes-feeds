@@ -26,7 +26,7 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
             if not entry.bans:
                 entry.parse_summary()
 
-            for location in entry.bans.locations:
+            for location in entry.bans.locations.pairs():
                 data["feed_published"].append(feed.published)
                 data["entry_index"].append(index)
                 data["entry_published"].append(entry.published)
