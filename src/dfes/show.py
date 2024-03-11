@@ -1,7 +1,8 @@
 from collections.abc import Iterable
 
 from dfes.bans import TotalFireBans
-from dfes.feeds import Feed, Entry, parse_feeds
+from dfes.feeds import parse_feeds
+from dfes.model import Entry, Feed
 from dfes.repository import Repository, FeedByPublished
 
 

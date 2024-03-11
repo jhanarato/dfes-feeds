@@ -4,7 +4,8 @@ from collections.abc import Iterable
 import polars as pl
 import polars.selectors as cs
 
-from dfes.feeds import Feed, parse_feed
+from dfes.feeds import parse_feed
+from dfes.model import Feed
 from dfes.repository import FileRepository, FeedByPublished
 
 

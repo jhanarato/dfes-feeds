@@ -2,7 +2,8 @@ from datetime import datetime, timezone, date
 from zoneinfo import ZoneInfo
 
 from dfes.bans import TotalFireBans, AffectedAreas, parse_bans
-from dfes.feeds import Feed, parse_feed
+from dfes.feeds import parse_feed
+from dfes.model import Feed
 from generate import generate_feed, dfes_published, declared_for, time_of_issue, date_of_issue, generate_description, \
     default_feed
 

@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 import jinja2
 
 from dfes.bans import TotalFireBans, AffectedAreas
-from dfes.feeds import Feed, Entry
+from dfes.model import Entry, Feed
 
 
 def dfes_published(value: datetime) -> str:

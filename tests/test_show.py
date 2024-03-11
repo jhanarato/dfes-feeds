@@ -5,8 +5,8 @@ import pytest
 
 from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.bans import TotalFireBans
-from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
+from dfes.model import Entry, Feed
 from dfes.show import to_show, last_issued, latest_bans, LatestEntries
 
 
