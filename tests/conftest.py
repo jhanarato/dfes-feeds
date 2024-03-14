@@ -81,23 +81,6 @@ def entry(bans_xml) -> Entry:
     return parse_feed(bans_xml).entries[0]
 
 
-@pytest.fixture
-def mangled_dfes_publication(jinja_env):
-    regions = {
-        "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
-        "Perth Metropolitan": ["Armadale"]
-    }
-
-    return jinja_env.get_template("bans.xml").render(
-        regions=regions,
-        dfes_published="15/10/23 XXX 08:08 AM",
-        feed_published="Mon, 16 Oct 2023 08:10:56 GMT",
-        time_of_issue="04:08 PM",
-        date_of_issue="15 October 2023",
-        declared_for="16 October 2023",
-    )
-
-
 @pytest.fixture(params=["in_memory", "file_system"])
 def repository(request, tmp_path):
     repositories = {
