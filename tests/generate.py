@@ -16,7 +16,7 @@ def declared_for(value: date) -> str:
 
 
 def time_of_issue(value: datetime) -> str:
-    return value.strftime("%H:%M %p")
+    return value.strftime("%I:%M %p")
 
 
 def date_of_issue(value: datetime) -> str:
