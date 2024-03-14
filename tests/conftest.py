@@ -3,7 +3,7 @@ from datetime import datetime, date, timezone
 import pytest
 from jinja2 import Environment, select_autoescape, FileSystemLoader
 
-from dfes.feeds import parse_feed
+from dfes.feeds import parse_feed, Entry
 from dfes.repository import InMemoryRepository, FileRepository
 
 
@@ -77,7 +77,7 @@ def bans_xml(jinja_env):
 
 
 @pytest.fixture
-def entry(bans_xml):
+def entry(bans_xml) -> Entry:
     return parse_feed(bans_xml).entries[0]
 
 
