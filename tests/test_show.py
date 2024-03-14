@@ -6,7 +6,7 @@ import pytest
 from conftest import generate_bans_xml, generate_with_no_entries
 from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
-from dfes.model import TotalFireBans
+from dfes.model import TotalFireBans, AffectedAreas
 from dfes.show import to_show, last_issued, latest_bans, LatestEntries
 
 
@@ -66,7 +66,7 @@ def declared_entry():
             revoked=False,
             issued=datetime(2000, 1, 1, 3),
             declared_for=date(2000, 1, 2),
-            locations=[("Armadale", "Perth Metropolitan")]
+            locations=AffectedAreas([("Armadale", "Perth Metropolitan")])
         )
     )
 
@@ -87,7 +87,7 @@ def revoked_entry():
             revoked=True,
             issued=datetime(2000, 1, 1, 3),
             declared_for=date(2000, 1, 2),
-            locations=[("Armadale", "Perth Metropolitan")]
+            locations=AffectedAreas([("Armadale", "Perth Metropolitan")])
         )
     )
 
@@ -160,7 +160,7 @@ def two_declared() -> list[Entry]:
                 revoked=False,
                 issued=datetime(2000, 1, 1, 3),
                 declared_for=date(2000, 1, 2),
-                locations=[("Armadale", "Perth Metropolitan")]
+                locations=AffectedAreas([("Armadale", "Perth Metropolitan")])
             )
         ),
         Entry(
@@ -171,7 +171,7 @@ def two_declared() -> list[Entry]:
                 revoked=False,
                 issued=datetime(2000, 1, 2, 3),
                 declared_for=date(2000, 1, 3),
-                locations=[("Armadale", "Perth Metropolitan")]
+                locations=AffectedAreas([("Armadale", "Perth Metropolitan")])
             )
         ),
     ]
