@@ -6,7 +6,8 @@ from bs4 import BeautifulSoup
 
 from dfes import bans
 from dfes.exceptions import ParsingFailed
-from dfes.model import AffectedAreas
+from dfes.model import AffectedAreas, TotalFireBans
+from generate import generate_description
 
 
 def test_get_region_tags():
@@ -152,8 +153,23 @@ def test_extract_region():
     assert bans.extract_region(tag) == "Midwest Gascoyne"
 
 
-def test_combined_data(entry):
-    combined = bans.parse_bans(entry.summary)
+def test_combined_data():
+    summary = generate_description(
+        TotalFireBans(
+            revoked=False,
+            issued=datetime(2023, 10, 15, 17, 6, tzinfo=ZoneInfo(key='Australia/Perth')),
+            declared_for=date(2023, 10, 16),
+            locations=AffectedAreas([
+                    ('Midwest Gascoyne', 'Carnamah'),
+                    ('Midwest Gascoyne', 'Chapman Valley'),
+                    ('Midwest Gascoyne', 'Coorow'),
+                    ('Perth Metropolitan', 'Armadale')
+                ]),
+        )
+    )
+
+    combined = bans.parse_bans(summary)
+
     assert combined.issued == datetime(2023, 10, 15, 17, 6, tzinfo=ZoneInfo(key='Australia/Perth'))
     assert combined.declared_for == date(2023, 10, 16)
     assert combined.locations.pairs == [
