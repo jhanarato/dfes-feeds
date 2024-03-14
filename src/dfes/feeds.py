@@ -68,7 +68,7 @@ def feed_published(parsed: dict) -> datetime:
 def create_entry(entry_data) -> Entry:
     return Entry(
         published=entry_published(entry_data),
-        dfes_published=dfes_published(entry_data),
+        dfes_published=dfes_published(entry_data["dfes_publicationtime"]),
         summary=summary(entry_data)
     )
 
@@ -78,9 +78,9 @@ def entry_published(entry: dict) -> datetime:
     return struct_time_to_datetime(s_t)
 
 
-def dfes_published(entry: dict) -> datetime:
+def dfes_published(published: str) -> datetime:
     try:
-        extracted = datetime.strptime(entry["dfes_publicationtime"], "%d/%m/%y %H:%M %p")
+        extracted = datetime.strptime(published, "%d/%m/%y %H:%M %p")
         return extracted.replace(tzinfo=timezone.utc)
     except ValueError:
         raise ParsingFailed("Could not parse publication time")

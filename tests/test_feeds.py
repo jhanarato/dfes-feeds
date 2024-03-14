@@ -6,7 +6,7 @@ import pytest
 import dfes.exceptions
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import Entry, parse_feed, parse_feeds
+from dfes.feeds import Entry, parse_feed, parse_feeds, dfes_published
 
 
 def test_bozo_feed_raises_exception():
@@ -27,9 +27,9 @@ def test_parse_entry(entry):
     assert entry.summary.startswith("<div>")
 
 
-def test_dfes_published_malformed(mangled_dfes_publication):
+def test_dfes_published_malformed():
     with pytest.raises(dfes.exceptions.ParsingFailed, match="Could not parse publication time"):
-        _ = parse_feed(mangled_dfes_publication)
+        dfes_published("This is not valid")
 
 
 def test_parse_entry_summary():
