@@ -3,10 +3,9 @@ from zoneinfo import ZoneInfo
 
 import pytest
 
-import dfes.exceptions
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import Item, parse_feed, parse_feeds, dfes_published, Feed
+from dfes.feeds import Item, parse_feed, parse_feeds, Feed
 from generate import generate_feed
 
 
@@ -37,11 +36,6 @@ def test_parse_item(bans_xml):
     assert item.published == datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
     assert item.dfes_published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     assert item.description.startswith("<div>")
-
-
-def test_dfes_published_malformed():
-    with pytest.raises(dfes.exceptions.ParsingFailed, match="Could not parse publication time"):
-        dfes_published("This is not valid")
 
 
 def test_parse_item_description():
