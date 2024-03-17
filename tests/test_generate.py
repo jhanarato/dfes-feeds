@@ -87,7 +87,7 @@ class TestItems:
     def test_generates_declared_for(self):
         pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
         item = next(generate_items(first_published=pub_date))
-        assert item.bans.declared_for == date(2000, 1, 1)
+        assert item.bans.declared_for == date(2000, 1, 2)
 
     def test_generates_locations(self):
         item = next(generate_items(first_published=datetime(2000, 1, 1)))
@@ -99,4 +99,4 @@ class TestItems:
         item = next(items)
         assert item.published == datetime(2000, 1, 2)
         assert item.bans.issued == datetime(2000, 1, 2)
-        assert item.bans.declared_for == date(2000, 1, 2)
+        assert item.bans.declared_for == date(2000, 1, 3)
