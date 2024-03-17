@@ -116,7 +116,6 @@ class Contexts:
             cs.datetime(), cs.date()
         ).unique().select(
             (pl.col("entry_published") - pl.col("dfes_published")).alias("entry_dfes"),
-            (pl.col("issued") - pl.col("dfes_published")).alias("dfes_issued"),
             (pl.col("declared_for") - pl.col("issued").cast(pl.Date).alias("dfes_declared_for"))
         ).max()
 
@@ -124,13 +123,6 @@ class Contexts:
         return self._df.select(cs.datetime(), cs.date()).unique().select(
             (pl.col("feed_published") - pl.col("entry_published")).alias("entry_pub_to_feed_pub"),
         ).max()
-
-    def entry_delayed(self) -> pl.DataFrame:
-        return self.no_locations().with_columns(
-            col_interval_minutes("dfes_published", "entry_published").alias("delay"),
-        ).with_columns(
-            (pl.col("delay") > 0).alias("is_delayed"),
-        )
 
     def dates(self) -> pl.DataFrame:
         return self._df.select(
