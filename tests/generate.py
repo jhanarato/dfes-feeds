@@ -1,5 +1,5 @@
 from collections.abc import Iterator
-from datetime import datetime, date, timezone
+from datetime import datetime, date, timezone, timedelta
 from zoneinfo import ZoneInfo
 
 import jinja2
@@ -86,12 +86,21 @@ def generate_description(bans: TotalFireBans) -> str:
 
 
 def generate_items(first_pub_date: datetime) -> Iterator[Item]:
-    yield Item(
-        published=first_pub_date,
-        description="",
-        bans=TotalFireBans(
-            issued=first_pub_date.replace(second=0),
-            declared_for=first_pub_date.date(),
-            locations=AffectedAreas([("A Region", "A District")])
+    published = first_pub_date
+
+    while True:
+        issued = published.replace(second=0)
+        declared_for_ = published.date()
+        locations = AffectedAreas([("A Region", "A District")])
+
+        yield Item(
+            published=published,
+            description="",
+            bans=TotalFireBans(
+                issued=issued,
+                declared_for=declared_for_,
+                locations=locations
+            )
         )
-    )
+
+        published += timedelta(days=1)
