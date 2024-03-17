@@ -52,7 +52,7 @@ def test_should_store_feed_when_it_fails_to_parse(repository):
     assert repository.list_failed() == [timestamp]
 
 
-def test_should_store_valid_but_empty_feed_in_bans(no_bans_xml, repository):
+def test_should_store_valid_but_empty_feed_in_bans(repository):
     published = datetime(2000, 1, 2, tzinfo=timezone.utc)
 
     feed = Feed(

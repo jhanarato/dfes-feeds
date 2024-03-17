@@ -2,11 +2,11 @@ from datetime import datetime, date, timezone
 
 import pytest
 from bs4 import BeautifulSoup
-from jinja2 import Environment, select_autoescape, FileSystemLoader
 
-from dfes.feeds import Feed
+from dfes.feeds import Feed, Entry
+from dfes.model import TotalFireBans, AffectedAreas
 from dfes.repository import InMemoryRepository, FileRepository
-from generate import generate_feed, default_feed
+from generate import generate_feed, default_feed, generate_description
 
 
 def generate_bans_xml(regions: dict[str, list[str]] | None = None,
@@ -16,36 +16,29 @@ def generate_bans_xml(regions: dict[str, list[str]] | None = None,
                       declared_for: date = date(2001, 1, 1),
                       revoked=False) -> str:
 
-    if not regions:
-        regions = {
-            "Midwest Gascoyne": ["Carnamah", "Chapman Valley", "Coorow"],
-            "Perth Metropolitan": ["Armadale"]
-        }
-
-    env = Environment(
-        loader=FileSystemLoader("templates/"),
-        autoescape=select_autoescape(),
-        trim_blocks=True,
-        lstrip_blocks=True,
-    )
-
-    return env.get_template("bans.xml").render(
-        regions=regions,
-        dfes_published=dfes_published.strftime("%d/%m/%y %I:%M %p"),
-        feed_published=feed_published.strftime("%a, %d %b %Y %H:%M:%S GMT"),
-        time_of_issue=issued.strftime("%I:%M %p"),
-        date_of_issue=issued.strftime("%d %B %Y"),
-        declared_for=declared_for.strftime("%d %B %Y"),
+    bans = TotalFireBans(
+        issued=issued,
+        declared_for=declared_for,
         revoked=revoked,
+        locations=AffectedAreas([
+            ("Midwest Gascoyne", "Carnamah"),
+            ("Midwest Gascoyne", "Chapman Valley"),
+            ("Midwest Gascoyne", "Coorow"),
+            ("Perth Metropolitan", "Armadale"),
+        ])
     )
 
-
-@pytest.fixture
-def no_bans_xml():
     feed = Feed(
         title="Total Fire Ban (All Regions)",
-        published=datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc),
-        entries=[],
+        published=feed_published,
+        entries=[
+            Entry(
+                published=feed_published,
+                dfes_published=dfes_published,
+                summary=generate_description(bans),
+                bans=bans,
+            )
+        ]
     )
 
     return generate_feed(feed)
