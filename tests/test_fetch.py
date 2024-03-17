@@ -5,10 +5,11 @@ import responses
 
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import parse_feed
+from dfes.feeds import parse_feed, Feed
 from dfes.fetch import store_feed, aquire_ban_feed, check_summaries, store_failed
 from dfes.repository import FailedByFetched
 from dfes.urls import FIRE_BAN_URL
+from generate import generate_feed
 
 
 @responses.activate
@@ -52,8 +53,18 @@ def test_should_store_feed_when_it_fails_to_parse(repository):
 
 
 def test_should_store_valid_but_empty_feed_in_bans(no_bans_xml, repository):
-    store_feed(no_bans_xml, repository)
-    assert repository.published() == [datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)]
+    published = datetime(2000, 1, 2, tzinfo=timezone.utc)
+
+    feed = Feed(
+        title="Total Fire Ban (All Regions)",
+        published=published,
+        entries=[],
+    )
+
+    feed_xml = generate_feed(feed)
+
+    store_feed(feed_xml, repository)
+    assert repository.published() == [published]
 
 
 def test_should_not_store_failed_feed_twice(repository):
