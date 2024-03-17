@@ -3,7 +3,6 @@ from datetime import datetime, date, timezone
 import pytest
 from jinja2 import Environment, select_autoescape, FileSystemLoader
 
-from dfes.feeds import parse_feed, Entry
 from dfes.repository import InMemoryRepository, FileRepository
 
 
@@ -74,11 +73,6 @@ def bans_xml(jinja_env):
                              feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
                              issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
                              declared_for=date(2023, 10, 16))
-
-
-@pytest.fixture
-def entry(bans_xml) -> Entry:
-    return parse_feed(bans_xml).entries[0]
 
 
 @pytest.fixture(params=["in_memory", "file_system"])
