@@ -54,16 +54,6 @@ def generate_with_no_entries(feed_published: datetime):
 
 
 @pytest.fixture
-def jinja_env():
-    return Environment(
-        loader=FileSystemLoader("templates/"),
-        autoescape=select_autoescape(),
-        trim_blocks=True,
-        lstrip_blocks=True,
-    )
-
-
-@pytest.fixture
 def no_bans_xml():
     feed = Feed(
         title="Total Fire Ban (All Regions)",
