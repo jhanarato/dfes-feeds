@@ -77,3 +77,10 @@ class TestItems:
         pub_date = datetime(2000, 1, 1)
         item = next(generate_items(first_pub_date=pub_date))
         assert item.published == pub_date
+
+    def test_generates_issued_without_seconds(self):
+        pub_datetime = datetime(2000, 1, 1, hour=10, minute=30, second=15)
+        issued_datetime = datetime(2000, 1, 1, hour=10, minute=30)
+        item = next(generate_items(first_pub_date=pub_datetime))
+        assert item.bans.issued == issued_datetime
+

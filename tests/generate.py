@@ -90,7 +90,7 @@ def generate_items(first_pub_date: datetime) -> Iterator[Item]:
         published=first_pub_date,
         description="",
         bans=TotalFireBans(
-            issued=first_pub_date,
+            issued=first_pub_date.replace(second=0),
             declared_for=first_pub_date.date(),
             locations=AffectedAreas([("A Region", "A District")])
         )
