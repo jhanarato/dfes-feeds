@@ -15,7 +15,7 @@ class TestToShow:
     def test_repository_empty(self, repository):
         assert to_show(repository) == tuple()
 
-    def test_latest_entry_is_declared(self, repository):
+    def test_latest_item_is_declared(self, repository):
         earlier_feed = generate_bans_xml(
             feed_published=datetime(2023, 10, 12),
             issued=datetime(2023, 10, 12),
@@ -38,13 +38,13 @@ class TestToShow:
 
         declared_for = earlier.date() + timedelta(days=1)
 
-        without_entry = Feed(
+        without_item = Feed(
             title="Total Fire Ban (All Regions)",
             published=later,
             items=[],
         )
 
-        with_entry = Feed(
+        with_item = Feed(
             title="Total Fire Ban (All Regions)",
             published=earlier,
             items=[
@@ -62,8 +62,8 @@ class TestToShow:
             ],
         )
 
-        earlier_feed = generate_feed(with_entry)
-        later_feed = generate_feed(without_entry)
+        earlier_feed = generate_feed(with_item)
+        later_feed = generate_feed(without_item)
 
         store_feed(earlier_feed, repository)
         store_feed(later_feed, repository)

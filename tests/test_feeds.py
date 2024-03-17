@@ -32,11 +32,11 @@ def test_parse_no_entries():
     assert parsed.published == published
 
 
-def test_parse_entry(bans_xml):
-    entry = parse_feed(bans_xml).items[0]
-    assert entry.published == datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
-    assert entry.dfes_published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
-    assert entry.summary.startswith("<div>")
+def test_parse_item(bans_xml):
+    item = parse_feed(bans_xml).items[0]
+    assert item.published == datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
+    assert item.dfes_published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
+    assert item.summary.startswith("<div>")
 
 
 def test_dfes_published_malformed():
@@ -44,21 +44,21 @@ def test_dfes_published_malformed():
         dfes_published("This is not valid")
 
 
-def test_parse_entry_summary():
+def test_parse_item_summary():
     issued = datetime(2000, 1, 2, 3, 4, tzinfo=ZoneInfo(key='Australia/Perth'))
     feed_xml = generate_bans_xml(issued=issued)
 
     summary = parse_feed(feed_xml).items[0].summary
 
-    entry = Item(
+    item = Item(
         published=datetime(2001, 1, 1),
         dfes_published=datetime(2001, 1, 1),
         summary=summary,
     )
 
-    entry.parse_summary()
+    item.parse_summary()
 
-    assert entry.bans.issued == issued
+    assert item.bans.issued == issued
 
 
 def test_parse_feeds():
