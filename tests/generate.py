@@ -7,10 +7,6 @@ from dfes.feeds import Item, Feed
 from dfes.model import AffectedAreas, TotalFireBans
 
 
-def dfes_published(value: datetime) -> str:
-    return value.strftime("%d/%m/%y %H:%M %p")
-
-
 def declared_for(value: date) -> str:
     return value.strftime("%d %B %Y").lstrip("0")
 
@@ -31,7 +27,6 @@ def jinja_env() -> jinja2.Environment:
         lstrip_blocks=True,
     )
 
-    env.filters["dfes_published"] = dfes_published
     env.filters["declared_for"] = declared_for
     env.filters["time_of_issue"] = time_of_issue
     env.filters["date_of_issue"] = date_of_issue
