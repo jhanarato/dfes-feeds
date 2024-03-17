@@ -106,3 +106,8 @@ class TestItems:
         first = next(items)
         second = next(items)
         assert first.bans.locations == second.bans.locations
+
+    def test_generates_description(self):
+        items = generate_items(first_published=datetime(2000, 1, 1))
+        item = next(items)
+        assert item.description == generate_description(item.bans)

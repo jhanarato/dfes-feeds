@@ -98,12 +98,10 @@ def generate_item(published: datetime) -> Item:
     declared_for_ = published.date() + timedelta(days=1)
     locations = AffectedAreas([("A Region", "A District")])
 
+    bans = TotalFireBans(issued=issued, declared_for=declared_for_, locations=locations)
+
     return Item(
         published=published,
-        description="",
-        bans=TotalFireBans(
-            issued=issued,
-            declared_for=declared_for_,
-            locations=locations
-        )
+        description=generate_description(bans),
+        bans=bans
     )
