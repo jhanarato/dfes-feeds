@@ -75,14 +75,6 @@ def entry_published(entry: dict) -> datetime:
     return struct_time_to_datetime(s_t)
 
 
-def dfes_published(published: str) -> datetime:
-    try:
-        extracted = datetime.strptime(published, "%d/%m/%y %H:%M %p")
-        return extracted.replace(tzinfo=timezone.utc)
-    except ValueError:
-        raise ParsingFailed("Could not parse publication time")
-
-
 def description(entry: dict) -> str:
     if value := entry.get("summary"):
         return value
