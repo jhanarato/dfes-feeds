@@ -13,7 +13,6 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
         "feed_published": [],
         "entry_index": [],
         "entry_published": [],
-        "dfes_published": [],
         "revoked": [],
         "issued": [],
         "declared_for": [],
@@ -30,7 +29,6 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
                 data["feed_published"].append(feed.published)
                 data["entry_index"].append(index)
                 data["entry_published"].append(item.published)
-                data["dfes_published"].append(item.dfes_published)
                 data["revoked"].append(item.bans.revoked)
                 data["issued"].append(item.bans.issued.astimezone(datetime.timezone.utc))
                 data["declared_for"].append(item.bans.declared_for)
@@ -43,7 +41,6 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
         perth_tz("feed_published"),
         pl.col("entry_index"),
         perth_tz("entry_published"),
-        perth_tz("dfes_published"),
         pl.col("revoked"),
         perth_tz("issued"),
         pl.col("declared_for"),
@@ -115,7 +112,6 @@ class Contexts:
         return self._df.select(
             cs.datetime(), cs.date()
         ).unique().select(
-            (pl.col("entry_published") - pl.col("dfes_published")).alias("entry_dfes"),
             (pl.col("declared_for") - pl.col("issued").cast(pl.Date).alias("dfes_declared_for"))
         ).max()
 
@@ -137,7 +133,7 @@ class Contexts:
 
     def feeds_and_entries(self) -> pl.DataFrame:
         return self._df.select(
-            "feed_published", "entry_published", "entry_index", n_entries(), "dfes_published"
+            "feed_published", "entry_published", "entry_index", n_entries()
         ).unique()
 
 
