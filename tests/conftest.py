@@ -9,11 +9,12 @@ from dfes.repository import InMemoryRepository, FileRepository
 from generate import generate_feed, default_feed, generate_description
 
 
-def generate_bans_xml(dfes_published: datetime = datetime(2001, 1, 1),
-                      feed_published: datetime = datetime(2001, 1, 1),
+def generate_bans_xml(feed_published: datetime = datetime(2001, 1, 1),
                       issued: datetime = datetime(2001, 1, 1),
                       declared_for: date = date(2001, 1, 1),
                       revoked=False) -> str:
+
+    dfes_published = datetime(2001, 1, 1)
 
     bans = TotalFireBans(
         issued=issued,
@@ -45,8 +46,7 @@ def generate_bans_xml(dfes_published: datetime = datetime(2001, 1, 1),
 
 @pytest.fixture
 def bans_xml():
-    return generate_bans_xml(dfes_published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
-                             feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
+    return generate_bans_xml(feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
                              issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
                              declared_for=date(2023, 10, 16))
 
