@@ -6,7 +6,8 @@ import pytest
 import dfes.exceptions
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import Entry, parse_feed, parse_feeds, dfes_published
+from dfes.feeds import Entry, parse_feed, parse_feeds, dfes_published, Feed
+from generate import generate_feed
 
 
 def test_bozo_feed_raises_exception():
@@ -14,11 +15,21 @@ def test_bozo_feed_raises_exception():
         _ = parse_feed("Not the expected xml string")
 
 
-def test_parse_no_entries(no_bans_xml):
-    parsed = parse_feed(no_bans_xml)
+def test_parse_no_entries():
+    published = datetime(2000, 1, 2, tzinfo=timezone.utc)
+
+    feed = Feed(
+        title="Total Fire Ban (All Regions)",
+        published=published,
+        entries=[],
+    )
+
+    feed_xml = generate_feed(feed)
+    parsed = parse_feed(feed_xml)
+
     assert parsed.entries == []
     assert parsed.title == "Total Fire Ban (All Regions)"
-    assert parsed.published == datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
+    assert parsed.published == published
 
 
 def test_parse_entry(bans_xml):
