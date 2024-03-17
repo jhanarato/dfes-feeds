@@ -39,13 +39,13 @@ def display_feeds(start: datetime, end: datetime):
         if not feed.items:
             print("Feed has no entries")
 
-        for index, entry in enumerate(feed.items):
+        for index, item in enumerate(feed.items):
             print(
-                f"Entry #{index} {declared_text(entry.bans)}\n"
-                f"Entry Published: {entry.published}\n"
-                f"DFES Published:  {entry.dfes_published}"
+                f"Item #{index} {declared_text(item.bans)}\n"
+                f"Item Published: {item.published}\n"
+                f"DFES Published:  {item.dfes_published}"
             )
-            bans = entry.bans
+            bans = item.bans
             declared_text(bans)
             print(f"DFES Issued at   {bans.issued}.")
             districts = " ".join([location[1] for location in bans.locations.pairs])

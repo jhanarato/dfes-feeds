@@ -23,8 +23,8 @@ def store_feed(feed_xml: str, repository: Repository, now: datetime = datetime.n
 
 
 def check_summaries(feed: Feed):
-    for entry in feed.items:
-        entry.parse_summary()
+    for item in feed.items:
+        item.parse_summary()
 
 
 def store_failed(repository: Repository, feed_xml: str) -> bool:

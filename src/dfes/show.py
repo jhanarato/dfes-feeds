@@ -41,13 +41,13 @@ class LatestEntries:
         self._feed = feed
 
     def declared(self) -> Item | None:
-        entries = declared_entries(self._feed)
+        entries = declared_items(self._feed)
         if entries:
             return last_issued(entries)
         return None
 
     def revoked(self) -> Item | None:
-        entries = revoked_entries(self._feed)
+        entries = revoked_items(self._feed)
         if entries:
             return last_issued(entries)
         return None
@@ -65,13 +65,13 @@ class LatestEntries:
         return self.revoked() and not self.declared()
 
 
-def declared_entries(feed: Feed):
-    return [entry for entry in feed.items if not entry.bans.revoked]
+def declared_items(feed: Feed):
+    return [item for item in feed.items if not item.bans.revoked]
 
 
-def revoked_entries(feed: Feed):
-    return [entry for entry in feed.items if entry.bans.revoked]
+def revoked_items(feed: Feed):
+    return [item for item in feed.items if item.bans.revoked]
 
 
-def last_issued(entries: list[Item]) -> Item:
-    return max(entries, key=lambda entry: entry.bans.issued)
+def last_issued(item: list[Item]) -> Item:
+    return max(item, key=lambda item: item.bans.issued)
