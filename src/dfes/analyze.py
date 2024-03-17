@@ -95,7 +95,6 @@ class Contexts:
     def intervals(self) -> pl.DataFrame:
         return self._df.select(
             col_interval_minutes("dfes_published", "entry_published"),
-            col_interval_minutes("dfes_published", "issued"),
             issued_to_declared(),
         )
 
