@@ -40,19 +40,6 @@ def generate_bans_xml(regions: dict[str, list[str]] | None = None,
     )
 
 
-def generate_with_no_entries(feed_published: datetime):
-    env = Environment(
-        loader=FileSystemLoader("templates/"),
-        autoescape=select_autoescape(),
-        trim_blocks=True,
-        lstrip_blocks=True,
-    )
-
-    return env.get_template("no_bans.xml").render(
-        feed_published=feed_published.strftime("%a, %d %b %Y %H:%M:%S GMT")
-    )
-
-
 @pytest.fixture
 def no_bans_xml():
     feed = Feed(
