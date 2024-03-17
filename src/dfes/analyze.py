@@ -22,7 +22,7 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
     }
 
     for feed in feeds:
-        for index, entry in enumerate(feed.entries):
+        for index, entry in enumerate(feed.items):
             if not entry.bans:
                 entry.parse_summary()
 

@@ -30,7 +30,7 @@ def generate_bans_xml(dfes_published: datetime = datetime(2001, 1, 1),
     feed = Feed(
         title="Total Fire Ban (All Regions)",
         published=feed_published,
-        entries=[
+        items=[
             Item(
                 published=feed_published,
                 dfes_published=dfes_published,

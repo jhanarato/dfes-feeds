@@ -41,13 +41,13 @@ class TestToShow:
         without_entry = Feed(
             title="Total Fire Ban (All Regions)",
             published=later,
-            entries=[],
+            items=[],
         )
 
         with_entry = Feed(
             title="Total Fire Ban (All Regions)",
             published=earlier,
-            entries=[
+            items=[
                 Item(
                     published=earlier,
                     dfes_published=earlier,
@@ -76,7 +76,7 @@ def empty_feed():
     return Feed(
         title="Total Fire Ban (All Regions)",
         published=datetime(2000, 1, 2, 3),
-        entries=[]
+        items=[]
     )
 
 
@@ -97,7 +97,7 @@ def declared_entry():
 
 @pytest.fixture
 def declared_feed(empty_feed, declared_entry):
-    empty_feed.entries.append(declared_entry)
+    empty_feed.items.append(declared_entry)
     return empty_feed
 
 
@@ -118,14 +118,14 @@ def revoked_entry():
 
 @pytest.fixture
 def revoked_feed(empty_feed, revoked_entry):
-    empty_feed.entries.append(revoked_entry)
+    empty_feed.items.append(revoked_entry)
     return empty_feed
 
 
 @pytest.fixture
 def feed_with_both(empty_feed, declared_entry, revoked_entry):
-    empty_feed.entries.append(declared_entry)
-    empty_feed.entries.append(revoked_entry)
+    empty_feed.items.append(declared_entry)
+    empty_feed.items.append(revoked_entry)
     return empty_feed
 
 
@@ -134,7 +134,7 @@ class TestLatestBans:
         assert latest_bans([empty_feed]) == tuple()
 
     def test_only_declared_to_show(self, declared_feed):
-        assert list(latest_bans([declared_feed])) == [declared_feed.entries[0].bans]
+        assert list(latest_bans([declared_feed])) == [declared_feed.items[0].bans]
 
     def test_raise_exception_if_only_revoked(self, revoked_feed):
         with pytest.raises(RuntimeError):
@@ -142,18 +142,18 @@ class TestLatestBans:
 
     def test_both_declared_and_revoked_to_show(self, feed_with_both):
         result = list(latest_bans([feed_with_both]))
-        assert result == [entry.bans for entry in feed_with_both.entries]
+        assert result == [entry.bans for entry in feed_with_both.items]
 
 
 class TestLatestEntries:
     def test_declared(self, declared_feed):
         latest = LatestEntries(declared_feed)
-        assert latest.declared() == declared_feed.entries[0]
+        assert latest.declared() == declared_feed.items[0]
         assert latest.revoked() is None
 
     def test_revoked(self, revoked_feed):
         latest = LatestEntries(revoked_feed)
-        assert latest.revoked() == revoked_feed.entries[0]
+        assert latest.revoked() == revoked_feed.items[0]
         assert latest.declared() is None
 
     def test_neither(self, empty_feed):

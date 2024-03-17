@@ -23,7 +23,7 @@ def store_feed(feed_xml: str, repository: Repository, now: datetime = datetime.n
 
 
 def check_summaries(feed: Feed):
-    for entry in feed.entries:
+    for entry in feed.items:
         entry.parse_summary()
 
 

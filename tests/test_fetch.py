@@ -58,7 +58,7 @@ def test_should_store_valid_but_empty_feed_in_bans(repository):
     feed = Feed(
         title="Total Fire Ban (All Regions)",
         published=published,
-        entries=[],
+        items=[],
     )
 
     feed_xml = generate_feed(feed)

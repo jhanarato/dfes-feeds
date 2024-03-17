@@ -3,13 +3,13 @@
 <channel>
     <title>{{feed.title}}</title>
     <pubDate>{{feed.published}}</pubDate>
-    {% for entry in feed.entries %}
+    {% for item in feed.items %}
     <item>
-        <pubDate>{{entry.published}}</pubDate>
-        {% with bans = entry.bans %}
+        <pubDate>{{item.published}}</pubDate>
+        {% with bans = item.bans %}
         <description><![CDATA[{% include "description.html" %}]]></description>
         {% endwith %}
-        <dfes:publicationTime>{{entry.dfes_published|dfes_published}}</dfes:publicationTime>
+        <dfes:publicationTime>{{item.dfes_published|dfes_published}}</dfes:publicationTime>
     </item>
     {% endfor %}
 </channel>

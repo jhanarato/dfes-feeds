@@ -66,7 +66,7 @@ def default_feed() -> Feed:
     return Feed(
         title="Total Fire Ban (All Regions)",
         published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
-        entries=[
+        items=[
             Item(
                 published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
                 dfes_published=datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc),

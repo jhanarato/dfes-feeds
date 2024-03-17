@@ -25,7 +25,7 @@ class Item:
 class Feed:
     title: str
     published: datetime
-    entries: list[Item]
+    items: list[Item]
 
 
 def parse_feed(feed_xml: str) -> Feed:
@@ -39,7 +39,7 @@ def parse_feed(feed_xml: str) -> Feed:
     return Feed(
         title=parsed["feed"]["title"],
         published=feed_published(parsed),
-        entries=entries
+        items=entries
     )
 
 
@@ -102,6 +102,6 @@ def struct_time_to_datetime(st: time.struct_time) -> datetime:
 def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
     for feed_text in feeds_text:
         feed = parse_feed(feed_text)
-        for entry in feed.entries:
+        for entry in feed.items:
             entry.parse_summary()
         yield feed

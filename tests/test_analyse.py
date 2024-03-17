@@ -17,7 +17,7 @@ def feeds_df():
             Feed(
                 title="Total Fire Ban (All Regions)",
                 published=datetime(2000, 1, 1),
-                entries=[
+                items=[
                     Item(
                         published=datetime(2000, 1, 1, 1),
                         dfes_published=datetime(2000, 1, 1, 2),
@@ -48,7 +48,7 @@ def feeds_df():
             Feed(
                 title="Total Fire Ban (All Regions)",
                 published=datetime(2000, 1, 3, 1),
-                entries=[
+                items=[
                     Item(
                         published=datetime(2000, 1, 3, 1),
                         dfes_published=datetime(2000, 1, 3, 2),

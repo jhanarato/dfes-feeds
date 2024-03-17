@@ -21,19 +21,19 @@ def test_parse_no_entries():
     feed = Feed(
         title="Total Fire Ban (All Regions)",
         published=published,
-        entries=[],
+        items=[],
     )
 
     feed_xml = generate_feed(feed)
     parsed = parse_feed(feed_xml)
 
-    assert parsed.entries == []
+    assert parsed.items == []
     assert parsed.title == "Total Fire Ban (All Regions)"
     assert parsed.published == published
 
 
 def test_parse_entry(bans_xml):
-    entry = parse_feed(bans_xml).entries[0]
+    entry = parse_feed(bans_xml).items[0]
     assert entry.published == datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
     assert entry.dfes_published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     assert entry.summary.startswith("<div>")
@@ -48,7 +48,7 @@ def test_parse_entry_summary():
     issued = datetime(2000, 1, 2, 3, 4, tzinfo=ZoneInfo(key='Australia/Perth'))
     feed_xml = generate_bans_xml(issued=issued)
 
-    summary = parse_feed(feed_xml).entries[0].summary
+    summary = parse_feed(feed_xml).items[0].summary
 
     entry = Item(
         published=datetime(2001, 1, 1),

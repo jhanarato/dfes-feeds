@@ -36,10 +36,10 @@ def display_feeds(start: datetime, end: datetime):
     for feed in feeds:
         print(f"Feed Published: {feed.published}")
 
-        if not feed.entries:
+        if not feed.items:
             print("Feed has no entries")
 
-        for index, entry in enumerate(feed.entries):
+        for index, entry in enumerate(feed.items):
             print(
                 f"Entry #{index} {declared_text(entry.bans)}\n"
                 f"Entry Published: {entry.published}\n"

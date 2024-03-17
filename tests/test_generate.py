@@ -13,7 +13,7 @@ class TestGenerateFeed:
         feed_in = Feed(
             title="Total Fire Ban (All Regions)",
             published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
-            entries=[],
+            items=[],
         )
 
         feed_text = generate_feed(feed_in)
@@ -26,7 +26,7 @@ class TestGenerateFeed:
         feed_text = generate_feed(feed_in)
         feed_out = parse_feed(feed_text)
 
-        for entry in feed_out.entries:
+        for entry in feed_out.items:
             entry.parse_summary()
 
         assert feed_out == feed_in

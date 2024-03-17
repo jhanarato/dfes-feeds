@@ -66,11 +66,11 @@ class LatestEntries:
 
 
 def declared_entries(feed: Feed):
-    return [entry for entry in feed.entries if not entry.bans.revoked]
+    return [entry for entry in feed.items if not entry.bans.revoked]
 
 
 def revoked_entries(feed: Feed):
-    return [entry for entry in feed.entries if entry.bans.revoked]
+    return [entry for entry in feed.items if entry.bans.revoked]
 
 
 def last_issued(entries: list[Item]) -> Item:
