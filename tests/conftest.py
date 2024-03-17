@@ -1,11 +1,12 @@
 from datetime import datetime, date, timezone
 
 import pytest
+from bs4 import BeautifulSoup
 from jinja2 import Environment, select_autoescape, FileSystemLoader
 
 from dfes.feeds import Feed
 from dfes.repository import InMemoryRepository, FileRepository
-from generate import generate_feed
+from generate import generate_feed, default_feed
 
 
 def generate_bans_xml(regions: dict[str, list[str]] | None = None,
@@ -81,6 +82,16 @@ def bans_xml():
                              declared_for=date(2023, 10, 16))
 
 
+@pytest.fixture
+def bad_summary(jinja_env) -> str:
+    feed = default_feed()
+    feed_xml = generate_feed(feed)
+    soup = BeautifulSoup(feed_xml)
+    tag = soup.find(name="description")
+    tag.string = "This will not parse"
+    return str(soup)
+
+
 @pytest.fixture(params=["in_memory", "file_system"])
 def repository(request, tmp_path):
     repositories = {
@@ -89,8 +100,3 @@ def repository(request, tmp_path):
     }
 
     return repositories[request.param]
-
-
-@pytest.fixture
-def bad_summary(jinja_env):
-    return jinja_env.get_template("bad_summary.xml").render()
