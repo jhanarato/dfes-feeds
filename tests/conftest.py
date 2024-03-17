@@ -3,7 +3,9 @@ from datetime import datetime, date, timezone
 import pytest
 from jinja2 import Environment, select_autoescape, FileSystemLoader
 
+from dfes.feeds import Feed
 from dfes.repository import InMemoryRepository, FileRepository
+from generate import generate_feed
 
 
 def generate_bans_xml(regions: dict[str, list[str]] | None = None,
@@ -62,9 +64,13 @@ def jinja_env():
 
 @pytest.fixture
 def no_bans_xml():
-    return generate_with_no_entries(
-        feed_published=datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc)
+    feed = Feed(
+        title="Total Fire Ban (All Regions)",
+        published=datetime(2023, 10, 14, 18, 16, 26, tzinfo=timezone.utc),
+        entries=[],
     )
+
+    return generate_feed(feed)
 
 
 @pytest.fixture
