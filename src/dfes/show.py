@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 
-from dfes.feeds import parse_feeds, Entry, Feed
+from dfes.feeds import parse_feeds, Item, Feed
 from dfes.model import TotalFireBans
 from dfes.repository import Repository, FeedByPublished
 
@@ -40,13 +40,13 @@ class LatestEntries:
     def __init__(self, feed: Feed):
         self._feed = feed
 
-    def declared(self) -> Entry | None:
+    def declared(self) -> Item | None:
         entries = declared_entries(self._feed)
         if entries:
             return last_issued(entries)
         return None
 
-    def revoked(self) -> Entry | None:
+    def revoked(self) -> Item | None:
         entries = revoked_entries(self._feed)
         if entries:
             return last_issued(entries)
@@ -73,5 +73,5 @@ def revoked_entries(feed: Feed):
     return [entry for entry in feed.entries if entry.bans.revoked]
 
 
-def last_issued(entries: list[Entry]) -> Entry:
+def last_issued(entries: list[Item]) -> Item:
     return max(entries, key=lambda entry: entry.bans.issued)

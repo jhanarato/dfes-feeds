@@ -3,7 +3,7 @@ from datetime import datetime, date, timezone
 import pytest
 from bs4 import BeautifulSoup
 
-from dfes.feeds import Feed, Entry
+from dfes.feeds import Feed, Item
 from dfes.model import TotalFireBans, AffectedAreas
 from dfes.repository import InMemoryRepository, FileRepository
 from generate import generate_feed, default_feed, generate_description
@@ -31,7 +31,7 @@ def generate_bans_xml(dfes_published: datetime = datetime(2001, 1, 1),
         title="Total Fire Ban (All Regions)",
         published=feed_published,
         entries=[
-            Entry(
+            Item(
                 published=feed_published,
                 dfes_published=dfes_published,
                 summary=generate_description(bans),

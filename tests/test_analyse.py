@@ -6,7 +6,7 @@ import pytest
 
 from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime, col_interval_minutes, \
     datetime_to_hour, perth_tz
-from dfes.feeds import Entry, Feed
+from dfes.feeds import Item, Feed
 from dfes.model import TotalFireBans
 
 
@@ -18,7 +18,7 @@ def feeds_df():
                 title="Total Fire Ban (All Regions)",
                 published=datetime(2000, 1, 1),
                 entries=[
-                    Entry(
+                    Item(
                         published=datetime(2000, 1, 1, 1),
                         dfes_published=datetime(2000, 1, 1, 2),
                         summary="",
@@ -29,7 +29,7 @@ def feeds_df():
                             locations=[("Armadale", "Perth Metropolitan")]
                         )
                     ),
-                    Entry(
+                    Item(
                         published=datetime(2000, 1, 2, 1),
                         dfes_published=datetime(2000, 1, 2, 2),
                         summary="",
@@ -49,7 +49,7 @@ def feeds_df():
                 title="Total Fire Ban (All Regions)",
                 published=datetime(2000, 1, 3, 1),
                 entries=[
-                    Entry(
+                    Item(
                         published=datetime(2000, 1, 3, 1),
                         dfes_published=datetime(2000, 1, 3, 2),
                         summary="",

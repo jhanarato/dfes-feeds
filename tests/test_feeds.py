@@ -6,7 +6,7 @@ import pytest
 import dfes.exceptions
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import Entry, parse_feed, parse_feeds, dfes_published, Feed
+from dfes.feeds import Item, parse_feed, parse_feeds, dfes_published, Feed
 from generate import generate_feed
 
 
@@ -50,7 +50,7 @@ def test_parse_entry_summary():
 
     summary = parse_feed(feed_xml).entries[0].summary
 
-    entry = Entry(
+    entry = Item(
         published=datetime(2001, 1, 1),
         dfes_published=datetime(2001, 1, 1),
         summary=summary,

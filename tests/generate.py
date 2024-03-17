@@ -3,7 +3,7 @@ from zoneinfo import ZoneInfo
 
 import jinja2
 
-from dfes.feeds import Entry, Feed
+from dfes.feeds import Item, Feed
 from dfes.model import AffectedAreas, TotalFireBans
 
 
@@ -67,13 +67,13 @@ def default_feed() -> Feed:
         title="Total Fire Ban (All Regions)",
         published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
         entries=[
-            Entry(
+            Item(
                 published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
                 dfes_published=datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc),
                 summary=generate_description(bans_1),
                 bans=bans_1
             ),
-            Entry(
+            Item(
                 published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
                 dfes_published=datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc),
                 summary=generate_description(bans_2),

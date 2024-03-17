@@ -11,7 +11,7 @@ from dfes.model import TotalFireBans
 
 
 @dataclass
-class Entry:
+class Item:
     published: datetime
     dfes_published: datetime
     summary: str
@@ -25,7 +25,7 @@ class Entry:
 class Feed:
     title: str
     published: datetime
-    entries: list[Entry]
+    entries: list[Item]
 
 
 def parse_feed(feed_xml: str) -> Feed:
@@ -65,8 +65,8 @@ def feed_published(parsed: dict) -> datetime:
     return struct_time_to_datetime(s_t)
 
 
-def create_entry(entry_data) -> Entry:
-    return Entry(
+def create_entry(entry_data) -> Item:
+    return Item(
         published=entry_published(entry_data),
         dfes_published=dfes_published(entry_data["dfes_publicationtime"]),
         summary=summary(entry_data)

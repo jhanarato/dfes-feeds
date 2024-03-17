@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 import pytest
 
 from conftest import generate_bans_xml
-from dfes.feeds import Entry, Feed
+from dfes.feeds import Item, Feed
 from dfes.fetch import store_feed
 from dfes.model import TotalFireBans, AffectedAreas
 from dfes.show import to_show, last_issued, latest_bans, LatestEntries
@@ -48,7 +48,7 @@ class TestToShow:
             title="Total Fire Ban (All Regions)",
             published=earlier,
             entries=[
-                Entry(
+                Item(
                     published=earlier,
                     dfes_published=earlier,
                     summary="",
@@ -82,7 +82,7 @@ def empty_feed():
 
 @pytest.fixture
 def declared_entry():
-    return Entry(
+    return Item(
         published=datetime(2000, 1, 1, 1),
         dfes_published=datetime(2000, 1, 1, 2),
         summary="",
@@ -103,7 +103,7 @@ def declared_feed(empty_feed, declared_entry):
 
 @pytest.fixture
 def revoked_entry():
-    return Entry(
+    return Item(
         published=datetime(2000, 1, 1, 1),
         dfes_published=datetime(2000, 1, 1, 2),
         summary="",
@@ -174,9 +174,9 @@ class TestLatestEntries:
 
 
 @pytest.fixture
-def two_declared() -> list[Entry]:
+def two_declared() -> list[Item]:
     return [
-        Entry(
+        Item(
             published=datetime(2000, 1, 1, 1),
             dfes_published=datetime(2000, 1, 1, 2),
             summary="",
@@ -187,7 +187,7 @@ def two_declared() -> list[Entry]:
                 locations=AffectedAreas([("Armadale", "Perth Metropolitan")])
             )
         ),
-        Entry(
+        Item(
             published=datetime(2000, 1, 2, 1),
             dfes_published=datetime(2000, 1, 2, 2),
             summary="",
