@@ -88,3 +88,7 @@ class TestItems:
         pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
         item = next(generate_items(first_pub_date=pub_date))
         assert item.bans.declared_for == date(2000, 1, 1)
+
+    def test_generates_locations(self):
+        item = next(generate_items(first_pub_date=datetime(2000, 1, 1)))
+        assert item.bans.locations == AffectedAreas([("A Region", "A District")])
