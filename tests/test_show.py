@@ -7,7 +7,7 @@ from conftest import generate_bans_xml
 from dfes.feeds import Item, Feed
 from dfes.fetch import store_feed
 from dfes.model import TotalFireBans, AffectedAreas
-from dfes.show import to_show, last_issued, latest_bans, LatestEntries
+from dfes.show import to_show, last_issued, latest_bans, LatestItems
 from generate import generate_feed
 
 
@@ -147,29 +147,29 @@ class TestLatestBans:
 
 class TestLatestEntries:
     def test_declared(self, declared_feed):
-        latest = LatestEntries(declared_feed)
+        latest = LatestItems(declared_feed)
         assert latest.declared() == declared_feed.items[0]
         assert latest.revoked() is None
 
     def test_revoked(self, revoked_feed):
-        latest = LatestEntries(revoked_feed)
+        latest = LatestItems(revoked_feed)
         assert latest.revoked() == revoked_feed.items[0]
         assert latest.declared() is None
 
     def test_neither(self, empty_feed):
-        latest = LatestEntries(empty_feed)
+        latest = LatestItems(empty_feed)
         assert latest.neither()
 
     def test_both(self, feed_with_both):
-        latest = LatestEntries(feed_with_both)
+        latest = LatestItems(feed_with_both)
         assert latest.both()
 
     def test_only_declared(self, declared_feed):
-        latest = LatestEntries(declared_feed)
+        latest = LatestItems(declared_feed)
         assert latest.only_declared()
 
     def test_only_revoked(self, revoked_feed):
-        latest = LatestEntries(revoked_feed)
+        latest = LatestItems(revoked_feed)
         assert latest.only_revoked()
 
 

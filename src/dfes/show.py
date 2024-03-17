@@ -19,7 +19,7 @@ def order_feeds(repository: Repository) -> Iterable[str]:
 
 def latest_bans(feeds: Iterable[Feed]) -> tuple[TotalFireBans, ...]:
     for feed in feeds:
-        latest = LatestEntries(feed)
+        latest = LatestItems(feed)
 
         if latest.neither():
             continue
@@ -36,20 +36,20 @@ def latest_bans(feeds: Iterable[Feed]) -> tuple[TotalFireBans, ...]:
     return tuple()
 
 
-class LatestEntries:
+class LatestItems:
     def __init__(self, feed: Feed):
         self._feed = feed
 
     def declared(self) -> Item | None:
-        entries = declared_items(self._feed)
-        if entries:
-            return last_issued(entries)
+        items = declared_items(self._feed)
+        if items:
+            return last_issued(items)
         return None
 
     def revoked(self) -> Item | None:
-        entries = revoked_items(self._feed)
-        if entries:
-            return last_issued(entries)
+        items = revoked_items(self._feed)
+        if items:
+            return last_issued(items)
         return None
 
     def neither(self) -> bool:
