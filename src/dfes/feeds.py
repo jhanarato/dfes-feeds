@@ -15,7 +15,6 @@ class Item:
     published: datetime
     description: str
     bans: TotalFireBans | None = None
-    dfes_published: datetime = datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc)
 
     def parse_description(self):
         self.bans = parse_bans(self.description)
