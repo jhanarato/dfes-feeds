@@ -17,9 +17,9 @@ class AffectedAreas:
 
 @dataclass
 class TotalFireBans:
-    revoked: bool
     issued: datetime
     declared_for: date
     locations: AffectedAreas
+    revoked: bool = False
 
 
