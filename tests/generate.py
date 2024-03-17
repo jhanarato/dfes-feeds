@@ -89,11 +89,3 @@ def generate_feed(feed: Feed) -> str:
 
 def generate_description(bans: TotalFireBans) -> str:
     return jinja_env().get_template("description.html").render(bans=bans)
-
-
-def main():
-    print(generate_feed(default_feed()))
-
-
-if __name__ == "__main__":
-    main()
