@@ -33,7 +33,7 @@ def parse_feed(feed_xml: str) -> Feed:
 
     check(parsed)
 
-    entries = [create_entry(entry_data)
+    entries = [create_item(entry_data)
                for entry_data in parsed["entries"]]
 
     return Feed(
@@ -65,7 +65,7 @@ def feed_published(parsed: dict) -> datetime:
     return struct_time_to_datetime(s_t)
 
 
-def create_entry(entry_data) -> Item:
+def create_item(entry_data) -> Item:
     return Item(
         published=entry_published(entry_data),
         dfes_published=dfes_published(entry_data["dfes_publicationtime"]),
