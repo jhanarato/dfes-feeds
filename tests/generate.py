@@ -69,13 +69,11 @@ def default_feed() -> Feed:
         items=[
             Item(
                 published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
-                dfes_published=datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc),
                 description=generate_description(bans_1),
                 bans=bans_1
             ),
             Item(
                 published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
-                dfes_published=datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc),
                 description=generate_description(bans_2),
                 bans=bans_2
             ),
