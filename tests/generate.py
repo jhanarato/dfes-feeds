@@ -84,10 +84,10 @@ def generate_items(first_published: datetime) -> Iterator[Item]:
 
 def generate_item(published: datetime) -> Item:
     issued = published.replace(second=0)
-    declared_for_ = published.date() + timedelta(days=1)
+    declared_for = published.date() + timedelta(days=1)
     locations = AffectedAreas([("A Region", "A District")])
 
-    bans = TotalFireBans(issued=issued, declared_for=declared_for_, locations=locations)
+    bans = TotalFireBans(issued=issued, declared_for=declared_for, locations=locations)
 
     return Item(
         published=published,
