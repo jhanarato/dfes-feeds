@@ -84,7 +84,7 @@ def default_feed() -> Feed:
 
 
 def generate_feed(feed: Feed) -> str:
-    return jinja_env().get_template("new_bans.xml").render(feed=feed)
+    return jinja_env().get_template("bans.xml").render(feed=feed)
 
 
 def generate_description(bans: TotalFireBans) -> str:

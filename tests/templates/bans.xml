@@ -1,37 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:dfes="http://emergency.wa.gov.au/xmlns/dfes" version="2.0">
 <channel>
-<title>Total Fire Ban (All Regions)</title>
-<pubDate>{{feed_published}}</pubDate>
-<item>
-    {% if revoked %}
-    <title>Total Fire Ban advice has changed for {{declared_for}} </title>
-    {% else %}
-    <title>Total Fire Ban advice for {{declared_for}} </title>
-    {% endif %}
-    <description><![CDATA[<div>
-    <p>
-        <br/><span style="color: #777777;">Time of issue: {{time_of_issue}} </span>
-        <br/><span style="color: #777777;">Date of issue: {{date_of_issue}} </span>
-    </p>
-
-    {% if revoked %}
-    <p>The Total Fire Ban declared for {{declared_for}} has been revoked for the local government districts listed below:</p>
-    {% else %}
-    <p>A Total Fire Ban has been declared for {{declared_for}} for the local government districts listed below:</p>
-    {% endif %}
-
-    {% for region in regions %}
-    <p><strong>{{region}} Region:</strong></p>
-    <ul>
-        {% for district in regions[region] %}
-        <li>{{district}} - All Day</li>
-        {% endfor %}
-    </ul>
+    <title>{{feed.title}}</title>
+    <pubDate>{{feed.published}}</pubDate>
+    {% for entry in feed.entries %}
+    <item>
+        <pubDate>{{entry.published}}</pubDate>
+        {% with bans = entry.bans %}
+        <description><![CDATA[{% include "description.html" %}]]></description>
+        {% endwith %}
+        <dfes:publicationTime>{{entry.dfes_published|dfes_published}}</dfes:publicationTime>
+    </item>
     {% endfor %}
-    </div>]]></description>
-    <dfes:publicationTime>{{dfes_published}}</dfes:publicationTime>
-    <pubDate>{{feed_published}}</pubDate>
-</item>
 </channel>
 </rss>
