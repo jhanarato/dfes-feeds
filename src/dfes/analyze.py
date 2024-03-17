@@ -92,12 +92,6 @@ class Contexts:
     def no_locations(self) -> pl.DataFrame:
         return self._df.select(pl.exclude("region", "district")).unique()
 
-    def intervals(self) -> pl.DataFrame:
-        return self._df.select(
-            col_interval_minutes("dfes_published", "entry_published"),
-            issued_to_declared(),
-        )
-
     def display(self) -> pl.DataFrame:
         return self.no_locations().with_columns(
             n_entries()
