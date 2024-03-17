@@ -70,31 +70,31 @@ class TestDescription:
 
 class TestItems:
     def test_generates_an_item_instance(self):
-        item = next(generate_items(first_pub_date=datetime(2000, 1, 1)))
+        item = next(generate_items(first_published=datetime(2000, 1, 1)))
         assert isinstance(item, Item)
 
     def test_generates_published_date(self):
         pub_date = datetime(2000, 1, 1)
-        item = next(generate_items(first_pub_date=pub_date))
+        item = next(generate_items(first_published=pub_date))
         assert item.published == pub_date
 
     def test_generates_issued_without_seconds(self):
         pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
         issued = datetime(2000, 1, 1, hour=10, minute=30)
-        item = next(generate_items(first_pub_date=pub_date))
+        item = next(generate_items(first_published=pub_date))
         assert item.bans.issued == issued
 
     def test_generates_declared_for(self):
         pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
-        item = next(generate_items(first_pub_date=pub_date))
+        item = next(generate_items(first_published=pub_date))
         assert item.bans.declared_for == date(2000, 1, 1)
 
     def test_generates_locations(self):
-        item = next(generate_items(first_pub_date=datetime(2000, 1, 1)))
+        item = next(generate_items(first_published=datetime(2000, 1, 1)))
         assert item.bans.locations == AffectedAreas([("A Region", "A District")])
 
     def test_increments_published_by_one_day(self):
-        items = generate_items(first_pub_date=datetime(2000, 1, 1))
+        items = generate_items(first_published=datetime(2000, 1, 1))
         next(items)
         item = next(items)
         assert item.published == datetime(2000, 1, 2)
