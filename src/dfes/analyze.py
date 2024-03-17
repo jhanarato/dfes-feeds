@@ -22,18 +22,18 @@ def to_dataframe(feeds: Iterable[Feed]) -> pl.DataFrame:
     }
 
     for feed in feeds:
-        for index, entry in enumerate(feed.items):
-            if not entry.bans:
-                entry.parse_summary()
+        for index, item in enumerate(feed.items):
+            if not item.bans:
+                item.parse_summary()
 
-            for location in entry.bans.locations.pairs:
+            for location in item.bans.locations.pairs:
                 data["feed_published"].append(feed.published)
                 data["entry_index"].append(index)
-                data["entry_published"].append(entry.published)
-                data["dfes_published"].append(entry.dfes_published)
-                data["revoked"].append(entry.bans.revoked)
-                data["issued"].append(entry.bans.issued.astimezone(datetime.timezone.utc))
-                data["declared_for"].append(entry.bans.declared_for)
+                data["entry_published"].append(item.published)
+                data["dfes_published"].append(item.dfes_published)
+                data["revoked"].append(item.bans.revoked)
+                data["issued"].append(item.bans.issued.astimezone(datetime.timezone.utc))
+                data["declared_for"].append(item.bans.declared_for)
                 data["region"].append(location[0])
                 data["district"].append(location[1])
 
