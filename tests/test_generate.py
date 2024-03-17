@@ -72,3 +72,8 @@ class TestItems:
     def test_generates_an_item_instance(self):
         item = next(generate_items(first_pub_date=datetime(2000, 1, 1)))
         assert isinstance(item, Item)
+
+    def test_generates_published_date(self):
+        pub_date = datetime(2000, 1, 1)
+        item = next(generate_items(first_pub_date=pub_date))
+        assert item.published == pub_date
