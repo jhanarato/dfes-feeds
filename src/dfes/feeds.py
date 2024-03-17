@@ -13,9 +13,9 @@ from dfes.model import TotalFireBans
 @dataclass
 class Item:
     published: datetime
-    dfes_published: datetime
     description: str
     bans: TotalFireBans | None = None
+    dfes_published: datetime = datetime(2001, 1, 1)
 
     def parse_description(self):
         self.bans = parse_bans(self.description)
