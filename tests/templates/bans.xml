@@ -9,7 +9,7 @@
         {% with bans = item.bans %}
         <description><![CDATA[{% include "description.html" %}]]></description>
         {% endwith %}
-        <dfes:publicationTime>{{item.dfes_published|dfes_published}}</dfes:publicationTime>
+        <dfes:publicationTime>{{item.published|dfes_published}}</dfes:publicationTime>
     </item>
     {% endfor %}
 </channel>

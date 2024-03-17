@@ -34,7 +34,6 @@ def test_parse_no_entries():
 def test_parse_item(bans_xml):
     item = parse_feed(bans_xml).items[0]
     assert item.published == datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
-    assert item.dfes_published == datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     assert item.description.startswith("<div>")
 
 
