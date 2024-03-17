@@ -83,7 +83,7 @@ def bans_xml():
 
 
 @pytest.fixture
-def bad_summary(jinja_env) -> str:
+def bad_summary() -> str:
     feed = default_feed()
     feed_xml = generate_feed(feed)
     soup = BeautifulSoup(feed_xml)
