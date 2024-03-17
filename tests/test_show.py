@@ -1,13 +1,14 @@
-from datetime import datetime, date
+from datetime import datetime, date, timezone, timedelta
 from zoneinfo import ZoneInfo
 
 import pytest
 
-from conftest import generate_bans_xml, generate_with_no_entries
+from conftest import generate_bans_xml
 from dfes.feeds import Entry, Feed
 from dfes.fetch import store_feed
 from dfes.model import TotalFireBans, AffectedAreas
 from dfes.show import to_show, last_issued, latest_bans, LatestEntries
+from generate import generate_feed
 
 
 class TestToShow:
@@ -32,19 +33,42 @@ class TestToShow:
         assert bans.issued == datetime(2023, 10, 13, tzinfo=ZoneInfo(key='Australia/Perth'))
 
     def test_skip_feed_with_no_entries(self, repository):
-        earlier_feed = generate_bans_xml(
-            feed_published=datetime(2023, 10, 12),
-            declared_for=date(2023, 10, 13)
+        earlier = datetime(2001, 1, 2, tzinfo=timezone.utc)
+        later = earlier + timedelta(hours=3)
+
+        declared_for = earlier.date() + timedelta(days=1)
+
+        without_entry = Feed(
+            title="Total Fire Ban (All Regions)",
+            published=later,
+            entries=[],
         )
 
-        later_feed = generate_with_no_entries(
-            feed_published=datetime(2023, 10, 13)
+        with_entry = Feed(
+            title="Total Fire Ban (All Regions)",
+            published=earlier,
+            entries=[
+                Entry(
+                    published=earlier,
+                    dfes_published=earlier,
+                    summary="",
+                    bans=TotalFireBans(
+                        revoked=False,
+                        issued=earlier,
+                        declared_for=declared_for,
+                        locations=AffectedAreas([]),
+                    )
+                ),
+            ],
         )
+
+        earlier_feed = generate_feed(with_entry)
+        later_feed = generate_feed(without_entry)
 
         store_feed(earlier_feed, repository)
         store_feed(later_feed, repository)
 
-        assert to_show(repository)[0].declared_for == date(2023, 10, 13)
+        assert to_show(repository)[0].declared_for == declared_for
 
 
 @pytest.fixture
