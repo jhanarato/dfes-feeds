@@ -21,7 +21,7 @@ def feeds_df():
                     Item(
                         published=datetime(2000, 1, 1, 1),
                         dfes_published=datetime(2000, 1, 1, 2),
-                        summary="",
+                        description="",
                         bans=TotalFireBans(
                             revoked=False,
                             issued=datetime(2000, 1, 1, 3),
@@ -32,7 +32,7 @@ def feeds_df():
                     Item(
                         published=datetime(2000, 1, 2, 1),
                         dfes_published=datetime(2000, 1, 2, 2),
-                        summary="",
+                        description="",
                         bans=TotalFireBans(
                             revoked=False,
                             issued=datetime(2000, 1, 2, 3),
@@ -52,7 +52,7 @@ def feeds_df():
                     Item(
                         published=datetime(2000, 1, 3, 1),
                         dfes_published=datetime(2000, 1, 3, 2),
-                        summary="",
+                        description="",
                         bans=TotalFireBans(
                             revoked=False,
                             issued=datetime(2000, 1, 3, 3),

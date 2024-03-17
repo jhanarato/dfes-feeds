@@ -10,8 +10,8 @@ from dfes.exceptions import ParsingFailed
 from dfes.model import AffectedAreas, TotalFireBans
 
 
-def parse_bans(summary_html: str) -> TotalFireBans:
-    soup = BeautifulSoup(summary_html, features="html.parser")
+def parse_bans(description_html: str) -> TotalFireBans:
+    soup = BeautifulSoup(description_html, features="html.parser")
 
     issued = datetime.combine(
         date_of_issue(soup),

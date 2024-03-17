@@ -6,7 +6,7 @@ import responses
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed, Feed
-from dfes.fetch import store_feed, aquire_ban_feed, check_summaries, store_failed
+from dfes.fetch import store_feed, aquire_ban_feed, check_description, store_failed
 from dfes.repository import FailedByFetched
 from dfes.urls import FIRE_BAN_URL
 from generate import generate_feed
@@ -79,20 +79,20 @@ def test_should_not_store_failed_feed_twice(repository):
     assert repository.list_failed() == [first_timestamp]
 
 
-def test_should_raise_exception_checking_bad_summary(bad_summary):
-    feed = parse_feed(bad_summary)
+def test_should_raise_exception_checking_bad_description(bad_description):
+    feed = parse_feed(bad_description)
     with pytest.raises(ParsingFailed):
-        check_summaries(feed)
+        check_description(feed)
 
 
-def test_should_be_chill_if_summary_is_fine(bans_xml):
+def test_should_be_chill_if_description_is_fine(bans_xml):
     feed = parse_feed(bans_xml)
-    check_summaries(feed)
+    check_description(feed)
 
 
-def test_should_store_bad_summary_in_faield(bad_summary, repository):
+def test_should_store_bad_description_in_failed(bad_description, repository):
     now = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
-    store_feed(bad_summary, repository, now)
+    store_feed(bad_description, repository, now)
     assert not repository.published()
     assert repository.list_failed() == [now]
 

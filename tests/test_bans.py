@@ -154,7 +154,7 @@ def test_extract_region():
 
 
 def test_combined_data():
-    summary = generate_description(
+    description = generate_description(
         TotalFireBans(
             revoked=False,
             issued=datetime(2023, 10, 15, 17, 6, tzinfo=ZoneInfo(key='Australia/Perth')),
@@ -168,7 +168,7 @@ def test_combined_data():
         )
     )
 
-    combined = bans.parse_bans(summary)
+    combined = bans.parse_bans(description)
 
     assert combined.issued == datetime(2023, 10, 15, 17, 6, tzinfo=ZoneInfo(key='Australia/Perth'))
     assert combined.declared_for == date(2023, 10, 16)

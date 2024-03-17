@@ -14,11 +14,11 @@ from dfes.model import TotalFireBans
 class Item:
     published: datetime
     dfes_published: datetime
-    summary: str
+    description: str
     bans: TotalFireBans | None = None
 
-    def parse_summary(self):
-        self.bans = parse_bans(self.summary)
+    def parse_description(self):
+        self.bans = parse_bans(self.description)
 
 
 @dataclass
@@ -69,7 +69,7 @@ def create_item(entry_data) -> Item:
     return Item(
         published=entry_published(entry_data),
         dfes_published=dfes_published(entry_data["dfes_publicationtime"]),
-        summary=summary(entry_data)
+        description=description(entry_data)
     )
 
 
@@ -86,7 +86,7 @@ def dfes_published(published: str) -> datetime:
         raise ParsingFailed("Could not parse publication time")
 
 
-def summary(entry: dict) -> str:
+def description(entry: dict) -> str:
     if value := entry.get("summary"):
         return value
 
@@ -103,5 +103,5 @@ def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
     for feed_text in feeds_text:
         feed = parse_feed(feed_text)
         for entry in feed.items:
-            entry.parse_summary()
+            entry.parse_description()
         yield feed

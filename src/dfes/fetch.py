@@ -15,16 +15,16 @@ def aquire_ban_feed() -> str:
 def store_feed(feed_xml: str, repository: Repository, now: datetime = datetime.now()):
     try:
         feed = parse_feed(feed_xml)
-        check_summaries(feed)
+        check_description(feed)
         repository.add_bans(feed.published, feed_xml)
     except ParsingFailed:
         if store_failed(repository, feed_xml):
             repository.add_failed(feed_xml, now)
 
 
-def check_summaries(feed: Feed):
+def check_description(feed: Feed):
     for item in feed.items:
-        item.parse_summary()
+        item.parse_description()
 
 
 def store_failed(repository: Repository, feed_xml: str) -> bool:

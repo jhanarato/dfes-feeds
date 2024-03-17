@@ -34,7 +34,7 @@ def generate_bans_xml(dfes_published: datetime = datetime(2001, 1, 1),
             Item(
                 published=feed_published,
                 dfes_published=dfes_published,
-                summary=generate_description(bans),
+                description=generate_description(bans),
                 bans=bans,
             )
         ]
@@ -52,7 +52,7 @@ def bans_xml():
 
 
 @pytest.fixture
-def bad_summary() -> str:
+def bad_description() -> str:
     feed = default_feed()
     feed_xml = generate_feed(feed)
     soup = BeautifulSoup(feed_xml)

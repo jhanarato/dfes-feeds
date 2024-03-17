@@ -51,7 +51,7 @@ class TestToShow:
                 Item(
                     published=earlier,
                     dfes_published=earlier,
-                    summary="",
+                    description="",
                     bans=TotalFireBans(
                         revoked=False,
                         issued=earlier,
@@ -85,7 +85,7 @@ def declared_item():
     return Item(
         published=datetime(2000, 1, 1, 1),
         dfes_published=datetime(2000, 1, 1, 2),
-        summary="",
+        description="",
         bans=TotalFireBans(
             revoked=False,
             issued=datetime(2000, 1, 1, 3),
@@ -106,7 +106,7 @@ def revoked_item():
     return Item(
         published=datetime(2000, 1, 1, 1),
         dfes_published=datetime(2000, 1, 1, 2),
-        summary="",
+        description="",
         bans=TotalFireBans(
             revoked=True,
             issued=datetime(2000, 1, 1, 3),
@@ -179,7 +179,7 @@ def two_declared() -> list[Item]:
         Item(
             published=datetime(2000, 1, 1, 1),
             dfes_published=datetime(2000, 1, 1, 2),
-            summary="",
+            description="",
             bans=TotalFireBans(
                 revoked=False,
                 issued=datetime(2000, 1, 1, 3),
@@ -190,7 +190,7 @@ def two_declared() -> list[Item]:
         Item(
             published=datetime(2000, 1, 2, 1),
             dfes_published=datetime(2000, 1, 2, 2),
-            summary="",
+            description="",
             bans=TotalFireBans(
                 revoked=False,
                 issued=datetime(2000, 1, 2, 3),

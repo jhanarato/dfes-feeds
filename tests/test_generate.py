@@ -27,7 +27,7 @@ class TestGenerateFeed:
         feed_out = parse_feed(feed_text)
 
         for item in feed_out.items:
-            item.parse_summary()
+            item.parse_description()
 
         assert feed_out == feed_in
 
