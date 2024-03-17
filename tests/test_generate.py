@@ -4,8 +4,8 @@ from zoneinfo import ZoneInfo
 from dfes.bans import parse_bans
 from dfes.feeds import parse_feed, Feed, Item
 from dfes.model import AffectedAreas, TotalFireBans
-from generate import generate_feed, declared_for, time_of_issue, date_of_issue, generate_description, \
-    default_feed, generate_items
+from filters import declared_for, time_of_issue, date_of_issue
+from generate import generate_feed, generate_description, default_feed, generate_items
 
 
 class TestGenerateFeed:

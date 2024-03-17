@@ -4,20 +4,9 @@ from zoneinfo import ZoneInfo
 
 import jinja2
 
+import filters
 from dfes.feeds import Item, Feed
 from dfes.model import AffectedAreas, TotalFireBans
-
-
-def declared_for(value: date) -> str:
-    return value.strftime("%d %B %Y").lstrip("0")
-
-
-def time_of_issue(value: datetime) -> str:
-    return value.strftime("%I:%M %p")
-
-
-def date_of_issue(value: datetime) -> str:
-    return value.strftime("%d %B %Y")
 
 
 def jinja_env() -> jinja2.Environment:
@@ -28,9 +17,9 @@ def jinja_env() -> jinja2.Environment:
         lstrip_blocks=True,
     )
 
-    env.filters["declared_for"] = declared_for
-    env.filters["time_of_issue"] = time_of_issue
-    env.filters["date_of_issue"] = date_of_issue
+    env.filters["declared_for"] = filters.declared_for
+    env.filters["time_of_issue"] = filters.time_of_issue
+    env.filters["date_of_issue"] = filters.date_of_issue
 
     return env
 
