@@ -42,8 +42,7 @@ def display_feeds(start: datetime, end: datetime):
         for index, item in enumerate(feed.items):
             print(
                 f"Item #{index} {declared_text(item.bans)}\n"
-                f"Item Published: {item.published}\n"
-                f"DFES Published:  {item.dfes_published}"
+                f"Item Published: {item.published}"
             )
             bans = item.bans
             declared_text(bans)
