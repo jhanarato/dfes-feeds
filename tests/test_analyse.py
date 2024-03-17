@@ -7,7 +7,7 @@ import pytest
 from dfes.analyze import to_dataframe, n_entries, issued_to_declared, format_datetime, col_interval_minutes, \
     datetime_to_hour, perth_tz
 from dfes.feeds import Item, Feed
-from dfes.model import TotalFireBans
+from dfes.model import TotalFireBans, AffectedAreas
 
 
 @pytest.fixture
@@ -26,7 +26,7 @@ def feeds_df():
                             revoked=False,
                             issued=datetime(2000, 1, 1, 3),
                             declared_for=date(2000, 1, 2),
-                            locations=[("Armadale", "Perth Metropolitan")]
+                            locations=AffectedAreas([("Armadale", "Perth Metropolitan")])
                         )
                     ),
                     Item(
@@ -37,10 +37,10 @@ def feeds_df():
                             revoked=False,
                             issued=datetime(2000, 1, 2, 3),
                             declared_for=date(2000, 1, 3),
-                            locations=[
+                            locations=AffectedAreas([
                                 ("Goldfields Midlands", "Toodyay"),
                                 ("South West", "Murray"),
-                            ]
+                            ])
                         )
                     ),
                 ]
