@@ -14,8 +14,6 @@ def generate_bans_xml(feed_published: datetime = datetime(2001, 1, 1),
                       declared_for: date = date(2001, 1, 1),
                       revoked=False) -> str:
 
-    dfes_published = datetime(2001, 1, 1)
-
     bans = TotalFireBans(
         issued=issued,
         declared_for=declared_for,
@@ -34,7 +32,6 @@ def generate_bans_xml(feed_published: datetime = datetime(2001, 1, 1),
         items=[
             Item(
                 published=feed_published,
-                dfes_published=dfes_published,
                 description=generate_description(bans),
                 bans=bans,
             )

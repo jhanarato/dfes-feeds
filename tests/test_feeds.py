@@ -45,7 +45,6 @@ def test_parse_item_description():
 
     item = Item(
         published=datetime(2001, 1, 1),
-        dfes_published=datetime(2001, 1, 1),
         description=description,
     )
 
