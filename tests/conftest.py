@@ -74,7 +74,7 @@ def no_bans_xml():
 
 
 @pytest.fixture
-def bans_xml(jinja_env):
+def bans_xml():
     return generate_bans_xml(dfes_published=datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc),
                              feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
                              issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
