@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 from dfes.bans import parse_bans
 from dfes.feeds import parse_feed, Feed
 from dfes.model import AffectedAreas, TotalFireBans
-from generate import generate_feed, dfes_published, declared_for, time_of_issue, date_of_issue, generate_description, \
+from generate import generate_feed, declared_for, time_of_issue, date_of_issue, generate_description, \
     default_feed
 
 
@@ -35,9 +35,6 @@ class TestGenerateFeed:
 class TestFilters:
     _datetime = datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc)
     _date = date(2001, 2, 3)
-
-    def test_dfes_published(self):
-        assert dfes_published(self._datetime) == "01/01/00 01:01 AM"
 
     def test_declared_for(self):
         assert declared_for(self._date) == "3 February 2001"
