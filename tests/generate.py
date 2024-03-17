@@ -1,3 +1,4 @@
+from collections.abc import Iterator
 from datetime import datetime, date, timezone
 from zoneinfo import ZoneInfo
 
@@ -82,3 +83,16 @@ def generate_feed(feed: Feed) -> str:
 
 def generate_description(bans: TotalFireBans) -> str:
     return jinja_env().get_template("description.html").render(bans=bans)
+
+
+def generate_items(first_pub_date: datetime) -> Iterator[Item]:
+    yield Item(
+        published=first_pub_date,
+        description="",
+        bans=TotalFireBans(
+            revoked=False,
+            issued=first_pub_date,
+            declared_for=first_pub_date.date(),
+            locations=AffectedAreas([("A Region", "A District")])
+        )
+    )

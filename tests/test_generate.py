@@ -2,10 +2,10 @@ from datetime import datetime, timezone, date
 from zoneinfo import ZoneInfo
 
 from dfes.bans import parse_bans
-from dfes.feeds import parse_feed, Feed
+from dfes.feeds import parse_feed, Feed, Item
 from dfes.model import AffectedAreas, TotalFireBans
 from generate import generate_feed, declared_for, time_of_issue, date_of_issue, generate_description, \
-    default_feed
+    default_feed, generate_items
 
 
 class TestGenerateFeed:
@@ -66,3 +66,9 @@ class TestDescription:
         bans_out = parse_bans(description)
 
         assert bans_in == bans_out
+
+
+class TestItems:
+    def test_generates_an_item_instance(self):
+        item = next(generate_items(first_pub_date=datetime(2000, 1, 1)))
+        assert isinstance(item, Item)
