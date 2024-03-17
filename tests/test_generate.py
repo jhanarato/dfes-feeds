@@ -93,8 +93,10 @@ class TestItems:
         item = next(generate_items(first_published=datetime(2000, 1, 1)))
         assert item.bans.locations == AffectedAreas([("A Region", "A District")])
 
-    def test_increments_published_by_one_day(self):
+    def test_increments_by_one_day(self):
         items = generate_items(first_published=datetime(2000, 1, 1))
         next(items)
         item = next(items)
         assert item.published == datetime(2000, 1, 2)
+        assert item.bans.issued == datetime(2000, 1, 2)
+        assert item.bans.declared_for == date(2000, 1, 2)
