@@ -81,7 +81,7 @@ def empty_feed():
 
 
 @pytest.fixture
-def declared_entry():
+def declared_item():
     return Item(
         published=datetime(2000, 1, 1, 1),
         dfes_published=datetime(2000, 1, 1, 2),
@@ -96,13 +96,13 @@ def declared_entry():
 
 
 @pytest.fixture
-def declared_feed(empty_feed, declared_entry):
-    empty_feed.items.append(declared_entry)
+def declared_feed(empty_feed, declared_item):
+    empty_feed.items.append(declared_item)
     return empty_feed
 
 
 @pytest.fixture
-def revoked_entry():
+def revoked_item():
     return Item(
         published=datetime(2000, 1, 1, 1),
         dfes_published=datetime(2000, 1, 1, 2),
@@ -117,15 +117,15 @@ def revoked_entry():
 
 
 @pytest.fixture
-def revoked_feed(empty_feed, revoked_entry):
-    empty_feed.items.append(revoked_entry)
+def revoked_feed(empty_feed, revoked_item):
+    empty_feed.items.append(revoked_item)
     return empty_feed
 
 
 @pytest.fixture
-def feed_with_both(empty_feed, declared_entry, revoked_entry):
-    empty_feed.items.append(declared_entry)
-    empty_feed.items.append(revoked_entry)
+def feed_with_both(empty_feed, declared_item, revoked_item):
+    empty_feed.items.append(declared_item)
+    empty_feed.items.append(revoked_item)
     return empty_feed
 
 
@@ -142,7 +142,7 @@ class TestLatestBans:
 
     def test_both_declared_and_revoked_to_show(self, feed_with_both):
         result = list(latest_bans([feed_with_both]))
-        assert result == [entry.bans for entry in feed_with_both.items]
+        assert result == [item.bans for item in feed_with_both.items]
 
 
 class TestLatestEntries:
