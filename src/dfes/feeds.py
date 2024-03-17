@@ -15,7 +15,7 @@ class Item:
     published: datetime
     description: str
     bans: TotalFireBans | None = None
-    dfes_published: datetime = datetime(2001, 1, 1)
+    dfes_published: datetime = datetime(2000, 1, 1, 1, 1, tzinfo=timezone.utc)
 
     def parse_description(self):
         self.bans = parse_bans(self.description)
@@ -54,8 +54,6 @@ def check(parsed):
         raise ParsingFailed("Feed published_parsed not available")
 
     for entry in parsed["entries"]:
-        if not entry.get("dfes_publicationtime"):
-            raise ParsingFailed("dfes_publicationtime not available")
         if not entry.get("published_parsed"):
             raise ParsingFailed("Entry published_parsed not available")
 
@@ -68,7 +66,6 @@ def feed_published(parsed: dict) -> datetime:
 def create_item(entry_data) -> Item:
     return Item(
         published=entry_published(entry_data),
-        dfes_published=dfes_published(entry_data["dfes_publicationtime"]),
         description=description(entry_data)
     )
 
