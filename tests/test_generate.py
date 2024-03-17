@@ -100,3 +100,9 @@ class TestItems:
         assert item.published == datetime(2000, 1, 2)
         assert item.bans.issued == datetime(2000, 1, 2)
         assert item.bans.declared_for == date(2000, 1, 3)
+
+    def test_affected_areas_stay_the_same(self):
+        items = generate_items(first_published=datetime(2000, 1, 1))
+        first = next(items)
+        second = next(items)
+        assert first.bans.locations == second.bans.locations
