@@ -91,16 +91,13 @@ class TestCreateItems:
 
     def test_increments_by_one_day(self):
         items = create_items(datetime(2000, 1, 1), 2)
-        item = items[1]
-        assert item.published == datetime(2000, 1, 2)
-        assert item.bans.issued == datetime(2000, 1, 2)
-        assert item.bans.declared_for == date(2000, 1, 3)
+        assert items[1].published == datetime(2000, 1, 2)
+        assert items[1].bans.issued == datetime(2000, 1, 2)
+        assert items[1].bans.declared_for == date(2000, 1, 3)
 
     def test_affected_areas_stay_the_same(self):
         items = create_items(datetime(2000, 1, 1), 2)
-        first = items[0]
-        second = items[1]
-        assert first.bans.locations == second.bans.locations
+        assert items[0].bans.locations == items[1].bans.locations
 
     def test_generates_description(self):
         items = create_items(datetime(2000, 1, 1), 1)
