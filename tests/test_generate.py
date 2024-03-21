@@ -111,3 +111,7 @@ class TestCreateFeed:
     def test_feed_with_no_items(self):
         feed = create_feed(datetime(2000, 1, 2), 0)
         assert not feed.items
+
+    def test_feed_has_one_item(self):
+        feed = create_feed(datetime(2000, 1, 2), 1)
+        assert len(feed.items) == 1

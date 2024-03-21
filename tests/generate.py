@@ -73,11 +73,14 @@ def render_bans_as_html(bans: TotalFireBans) -> str:
     return jinja_env().get_template("description.html").render(bans=bans)
 
 
-def create_feed(feed_published: datetime, items: int) -> Feed:
+def create_feed(feed_published: datetime, n_items: int) -> Feed:
+    item_published = feed_published - timedelta(days=1)
+    items = create_items(item_published, n_items)
+
     return Feed(
         title="Total Fire Ban (All Regions)",
         published=feed_published,
-        items=[]
+        items=items
     )
 
 
