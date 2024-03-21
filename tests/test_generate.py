@@ -5,11 +5,11 @@ from dfes.bans import parse_bans
 from dfes.feeds import parse_feed, Feed, Item
 from dfes.model import AffectedAreas, TotalFireBans
 from filters import declared_for, time_of_issue, date_of_issue
-from generate import render_feed_as_rss, render_bans_as_html, default_feed, create_items
+from generate import render_feed_as_rss, render_bans_as_html, default_feed, create_items, create_feed
 
 
 class TestRenderFeedAsRss:
-    def test_rss_with_no_entries(self):
+    def test_rss_with_no_items(self):
         feed_in = Feed(
             title="Total Fire Ban (All Regions)",
             published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
@@ -21,7 +21,7 @@ class TestRenderFeedAsRss:
 
         assert feed_out == feed_in
 
-    def test_rss_with_entries(self):
+    def test_rss_with_items(self):
         feed_in = default_feed()
         feed_text = render_feed_as_rss(feed_in)
         feed_out = parse_feed(feed_text)
@@ -111,3 +111,9 @@ class TestCreateItems:
         items = create_items(first_published=datetime(2000, 1, 1))
         item = next(items)
         assert item.description == render_bans_as_html(item.bans)
+
+
+class TestCreateFeed:
+    def test_feed_with_no_items(self):
+        feed = create_feed(datetime(2000, 1, 2), 0)
+        assert not feed.items
