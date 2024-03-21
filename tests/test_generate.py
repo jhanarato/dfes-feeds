@@ -2,7 +2,7 @@ from datetime import datetime, timezone, date
 from zoneinfo import ZoneInfo
 
 from dfes.bans import parse_bans
-from dfes.feeds import parse_feed, Feed, Item
+from dfes.feeds import parse_feed, Feed
 from dfes.model import AffectedAreas, TotalFireBans
 from filters import declared_for, time_of_issue, date_of_issue
 from generate import render_feed_as_rss, render_bans_as_html, default_feed, create_items, create_feed
@@ -69,48 +69,42 @@ class TestRenderBansAsHtml:
 
 
 class TestCreateItems:
-    def test_generates_an_item_instance(self):
-        item = next(create_items(first_published=datetime(2000, 1, 1)))
-        assert isinstance(item, Item)
-
     def test_generates_published_date(self):
         pub_date = datetime(2000, 1, 1)
-        item = next(create_items(first_published=pub_date))
+        item = create_items(pub_date, 1)[0]
         assert item.published == pub_date
 
     def test_generates_issued_without_seconds(self):
         pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
         issued = datetime(2000, 1, 1, hour=10, minute=30)
-        item = next(create_items(first_published=pub_date))
+        item = create_items(pub_date, 1)[0]
         assert item.bans.issued == issued
 
     def test_generates_declared_for(self):
         pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
-        item = next(create_items(first_published=pub_date))
+        item = create_items(pub_date, 1)[0]
         assert item.bans.declared_for == date(2000, 1, 2)
 
     def test_generates_locations(self):
-        item = next(create_items(first_published=datetime(2000, 1, 1)))
+        item = create_items(datetime(2000, 1, 1), 1)[0]
         assert item.bans.locations == AffectedAreas([("A Region", "A District")])
 
     def test_increments_by_one_day(self):
-        items = create_items(first_published=datetime(2000, 1, 1))
-        next(items)
-        item = next(items)
+        items = create_items(datetime(2000, 1, 1), 2)
+        item = items[1]
         assert item.published == datetime(2000, 1, 2)
         assert item.bans.issued == datetime(2000, 1, 2)
         assert item.bans.declared_for == date(2000, 1, 3)
 
     def test_affected_areas_stay_the_same(self):
-        items = create_items(first_published=datetime(2000, 1, 1))
-        first = next(items)
-        second = next(items)
+        items = create_items(datetime(2000, 1, 1), 2)
+        first = items[0]
+        second = items[1]
         assert first.bans.locations == second.bans.locations
 
     def test_generates_description(self):
-        items = create_items(first_published=datetime(2000, 1, 1))
-        item = next(items)
-        assert item.description == render_bans_as_html(item.bans)
+        items = create_items(datetime(2000, 1, 1), 1)
+        assert items[0].description == render_bans_as_html(items[0].bans)
 
 
 class TestCreateFeed:

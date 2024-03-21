@@ -1,4 +1,3 @@
-from collections.abc import Iterator
 from datetime import datetime, date, timezone, timedelta
 from zoneinfo import ZoneInfo
 
@@ -82,12 +81,15 @@ def create_feed(feed_published: datetime, items: int) -> Feed:
     )
 
 
-def create_items(first_published: datetime) -> Iterator[Item]:
+def create_items(first_published: datetime, n_items: int) -> list[Item]:
+    items = []
     published = first_published
 
-    while True:
-        yield create_item(published)
+    for _ in range(n_items):
+        items.append(create_item(published))
         published += timedelta(days=1)
+
+    return items
 
 
 def create_item(published: datetime) -> Item:
