@@ -5,7 +5,7 @@ from dfes.bans import parse_bans
 from dfes.feeds import parse_feed, Feed, Item
 from dfes.model import AffectedAreas, TotalFireBans
 from filters import declared_for, time_of_issue, date_of_issue
-from generate import generate_feed_rss, generate_description, default_feed, generate_items
+from generate import generate_feed_rss, generate_description_html, default_feed, generate_items
 
 
 class TestGenerateFeedRss:
@@ -46,8 +46,8 @@ class TestFilters:
         assert date_of_issue(self._datetime) == "01 January 2000"
 
 
-class TestDescription:
-    def test_generate_description(self):
+class TestGenerateDescriptionHtml:
+    def test_generate(self):
         areas = AffectedAreas([
                 ('Midwest Gascoyne', 'Carnamah'),
                 ('Midwest Gascoyne', 'Chapman Valley'),
@@ -62,7 +62,7 @@ class TestDescription:
             locations=areas,
         )
 
-        description = generate_description(bans_in)
+        description = generate_description_html(bans_in)
         bans_out = parse_bans(description)
 
         assert bans_in == bans_out
@@ -110,4 +110,4 @@ class TestItems:
     def test_generates_description(self):
         items = generate_items(first_published=datetime(2000, 1, 1))
         item = next(items)
-        assert item.description == generate_description(item.bans)
+        assert item.description == generate_description_html(item.bans)

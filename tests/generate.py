@@ -54,12 +54,12 @@ def default_feed() -> Feed:
         items=[
             Item(
                 published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
-                description=generate_description(bans_1),
+                description=generate_description_html(bans_1),
                 bans=bans_1
             ),
             Item(
                 published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
-                description=generate_description(bans_2),
+                description=generate_description_html(bans_2),
                 bans=bans_2
             ),
         ],
@@ -70,7 +70,7 @@ def generate_feed_rss(feed: Feed) -> str:
     return jinja_env().get_template("bans.xml").render(feed=feed)
 
 
-def generate_description(bans: TotalFireBans) -> str:
+def generate_description_html(bans: TotalFireBans) -> str:
     return jinja_env().get_template("description.html").render(bans=bans)
 
 
@@ -91,6 +91,6 @@ def generate_item(published: datetime) -> Item:
 
     return Item(
         published=published,
-        description=generate_description(bans),
+        description=generate_description_html(bans),
         bans=bans
     )

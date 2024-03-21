@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from dfes import bans
 from dfes.exceptions import ParsingFailed
 from dfes.model import AffectedAreas, TotalFireBans
-from generate import generate_description
+from generate import generate_description_html
 
 
 def test_get_region_tags():
@@ -154,7 +154,7 @@ def test_extract_region():
 
 
 def test_combined_data():
-    description = generate_description(
+    description = generate_description_html(
         TotalFireBans(
             revoked=False,
             issued=datetime(2023, 10, 15, 17, 6, tzinfo=ZoneInfo(key='Australia/Perth')),

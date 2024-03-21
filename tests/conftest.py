@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from dfes.feeds import Feed, Item
 from dfes.model import TotalFireBans, AffectedAreas
 from dfes.repository import InMemoryRepository, FileRepository
-from generate import generate_feed_rss, default_feed, generate_description
+from generate import generate_feed_rss, default_feed, generate_description_html
 
 
 def generate_bans_xml(feed_published: datetime = datetime(2001, 1, 1),
@@ -32,7 +32,7 @@ def generate_bans_xml(feed_published: datetime = datetime(2001, 1, 1),
         items=[
             Item(
                 published=feed_published,
-                description=generate_description(bans),
+                description=generate_description_html(bans),
                 bans=bans,
             )
         ]
