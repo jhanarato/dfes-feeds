@@ -5,7 +5,7 @@ from dfes.bans import parse_bans
 from dfes.feeds import parse_feed, Feed, Item
 from dfes.model import AffectedAreas, TotalFireBans
 from filters import declared_for, time_of_issue, date_of_issue
-from generate import generate_feed_rss, generate_description_html, default_feed, items
+from generate import feed_rss, generate_description_html, default_feed, items
 
 
 class TestGenerateFeedRss:
@@ -16,14 +16,14 @@ class TestGenerateFeedRss:
             items=[],
         )
 
-        feed_text = generate_feed_rss(feed_in)
+        feed_text = feed_rss(feed_in)
         feed_out = parse_feed(feed_text)
 
         assert feed_out == feed_in
 
     def test_rss_with_entries(self):
         feed_in = default_feed()
-        feed_text = generate_feed_rss(feed_in)
+        feed_text = feed_rss(feed_in)
         feed_out = parse_feed(feed_text)
 
         for item in feed_out.items:

@@ -9,7 +9,7 @@ from dfes.feeds import parse_feed, Feed
 from dfes.fetch import store_feed, aquire_ban_feed, check_description, store_failed
 from dfes.repository import FailedByFetched
 from dfes.urls import FIRE_BAN_URL
-from generate import generate_feed_rss
+from generate import feed_rss
 
 
 @responses.activate
@@ -61,7 +61,7 @@ def test_should_store_valid_but_empty_feed_in_bans(repository):
         items=[],
     )
 
-    feed_xml = generate_feed_rss(feed)
+    feed_xml = feed_rss(feed)
 
     store_feed(feed_xml, repository)
     assert repository.published() == [published]
