@@ -82,12 +82,12 @@ def create_feed(feed_published: datetime, items: int) -> Feed:
 
 
 def create_items(first_published: datetime, n_items: int) -> list[Item]:
+    items_published = [first_published + timedelta(days=n)
+                       for n in range(n_items)]
     items = []
-    published = first_published
 
-    for _ in range(n_items):
+    for published in items_published:
         items.append(create_item(published))
-        published += timedelta(days=1)
 
     return items
 
