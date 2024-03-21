@@ -74,15 +74,15 @@ def generate_description_html(bans: TotalFireBans) -> str:
     return jinja_env().get_template("description.html").render(bans=bans)
 
 
-def generate_items(first_published: datetime) -> Iterator[Item]:
+def items(first_published: datetime) -> Iterator[Item]:
     published = first_published
 
     while True:
-        yield generate_item(published)
+        yield item(published)
         published += timedelta(days=1)
 
 
-def generate_item(published: datetime) -> Item:
+def item(published: datetime) -> Item:
     issued = published.replace(second=0)
     declared_for = published.date() + timedelta(days=1)
     locations = AffectedAreas([("A Region", "A District")])
