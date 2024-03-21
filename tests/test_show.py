@@ -8,7 +8,7 @@ from dfes.feeds import Item, Feed
 from dfes.fetch import store_feed
 from dfes.model import TotalFireBans, AffectedAreas
 from dfes.show import to_show, last_issued, latest_bans, LatestItems
-from generate import feed_rss
+from generate import render_feed_as_rss
 
 
 class TestToShow:
@@ -61,8 +61,8 @@ class TestToShow:
             ],
         )
 
-        earlier_feed = feed_rss(with_item)
-        later_feed = feed_rss(without_item)
+        earlier_feed = render_feed_as_rss(with_item)
+        later_feed = render_feed_as_rss(without_item)
 
         store_feed(earlier_feed, repository)
         store_feed(later_feed, repository)

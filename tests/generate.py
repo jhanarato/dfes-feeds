@@ -54,23 +54,23 @@ def default_feed() -> Feed:
         items=[
             Item(
                 published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
-                description=generate_description_html(bans_1),
+                description=render_bans_as_html(bans_1),
                 bans=bans_1
             ),
             Item(
                 published=datetime(2000, 1, 1, 1, 1, 1, tzinfo=timezone.utc),
-                description=generate_description_html(bans_2),
+                description=render_bans_as_html(bans_2),
                 bans=bans_2
             ),
         ],
     )
 
 
-def feed_rss(feed: Feed) -> str:
+def render_feed_as_rss(feed: Feed) -> str:
     return jinja_env().get_template("bans.xml").render(feed=feed)
 
 
-def generate_description_html(bans: TotalFireBans) -> str:
+def render_bans_as_html(bans: TotalFireBans) -> str:
     return jinja_env().get_template("description.html").render(bans=bans)
 
 
@@ -78,11 +78,11 @@ def create_items(first_published: datetime) -> Iterator[Item]:
     published = first_published
 
     while True:
-        yield item(published)
+        yield create_item(published)
         published += timedelta(days=1)
 
 
-def item(published: datetime) -> Item:
+def create_item(published: datetime) -> Item:
     issued = published.replace(second=0)
     declared_for = published.date() + timedelta(days=1)
     locations = AffectedAreas([("A Region", "A District")])
@@ -91,6 +91,6 @@ def item(published: datetime) -> Item:
 
     return Item(
         published=published,
-        description=generate_description_html(bans),
+        description=render_bans_as_html(bans),
         bans=bans
     )

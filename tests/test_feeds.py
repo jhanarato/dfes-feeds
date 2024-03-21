@@ -6,7 +6,7 @@ import pytest
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import Item, parse_feed, parse_feeds, Feed
-from generate import feed_rss
+from generate import render_feed_as_rss
 
 
 def test_bozo_feed_raises_exception():
@@ -23,7 +23,7 @@ def test_parse_no_entries():
         items=[],
     )
 
-    feed_xml = feed_rss(feed)
+    feed_xml = render_feed_as_rss(feed)
     parsed = parse_feed(feed_xml)
 
     assert parsed.items == []

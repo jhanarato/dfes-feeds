@@ -5,10 +5,10 @@ from dfes.bans import parse_bans
 from dfes.feeds import parse_feed, Feed, Item
 from dfes.model import AffectedAreas, TotalFireBans
 from filters import declared_for, time_of_issue, date_of_issue
-from generate import feed_rss, generate_description_html, default_feed, create_items
+from generate import render_feed_as_rss, render_bans_as_html, default_feed, create_items
 
 
-class TestGenerateFeedRss:
+class TestRenderFeedAsRss:
     def test_rss_with_no_entries(self):
         feed_in = Feed(
             title="Total Fire Ban (All Regions)",
@@ -16,14 +16,14 @@ class TestGenerateFeedRss:
             items=[],
         )
 
-        feed_text = feed_rss(feed_in)
+        feed_text = render_feed_as_rss(feed_in)
         feed_out = parse_feed(feed_text)
 
         assert feed_out == feed_in
 
     def test_rss_with_entries(self):
         feed_in = default_feed()
-        feed_text = feed_rss(feed_in)
+        feed_text = render_feed_as_rss(feed_in)
         feed_out = parse_feed(feed_text)
 
         for item in feed_out.items:
@@ -46,7 +46,7 @@ class TestFilters:
         assert date_of_issue(self._datetime) == "01 January 2000"
 
 
-class TestGenerateDescriptionHtml:
+class TestRenderBansAsHtml:
     def test_generate(self):
         areas = AffectedAreas([
                 ('Midwest Gascoyne', 'Carnamah'),
@@ -62,13 +62,13 @@ class TestGenerateDescriptionHtml:
             locations=areas,
         )
 
-        description = generate_description_html(bans_in)
+        description = render_bans_as_html(bans_in)
         bans_out = parse_bans(description)
 
         assert bans_in == bans_out
 
 
-class TestItems:
+class TestCreateItems:
     def test_generates_an_item_instance(self):
         item = next(create_items(first_published=datetime(2000, 1, 1)))
         assert isinstance(item, Item)
@@ -110,4 +110,4 @@ class TestItems:
     def test_generates_description(self):
         items = create_items(first_published=datetime(2000, 1, 1))
         item = next(items)
-        assert item.description == generate_description_html(item.bans)
+        assert item.description == render_bans_as_html(item.bans)
