@@ -74,7 +74,7 @@ def generate_description_html(bans: TotalFireBans) -> str:
     return jinja_env().get_template("description.html").render(bans=bans)
 
 
-def items(first_published: datetime) -> Iterator[Item]:
+def create_items(first_published: datetime) -> Iterator[Item]:
     published = first_published
 
     while True:
