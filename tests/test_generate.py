@@ -1,4 +1,4 @@
-from datetime import datetime, timezone, date
+from datetime import datetime, timezone, date, timedelta
 from zoneinfo import ZoneInfo
 
 from dfes.bans import parse_bans
@@ -108,10 +108,18 @@ class TestCreateItems:
 
 
 class TestCreateFeed:
-    def test_feed_with_no_items(self):
+    def test_no_items(self):
         feed = create_feed(datetime(2000, 1, 2), 0)
         assert not feed.items
 
-    def test_feed_has_one_item(self):
+    def test_one_item(self):
         feed = create_feed(datetime(2000, 1, 2), 1)
         assert len(feed.items) == 1
+
+    def test_two_items(self):
+        feed = create_feed(datetime(2000, 1, 2), 2)
+        assert len(feed.items) == 2
+
+    def test_first_item_published_day_before_feed(self):
+        feed = create_feed(datetime(2000, 1, 2), 1)
+        assert feed.published - feed.items[0].published == timedelta(days=1)
