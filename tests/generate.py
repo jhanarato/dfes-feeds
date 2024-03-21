@@ -66,7 +66,7 @@ def default_feed() -> Feed:
     )
 
 
-def generate_feed(feed: Feed) -> str:
+def generate_feed_rss(feed: Feed) -> str:
     return jinja_env().get_template("bans.xml").render(feed=feed)
 
 

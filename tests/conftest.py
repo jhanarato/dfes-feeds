@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from dfes.feeds import Feed, Item
 from dfes.model import TotalFireBans, AffectedAreas
 from dfes.repository import InMemoryRepository, FileRepository
-from generate import generate_feed, default_feed, generate_description
+from generate import generate_feed_rss, default_feed, generate_description
 
 
 def generate_bans_xml(feed_published: datetime = datetime(2001, 1, 1),
@@ -38,7 +38,7 @@ def generate_bans_xml(feed_published: datetime = datetime(2001, 1, 1),
         ]
     )
 
-    return generate_feed(feed)
+    return generate_feed_rss(feed)
 
 
 @pytest.fixture
@@ -51,7 +51,7 @@ def bans_xml():
 @pytest.fixture
 def bad_description() -> str:
     feed = default_feed()
-    feed_xml = generate_feed(feed)
+    feed_xml = generate_feed_rss(feed)
     soup = BeautifulSoup(feed_xml)
     tag = soup.find(name="description")
     tag.string = "This will not parse"
