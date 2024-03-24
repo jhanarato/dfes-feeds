@@ -5,7 +5,7 @@ import responses
 
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import parse_feed, Feed
+from dfes.feeds import parse_feed
 from dfes.fetch import store_feed, aquire_ban_feed, check_description, store_failed
 from dfes.repository import FailedByFetched
 from dfes.urls import FIRE_BAN_URL
@@ -19,17 +19,19 @@ def test_aquire_ok():
     assert aquire_ban_feed() == contents
 
 
-def test_should_add_feed_to_empty_repository(bans_xml, repository):
+def test_should_add_feed_to_empty_repository(repository):
     feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
     rss = render_feed_as_rss(feed)
     store_feed(rss, repository)
     assert repository.published() == [feed.published]
 
 
-def test_should_not_add_feed_twice(bans_xml, repository):
-    store_feed(bans_xml, repository)
-    store_feed(bans_xml, repository)
-    assert repository.published() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
+def test_should_not_add_feed_twice(repository):
+    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
+    rss = render_feed_as_rss(feed)
+    store_feed(rss, repository)
+    store_feed(rss, repository)
+    assert repository.published() == [feed.published]
 
 
 def test_should_add_two_different_feeds(repository):
@@ -49,24 +51,15 @@ def test_should_store_feed_when_it_fails_to_parse(repository):
     feed_xml = "gobbledygook"
     timestamp = datetime(2023, 7, 4, 12, 30, tzinfo=timezone.utc)
     store_feed(feed_xml, repository, now=timestamp)
-
     assert repository.published() == []
     assert repository.list_failed() == [timestamp]
 
 
 def test_should_store_valid_but_empty_feed_in_bans(repository):
-    published = datetime(2000, 1, 2, tzinfo=timezone.utc)
-
-    feed = Feed(
-        title="Total Fire Ban (All Regions)",
-        published=published,
-        items=[],
-    )
-
+    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 0)
     feed_xml = render_feed_as_rss(feed)
-
     store_feed(feed_xml, repository)
-    assert repository.published() == [published]
+    assert repository.published() == [feed.published]
 
 
 def test_should_not_store_failed_feed_twice(repository):
