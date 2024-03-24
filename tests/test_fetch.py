@@ -60,10 +60,11 @@ def test_should_store_feed_when_it_fails_to_parse(repository):
 
 
 def test_should_store_valid_but_empty_feed_in_bans(repository):
-    feed = create_feed(n_items=0)
-    feed_xml = render_feed_as_rss(feed)
-    store_feed(feed_xml, repository)
-    assert repository.published() == [feed.published]
+    rss = render_feed_as_rss(
+        create_feed(n_items=0)
+    )
+    store_feed(rss, repository)
+    assert repository.published() == [create_feed(n_items=0).published]
 
 
 def test_should_not_store_failed_feed_twice(repository):
