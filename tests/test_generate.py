@@ -70,12 +70,12 @@ class TestRenderBansAsHtml:
 
 class TestCreateItems:
     def test_sets_published_date(self):
-        pub_date = datetime(2000, 1, 1)
+        pub_date = datetime(2000, 1, 1, tzinfo=timezone.utc)
         item = create_items(pub_date, 1)[0]
         assert item.published == pub_date
 
     def test_sets_issued(self):
-        pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
+        pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15, tzinfo=timezone.utc)
         issued = datetime(2000, 1, 1, hour=10, minute=30, tzinfo=ZoneInfo("Australia/Perth"))
         item = create_items(pub_date, 1)[0]
         assert item.bans.issued == issued
