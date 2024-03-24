@@ -3,7 +3,7 @@ from zoneinfo import ZoneInfo
 
 import jinja2
 
-import filters
+import jinja
 from dfes.feeds import Item, Feed
 from dfes.model import AffectedAreas, TotalFireBans
 
@@ -16,9 +16,9 @@ def jinja_env() -> jinja2.Environment:
         lstrip_blocks=True,
     )
 
-    env.filters["declared_for"] = filters.declared_for
-    env.filters["time_of_issue"] = filters.time_of_issue
-    env.filters["date_of_issue"] = filters.date_of_issue
+    env.filters["declared_for"] = jinja.declared_for
+    env.filters["time_of_issue"] = jinja.time_of_issue
+    env.filters["date_of_issue"] = jinja.date_of_issue
 
     return env
 

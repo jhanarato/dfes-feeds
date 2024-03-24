@@ -4,8 +4,8 @@ from zoneinfo import ZoneInfo
 from dfes.bans import parse_bans
 from dfes.feeds import parse_feed
 from dfes.model import AffectedAreas, TotalFireBans
-from filters import declared_for, time_of_issue, date_of_issue
 from generate import render_feed_as_rss, render_bans_as_html, create_items, create_feed
+from jinja import declared_for, time_of_issue, date_of_issue
 
 
 class TestRenderFeedAsRss:
