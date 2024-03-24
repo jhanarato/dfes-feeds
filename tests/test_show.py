@@ -1,38 +1,28 @@
 from datetime import datetime, date, timezone, timedelta
-from zoneinfo import ZoneInfo
 
 import pytest
 
-from conftest import generate_bans_xml
 from dfes.feeds import Item, Feed
 from dfes.fetch import store_feed
 from dfes.model import TotalFireBans, AffectedAreas
 from dfes.show import to_show, last_issued, latest_bans, LatestItems
-from generate import render_feed_as_rss
+from generate import render_feed_as_rss, create_feed
 
 
 class TestToShow:
     def test_repository_empty(self, repository):
         assert to_show(repository) == tuple()
 
-    def test_latest_item_is_declared(self, repository):
-        earlier_feed = generate_bans_xml(
-            feed_published=datetime(2023, 10, 12),
-            issued=datetime(2023, 10, 12),
-        )
+    def test_first_bans_to_show_come_from_later_feed(self, repository):
+        earlier_feed = create_feed(datetime(2023, 10, 12), 1)
+        later_feed = create_feed(datetime(2023, 10, 13), 1)
 
-        later_feed = generate_bans_xml(
-            feed_published=datetime(2023, 10, 13),
-            issued=datetime(2023, 10, 13),
-        )
+        store_feed(render_feed_as_rss(earlier_feed), repository)
+        store_feed(render_feed_as_rss(later_feed), repository)
 
-        store_feed(earlier_feed, repository)
-        store_feed(later_feed, repository)
+        assert to_show(repository)[0] == later_feed.items[0].bans
 
-        bans = to_show(repository)[0]
-        assert bans.issued == datetime(2023, 10, 13, tzinfo=ZoneInfo(key='Australia/Perth'))
-
-    def test_skip_feed_with_no_entries(self, repository):
+    def test_skip_feed_with_no_items(self, repository):
         earlier = datetime(2001, 1, 2, tzinfo=timezone.utc)
         later = earlier + timedelta(hours=3)
 
