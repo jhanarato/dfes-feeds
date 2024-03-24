@@ -91,10 +91,13 @@ def test_should_store_bad_description_in_failed(bad_description, repository):
     assert repository.list_failed() == [now]
 
 
-def test_should_store_ok_bans_normally(bans_xml, repository):
+def test_should_store_ok_bans_normally(repository):
+    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 0)
+    rss = render_feed_as_rss(feed)
+
     now = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
-    store_feed(bans_xml, repository, now)
-    assert repository.published() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
+    store_feed(rss, repository, now)
+    assert repository.published() == [feed.published]
 
 
 def test_should_always_store_failed_when_repository_empty(repository):
