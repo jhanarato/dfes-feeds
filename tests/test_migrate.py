@@ -3,21 +3,23 @@ from pathlib import Path
 
 import pytest
 
-from conftest import generate_bans_xml
 from dfes.migrate import migrate_to_seconds, delete_missing_seconds, missing_seconds
 from dfes.repository import FileRepository
+from generate import create_feed, render_feed_as_rss
 
 
 def write_without_seconds(feed_published: datetime, repository_path: Path):
-    feed_text = generate_bans_xml(feed_published=feed_published)
+    feed = create_feed(feed_published, 0)
+    rss = render_feed_as_rss(feed)
     file_path = repository_path / feed_published.strftime("bans_issued_%Y_%m_%d_%H%M.rss")
-    file_path.write_text(feed_text)
+    file_path.write_text(rss)
 
 
 def write_with_seconds(feed_published: datetime, repository_path: Path):
-    feed_text = generate_bans_xml(feed_published=feed_published)
+    feed = create_feed(feed_published, 0)
+    rss = render_feed_as_rss(feed)
     file_path = repository_path / feed_published.strftime("bans_issued_%Y_%m_%d_%H%M%S.rss")
-    file_path.write_text(feed_text)
+    file_path.write_text(rss)
 
 
 @pytest.fixture
