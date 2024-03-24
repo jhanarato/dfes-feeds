@@ -10,7 +10,7 @@ from jinja import declared_for, time_of_issue, date_of_issue
 
 class TestRenderFeedAsRss:
     def test_rss_with_no_items(self):
-        feed_in = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 0)
+        feed_in = create_feed(n_items=0)
 
         feed_text = render_feed_as_rss(feed_in)
         feed_out = parse_feed(feed_text)
@@ -18,7 +18,7 @@ class TestRenderFeedAsRss:
         assert feed_out == feed_in
 
     def test_rss_with_items(self):
-        feed_in = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
+        feed_in = create_feed(n_items=1)
         feed_text = render_feed_as_rss(feed_in)
         feed_out = parse_feed(feed_text)
 
