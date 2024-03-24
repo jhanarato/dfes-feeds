@@ -64,13 +64,10 @@ def test_should_store_valid_but_empty_feed_in_bans(repository):
 
 def test_should_not_store_failed_feed_twice(repository):
     feed_xml = "gobbledygook"
-
     first_timestamp = datetime(2023, 7, 4, 1, tzinfo=timezone.utc)
     second_timestamp = datetime(2023, 7, 4, 2, tzinfo=timezone.utc)
-
     store_feed(feed_xml, repository, now=first_timestamp)
     store_feed(feed_xml, repository, now=second_timestamp)
-
     assert repository.list_failed() == [first_timestamp]
 
 
