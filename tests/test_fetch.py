@@ -96,7 +96,7 @@ def test_should_store_bad_description_in_failed(bad_description, repository):
 
 
 def test_should_store_ok_bans_normally(repository):
-    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 0)
+    feed = create_feed()
     rss = render_feed_as_rss(feed)
 
     now = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
