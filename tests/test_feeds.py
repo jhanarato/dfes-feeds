@@ -6,7 +6,7 @@ import pytest
 from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import Item, parse_feed, parse_feeds, Feed
-from generate import render_feed_as_rss
+from generate import render_feed_as_rss, create_feed
 
 
 def test_bozo_feed_raises_exception():
@@ -31,10 +31,12 @@ def test_parse_no_entries():
     assert parsed.published == published
 
 
-def test_parse_item(bans_xml):
-    item = parse_feed(bans_xml).items[0]
-    assert item.published == datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)
-    assert item.description.startswith("<div>")
+def test_parse_item():
+    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
+    rss = render_feed_as_rss(feed)
+    parsed = parse_feed(rss)
+    assert parsed.items[0].published == datetime(2000, 1, 1, 0, 0, tzinfo=timezone.utc)
+    assert parsed.items[0].description.startswith("<div>")
 
 
 def test_parse_item_description():
