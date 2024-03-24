@@ -1,34 +1,17 @@
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-import jinja2
-
-import jinja
 from dfes.feeds import Item, Feed
 from dfes.model import AffectedAreas, TotalFireBans
-
-
-def jinja_env() -> jinja2.Environment:
-    env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader("templates/"),
-        autoescape=jinja2.select_autoescape(),
-        trim_blocks=True,
-        lstrip_blocks=True,
-    )
-
-    env.filters["declared_for"] = jinja.declared_for
-    env.filters["time_of_issue"] = jinja.time_of_issue
-    env.filters["date_of_issue"] = jinja.date_of_issue
-
-    return env
+from jinja import environment
 
 
 def render_feed_as_rss(feed: Feed) -> str:
-    return jinja_env().get_template("bans.xml").render(feed=feed)
+    return environment().get_template("bans.xml").render(feed=feed)
 
 
 def render_bans_as_html(bans: TotalFireBans) -> str:
-    return jinja_env().get_template("description.html").render(bans=bans)
+    return environment().get_template("description.html").render(bans=bans)
 
 
 def create_feed(feed_published: datetime, n_items: int) -> Feed:
