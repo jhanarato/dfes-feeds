@@ -1,11 +1,12 @@
 from datetime import datetime, timezone
 
-from conftest import generate_bans_xml
 from dfes.parser import Parser
+from generate import create_feed, render_feed_as_rss
 
 
 def test_extract_feed_published():
     published = datetime(2021, 1, 1, 1, 1, tzinfo=timezone.utc)
-    feed = generate_bans_xml(feed_published=published)
-    parser = Parser(feed)
+    feed = create_feed(published, 0)
+    rss = render_feed_as_rss(feed)
+    parser = Parser(rss)
     assert parser.feed_published() == published
