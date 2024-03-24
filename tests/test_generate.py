@@ -102,17 +102,17 @@ class TestCreateItems:
 
 class TestCreateFeed:
     def test_no_items(self):
-        feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 0)
+        feed = create_feed(n_items=0)
         assert not feed.items
 
     def test_one_item(self):
-        feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
+        feed = create_feed(n_items=1)
         assert len(feed.items) == 1
 
     def test_two_items(self):
-        feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 2)
+        feed = create_feed(n_items=2)
         assert len(feed.items) == 2
 
     def test_first_item_published_day_before_feed(self):
-        feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
+        feed = create_feed(n_items=1)
         assert feed.published - feed.items[0].published == timedelta(days=1)
