@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pytest
 from bs4 import BeautifulSoup
 
@@ -9,7 +7,7 @@ from generate import render_feed_as_rss, create_feed
 
 @pytest.fixture
 def bad_description() -> str:
-    feed = create_feed(datetime(2000, 1, 1), 1)
+    feed = create_feed()
     feed_xml = render_feed_as_rss(feed)
     soup = BeautifulSoup(feed_xml)
     tag = soup.find(name="description")
