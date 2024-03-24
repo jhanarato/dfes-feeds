@@ -94,7 +94,7 @@ def items_published(first_published, n_items) -> list[datetime]:
 
 
 def create_item(published: datetime) -> Item:
-    issued = published.replace(second=0)
+    issued = published.replace(second=0, tzinfo=ZoneInfo("Australia/Perth"))
     declared_for = published.date() + timedelta(days=1)
     locations = AffectedAreas([("A Region", "A District")])
 

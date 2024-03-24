@@ -74,9 +74,9 @@ class TestCreateItems:
         item = create_items(pub_date, 1)[0]
         assert item.published == pub_date
 
-    def test_sets_issued_without_seconds(self):
+    def test_sets_issued(self):
         pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
-        issued = datetime(2000, 1, 1, hour=10, minute=30)
+        issued = datetime(2000, 1, 1, hour=10, minute=30, tzinfo=ZoneInfo("Australia/Perth"))
         item = create_items(pub_date, 1)[0]
         assert item.bans.issued == issued
 
@@ -92,7 +92,7 @@ class TestCreateItems:
     def test_increments_by_one_day(self):
         items = create_items(datetime(2000, 1, 1), 2)
         assert items[1].published == datetime(2000, 1, 2)
-        assert items[1].bans.issued == datetime(2000, 1, 2)
+        assert items[1].bans.issued == datetime(2000, 1, 2, tzinfo=ZoneInfo("Australia/Perth"))
         assert items[1].bans.declared_for == date(2000, 1, 3)
 
     def test_affected_areas_stay_the_same(self):
