@@ -9,7 +9,7 @@ from dfes.feeds import parse_feed, Feed
 from dfes.fetch import store_feed, aquire_ban_feed, check_description, store_failed
 from dfes.repository import FailedByFetched
 from dfes.urls import FIRE_BAN_URL
-from generate import render_feed_as_rss
+from generate import render_feed_as_rss, create_feed
 
 
 @responses.activate
@@ -20,8 +20,10 @@ def test_aquire_ok():
 
 
 def test_should_add_feed_to_empty_repository(bans_xml, repository):
-    store_feed(bans_xml, repository)
-    assert repository.published() == [datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc)]
+    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
+    rss = render_feed_as_rss(feed)
+    store_feed(rss, repository)
+    assert repository.published() == [feed.published]
 
 
 def test_should_not_add_feed_twice(bans_xml, repository):
