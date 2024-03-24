@@ -37,8 +37,13 @@ def test_should_add_two_different_feeds(repository):
     published_first = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     published_second = datetime(2023, 10, 17, 8, 10, 56, tzinfo=timezone.utc)
 
-    first_rss = render_feed_as_rss(create_feed(published_first, 1))
-    second_rss = render_feed_as_rss(create_feed(published_second, 1))
+    first_rss = render_feed_as_rss(
+        create_feed(published_first, 1)
+    )
+
+    second_rss = render_feed_as_rss(
+        create_feed(published_second, 1)
+    )
 
     store_feed(first_rss, repository)
     store_feed(second_rss, repository)
