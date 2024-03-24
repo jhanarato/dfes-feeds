@@ -81,42 +81,42 @@ class TestCreateItems:
         assert item.bans.issued == issued
 
     def test_sets_declared_for(self):
-        pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
+        pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15, tzinfo=timezone.utc)
         item = create_items(pub_date, 1)[0]
         assert item.bans.declared_for == date(2000, 1, 2)
 
     def test_sets_locations(self):
-        item = create_items(datetime(2000, 1, 1), 1)[0]
+        item = create_items(datetime(2000, 1, 1, tzinfo=timezone.utc), 1)[0]
         assert item.bans.locations == AffectedAreas([("A Region", "A District")])
 
     def test_increments_by_one_day(self):
-        items = create_items(datetime(2000, 1, 1), 2)
-        assert items[1].published == datetime(2000, 1, 2)
+        items = create_items(datetime(2000, 1, 1, tzinfo=timezone.utc), 2)
+        assert items[1].published == datetime(2000, 1, 2, tzinfo=timezone.utc)
         assert items[1].bans.issued == datetime(2000, 1, 2, tzinfo=ZoneInfo("Australia/Perth"))
         assert items[1].bans.declared_for == date(2000, 1, 3)
 
     def test_affected_areas_stay_the_same(self):
-        items = create_items(datetime(2000, 1, 1), 2)
+        items = create_items(datetime(2000, 1, 1, tzinfo=timezone.utc), 2)
         assert items[0].bans.locations == items[1].bans.locations
 
     def test_generates_description(self):
-        items = create_items(datetime(2000, 1, 1), 1)
+        items = create_items(datetime(2000, 1, 1, tzinfo=timezone.utc), 1)
         assert items[0].description == render_bans_as_html(items[0].bans)
 
 
 class TestCreateFeed:
     def test_no_items(self):
-        feed = create_feed(datetime(2000, 1, 2), 0)
+        feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 0)
         assert not feed.items
 
     def test_one_item(self):
-        feed = create_feed(datetime(2000, 1, 2), 1)
+        feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
         assert len(feed.items) == 1
 
     def test_two_items(self):
-        feed = create_feed(datetime(2000, 1, 2), 2)
+        feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 2)
         assert len(feed.items) == 2
 
     def test_first_item_published_day_before_feed(self):
-        feed = create_feed(datetime(2000, 1, 2), 1)
+        feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
         assert feed.published - feed.items[0].published == timedelta(days=1)
