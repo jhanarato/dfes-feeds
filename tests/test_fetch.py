@@ -77,8 +77,10 @@ def test_should_raise_exception_checking_bad_description(bad_description):
         check_description(feed)
 
 
-def test_should_be_chill_if_description_is_fine(bans_xml):
-    feed = parse_feed(bans_xml)
+def test_should_not_raise_exception_when_description_is_fine():
+    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 0)
+    rss = render_feed_as_rss(feed)
+    feed = parse_feed(rss)
     check_description(feed)
 
 
