@@ -30,7 +30,7 @@ def test_parse_no_entries():
 
 
 def test_parse_item():
-    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
+    feed = create_feed()
     rss = render_feed_as_rss(feed)
     parsed = parse_feed(rss)
     assert parsed.items[0].published == datetime(2000, 1, 1, 0, 0, tzinfo=timezone.utc)
