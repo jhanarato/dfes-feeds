@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 from dfes.feeds import Item, Feed
@@ -14,7 +14,7 @@ def render_bans_as_html(bans: TotalFireBans) -> str:
     return environment().get_template("description.html").render(bans=bans)
 
 
-def create_feed(feed_published: datetime, n_items: int) -> Feed:
+def create_feed(feed_published: datetime = datetime(2000, 1, 2, tzinfo=timezone.utc), n_items: int = 1) -> Feed:
     item_published = feed_published - timedelta(days=1)
     items = create_items(item_published, n_items)
 
