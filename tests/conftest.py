@@ -1,44 +1,10 @@
-from datetime import datetime, date
+from datetime import datetime
 
 import pytest
 from bs4 import BeautifulSoup
 
-from dfes.feeds import Feed, Item
-from dfes.model import TotalFireBans, AffectedAreas
 from dfes.repository import InMemoryRepository, FileRepository
-from generate import render_feed_as_rss, render_bans_as_html, create_feed
-
-
-def generate_bans_xml(feed_published: datetime = datetime(2001, 1, 1),
-                      issued: datetime = datetime(2001, 1, 1),
-                      declared_for: date = date(2001, 1, 1),
-                      revoked=False) -> str:
-
-    bans = TotalFireBans(
-        issued=issued,
-        declared_for=declared_for,
-        revoked=revoked,
-        locations=AffectedAreas([
-            ("Midwest Gascoyne", "Carnamah"),
-            ("Midwest Gascoyne", "Chapman Valley"),
-            ("Midwest Gascoyne", "Coorow"),
-            ("Perth Metropolitan", "Armadale"),
-        ])
-    )
-
-    feed = Feed(
-        title="Total Fire Ban (All Regions)",
-        published=feed_published,
-        items=[
-            Item(
-                published=feed_published,
-                description=render_bans_as_html(bans),
-                bans=bans,
-            )
-        ]
-    )
-
-    return render_feed_as_rss(feed)
+from generate import render_feed_as_rss, create_feed
 
 
 @pytest.fixture
