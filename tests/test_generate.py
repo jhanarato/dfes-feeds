@@ -2,19 +2,15 @@ from datetime import datetime, timezone, date, timedelta
 from zoneinfo import ZoneInfo
 
 from dfes.bans import parse_bans
-from dfes.feeds import parse_feed, Feed
+from dfes.feeds import parse_feed
 from dfes.model import AffectedAreas, TotalFireBans
 from filters import declared_for, time_of_issue, date_of_issue
-from generate import render_feed_as_rss, render_bans_as_html, default_feed, create_items, create_feed
+from generate import render_feed_as_rss, render_bans_as_html, create_items, create_feed
 
 
 class TestRenderFeedAsRss:
     def test_rss_with_no_items(self):
-        feed_in = Feed(
-            title="Total Fire Ban (All Regions)",
-            published=datetime(2000, 1, 1, 1, tzinfo=timezone.utc),
-            items=[],
-        )
+        feed_in = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 0)
 
         feed_text = render_feed_as_rss(feed_in)
         feed_out = parse_feed(feed_text)
@@ -22,7 +18,7 @@ class TestRenderFeedAsRss:
         assert feed_out == feed_in
 
     def test_rss_with_items(self):
-        feed_in = default_feed()
+        feed_in = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
         feed_text = render_feed_as_rss(feed_in)
         feed_out = parse_feed(feed_text)
 
