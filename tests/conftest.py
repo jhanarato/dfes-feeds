@@ -1,4 +1,4 @@
-from datetime import datetime, date, timezone
+from datetime import datetime, date
 
 import pytest
 from bs4 import BeautifulSoup
@@ -39,13 +39,6 @@ def generate_bans_xml(feed_published: datetime = datetime(2001, 1, 1),
     )
 
     return render_feed_as_rss(feed)
-
-
-@pytest.fixture
-def bans_xml():
-    return generate_bans_xml(feed_published=datetime(2023, 10, 16, 8, 10, 56, tzinfo=timezone.utc),
-                             issued=datetime(2023, 10, 15, 17, 6, tzinfo=timezone.utc),
-                             declared_for=date(2023, 10, 16))
 
 
 @pytest.fixture
