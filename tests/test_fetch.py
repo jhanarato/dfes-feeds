@@ -82,7 +82,7 @@ def test_should_raise_exception_checking_bad_description(bad_description):
 
 
 def test_should_not_raise_exception_when_description_ok():
-    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 0)
+    feed = create_feed()
     rss = render_feed_as_rss(feed)
     feed = parse_feed(rss)
     check_description(feed)
