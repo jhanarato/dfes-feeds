@@ -3,7 +3,6 @@ from datetime import datetime, timezone
 import pytest
 import responses
 
-from conftest import generate_bans_xml
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed
 from dfes.fetch import store_feed, aquire_ban_feed, check_description, store_failed
@@ -38,11 +37,11 @@ def test_should_add_two_different_feeds(repository):
     published_first = datetime(2023, 10, 15, 8, 8, tzinfo=timezone.utc)
     published_second = datetime(2023, 10, 17, 8, 10, 56, tzinfo=timezone.utc)
 
-    first_feed = generate_bans_xml(feed_published=published_first)
-    second_feed = generate_bans_xml(feed_published=published_second)
+    first_rss = render_feed_as_rss(create_feed(published_first, 1))
+    second_rss = render_feed_as_rss(create_feed(published_second, 1))
 
-    store_feed(first_feed, repository)
-    store_feed(second_feed, repository)
+    store_feed(first_rss, repository)
+    store_feed(second_rss, repository)
 
     assert repository.published() == [published_first, published_second]
 
