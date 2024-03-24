@@ -19,14 +19,14 @@ def test_aquire_ok():
 
 
 def test_should_add_feed_to_empty_repository(repository):
-    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
+    feed = create_feed()
     rss = render_feed_as_rss(feed)
     store_feed(rss, repository)
     assert repository.published() == [feed.published]
 
 
 def test_should_not_add_feed_twice(repository):
-    feed = create_feed(datetime(2000, 1, 2, tzinfo=timezone.utc), 1)
+    feed = create_feed()
     rss = render_feed_as_rss(feed)
     store_feed(rss, repository)
     store_feed(rss, repository)
