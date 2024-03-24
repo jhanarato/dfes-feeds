@@ -69,23 +69,23 @@ class TestRenderBansAsHtml:
 
 
 class TestCreateItems:
-    def test_generates_published_date(self):
+    def test_sets_published_date(self):
         pub_date = datetime(2000, 1, 1)
         item = create_items(pub_date, 1)[0]
         assert item.published == pub_date
 
-    def test_generates_issued_without_seconds(self):
+    def test_sets_issued_without_seconds(self):
         pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
         issued = datetime(2000, 1, 1, hour=10, minute=30)
         item = create_items(pub_date, 1)[0]
         assert item.bans.issued == issued
 
-    def test_generates_declared_for(self):
+    def test_sets_declared_for(self):
         pub_date = datetime(2000, 1, 1, hour=10, minute=30, second=15)
         item = create_items(pub_date, 1)[0]
         assert item.bans.declared_for == date(2000, 1, 2)
 
-    def test_generates_locations(self):
+    def test_sets_locations(self):
         item = create_items(datetime(2000, 1, 1), 1)[0]
         assert item.bans.locations == AffectedAreas([("A Region", "A District")])
 
