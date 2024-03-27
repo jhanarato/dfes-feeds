@@ -16,9 +16,6 @@ class Item:
     description: str
     bans: TotalFireBans | None = None
 
-    def parse_description(self):
-        self.bans = parse_bans(self.description)
-
 
 @dataclass
 class Feed:
