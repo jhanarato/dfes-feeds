@@ -23,7 +23,7 @@ class TestRenderFeedAsRss:
         feed_out = parse_feed(feed_text)
 
         for item in feed_out.items:
-            item.parse_description()
+            item.bans = parse_bans(item.description)
 
         assert feed_out == feed_in
 

@@ -2,6 +2,7 @@ from datetime import datetime
 
 import requests
 
+from dfes.bans import parse_bans
 from dfes.exceptions import ParsingFailed
 from dfes.feeds import parse_feed, Feed
 from dfes.repository import Repository, FailedByFetched
@@ -24,7 +25,7 @@ def store_feed(feed_xml: str, repository: Repository, now: datetime = datetime.n
 
 def check_description(feed: Feed):
     for item in feed.items:
-        item.parse_description()
+        item.bans = parse_bans(item.description)
 
 
 def store_failed(repository: Repository, feed_xml: str) -> bool:

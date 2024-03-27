@@ -90,6 +90,6 @@ def struct_time_to_datetime(st: time.struct_time) -> datetime:
 def parse_feeds(feeds_text: Iterable[str]) -> Iterable[Feed]:
     for feed_text in feeds_text:
         feed = parse_feed(feed_text)
-        for entry in feed.items:
-            entry.parse_description()
+        for item in feed.items:
+            item.bans = parse_bans(item.description)
         yield feed
