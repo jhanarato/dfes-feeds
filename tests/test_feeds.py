@@ -3,7 +3,8 @@ from datetime import datetime, timezone
 import pytest
 
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import parse_feed, Feed
+from dfes.feeds import parse_feed
+from dfes.model import Feed
 from generate import render_feed_as_rss, create_feed
 
 

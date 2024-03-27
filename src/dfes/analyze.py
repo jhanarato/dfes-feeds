@@ -5,7 +5,8 @@ import polars as pl
 import polars.selectors as cs
 
 from dfes.bans import parse_bans
-from dfes.feeds import parse_feed, Feed
+from dfes.feeds import parse_feed
+from dfes.model import Feed
 from dfes.repository import FileRepository, FeedByPublished
 
 

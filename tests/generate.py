@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-from dfes.feeds import Item, Feed
-from dfes.model import AffectedAreas, TotalFireBans
+from dfes.model import AffectedAreas, TotalFireBans, Item, Feed
 from jinja import environment
 
 

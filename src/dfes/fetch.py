@@ -4,7 +4,8 @@ import requests
 
 from dfes.bans import parse_bans
 from dfes.exceptions import ParsingFailed
-from dfes.feeds import parse_feed, Feed
+from dfes.feeds import parse_feed
+from dfes.model import Feed
 from dfes.repository import Repository, FailedByFetched
 from dfes.urls import FIRE_BAN_URL
 

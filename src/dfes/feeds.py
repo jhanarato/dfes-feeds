@@ -1,27 +1,12 @@
 import time
 from collections.abc import Iterable
-from dataclasses import dataclass
 from datetime import datetime, timezone
 
 import feedparser
 
 from dfes.bans import parse_bans
 from dfes.exceptions import ParsingFailed
-from dfes.model import TotalFireBans
-
-
-@dataclass
-class Item:
-    published: datetime
-    description: str
-    bans: TotalFireBans | None = None
-
-
-@dataclass
-class Feed:
-    title: str
-    published: datetime
-    items: list[Item]
+from dfes.model import Item, Feed
 
 
 def parse_feed(feed_xml: str) -> Feed:

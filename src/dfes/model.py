@@ -23,3 +23,15 @@ class TotalFireBans:
     revoked: bool = False
 
 
+@dataclass
+class Item:
+    published: datetime
+    description: str
+    bans: TotalFireBans | None = None
+
+
+@dataclass
+class Feed:
+    title: str
+    published: datetime
+    items: list[Item]

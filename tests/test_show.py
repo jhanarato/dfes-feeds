@@ -2,9 +2,8 @@ from datetime import datetime, date, timezone, timedelta
 
 import pytest
 
-from dfes.feeds import Item, Feed
 from dfes.fetch import store_feed
-from dfes.model import TotalFireBans, AffectedAreas
+from dfes.model import TotalFireBans, AffectedAreas, Item, Feed
 from dfes.show import to_show, last_issued, latest_bans, LatestItems
 from generate import render_feed_as_rss, create_feed
 
